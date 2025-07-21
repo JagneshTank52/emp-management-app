@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #FFD85F;
+    --secondary-color: #303030;
+    --primary-bg-color: #FCEBB6;
+    --secondary-bg-color: #E3E5E6;
+    --component-primary-bg-color: #ffffff;
+    --component-secondary-bg-color: #FCFAEB;
+}
+
+body,html {
+    height: 100%;
+    margin: 0;
+    /* padding: 5; */
+    border-radius: 0;
+}
+
+body{
+    background: radial-gradient(ellipse at top left, var(--secondary-bg-color) 40%, var(--primary-bg-color) 70%);
+}
