@@ -2,5 +2,5 @@
     height: 65px;
     border-radius: 32px;
     background-color: var(--component-primary-bg-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0,0.2); 
 }

@@ -15,5 +15,17 @@ body,html {
 }
 
 body{
-    background: radial-gradient(ellipse at top left, var(--secondary-bg-color) 40%, var(--primary-bg-color) 70%);
+    background: radial-gradient(ellipse at top left, var(--secondary-bg-color) 40%, var(--primary-bg-color) 100%);
+}
+
+.btn-primary{
+    background-color: var(--component-primary-bg-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+}
+
+.btn:hover {
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }

@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3 header">
+        <h2 class="mb-0" style="color: var(--secondary-color);">Employees</h2>
+        <a routerLink="/employee/create" class="btn btn-primary">Add Employee</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (employee of allEmployees; track employee.Id)
+                {
+                <tr>
+                    <td>{{employee.FirstName}} {{employee.LastName}}</td>
+                    <td>{{employee.Email}}</td>
+                    <td>{{employee.PhoneNumber}}</td>
+                    <td>{{employee.Gender}}</td>
+                    <td>{{employee.DateOfBirth | date:'shortDate'}}</td>
+                    <td>{{employee.Address}}</td>
+                    <td>{{employee.DepartmentName}}</td>
+                    <td>{{employee.RoleName}}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Employee Actions">
+                            <a [routerLink]="['/', employee.Id]" class="btn btn-info btn-sm me-2">View</a>
+                            <a [routerLink]="['/employee', employee.Id, 'edit']"
+                                class="btn btn-warning btn-sm me-2">Update</a>
+                            <button (click)="deleteEmployee(employee.Id)"
+                                    class="btn btn-danger btn-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                } @empty{
+                <tr>
+                    <td colspan="9" class="text-center text-muted">No employees found.</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div class="text-center mt-3">
+        <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
+    </div> -->
+</div>
