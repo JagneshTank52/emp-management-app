@@ -1,0 +1,30 @@
+.btn-base {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 16px;
+      border: 1px solid;
+      border-radius: 15px;
+      min-height: 40px;
+      /* font-size: 40px; */
+      min-width: 80px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      outline: none;
+    }
+
+    .btn-base:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-base:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-base:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }

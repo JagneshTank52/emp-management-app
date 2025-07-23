@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../../core/services/employee.service';
-import { EmployeeDetailsModel } from '../../../core/module/employee-details';
+import { EmployeeDetailsModel } from '../../../core/model/employee-details';
 import { CommonModule } from '@angular/common';
+import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
 
 @Component({
   selector: 'app-employee-details',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule,ReusableBtn],
   templateUrl: './employee-details.html',
   styleUrl: './employee-details.css'
 })
@@ -21,10 +22,12 @@ export class EmployeeDetails implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private employeeService: EmployeeService,
+    private cdr: ChangeDetectorRef,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    debugger;
     this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
       const idParam = params.get('id');
       if (idParam) {
@@ -40,6 +43,7 @@ export class EmployeeDetails implements OnInit {
     this.employeeSubscription = this.employeeService.getEmployeeById(id).subscribe({
       next: (data) => {
         this.employee = data;
+        this.cdr.detectChanges();
         this.errorMessage = ''; // Clear any previous error
       },
       error: (err) => {
@@ -55,4 +59,10 @@ export class EmployeeDetails implements OnInit {
     this.employeeSubscription?.unsubscribe();
   }
 
+  backToList() : void {
+    this.router.navigate(['employee']);
+  }
+  navigateToEditEmployee() : void {
+    this.router.navigate(['employee',this.employeeId,'edit']);
+  }
 }

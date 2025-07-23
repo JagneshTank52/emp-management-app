@@ -1,24 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { EmployeeService } from '../../../core/services/employee.service';
-import { EmployeeDetailsModel } from '../../../core/module/employee-details';
+import { EmployeeDetailsModel } from '../../../core/model/employee-details';
+import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
 
 
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule,RouterModule ],
+  imports: [CommonModule,RouterModule,ReusableBtn],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
+
 })
 export class EmployeeList implements OnInit {
   allEmployees: EmployeeDetailsModel[] = [];
+  // allEmployees$: Observable<EmployeeDetailsModel[]>;
   message: string = '';
   loadEmpSubscription?: Subscription;
   deleteEmpSubscription?: Subscription;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService,private cdr: ChangeDetectorRef,private router: Router,) {
     console.log("constructor in emp list");
   }
 
@@ -30,7 +33,8 @@ export class EmployeeList implements OnInit {
   loadEmployees() {
     this.loadEmpSubscription = this.employeeService.getAllEmployees().subscribe({
       next: (data) => {
-        this.allEmployees = data
+        this.allEmployees = data;
+        this.cdr.detectChanges();
          console.log('All Employees:', this.allEmployees);
         if (this.allEmployees.length === 0) {
           this.message = 'No employees to display.';
@@ -47,20 +51,15 @@ export class EmployeeList implements OnInit {
 
     deleteEmployee(id: number): void {
       debugger;
-    // Optional: Add a confirmation dialog
     if (confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
-      this.message = 'Deleting employee...'; // Show processing message
+      this.message = 'Deleting employee...'; 
       this.deleteEmpSubscription = this.employeeService.deleteEmployee(id).subscribe({
         next: (response) => {
           this.message = 'Employee deleted successfully!';
           console.log('Employee deleted:', response);
-          // Option 1: Filter out the deleted employee from the current list (optimistic update)
-          this.allEmployees = this.allEmployees.filter(emp => emp.Id !== id);
+        
+          this.loadEmployees();
 
-          // Option 2 (Alternative/Fallback): Reload the entire list from the server
-          // this.loadEmployees();
-
-          // If the list becomes empty after deletion, update the message
           if (this.allEmployees.length === 0) {
             this.message = 'No employees to display.';
           }
@@ -68,7 +67,8 @@ export class EmployeeList implements OnInit {
         error: (error) => {
           this.message = 'Failed to delete employee. ' + (error.error?.message || error.message || '');
           console.error('Error deleting employee:', error);
-        }
+        },
+      
       });
     }
   }
@@ -77,5 +77,15 @@ export class EmployeeList implements OnInit {
     if (this.loadEmpSubscription) {
       this.loadEmpSubscription.unsubscribe();
     }
+  }
+
+  navigateToAddEmployee() : void {
+    this.router.navigate(['employee','create']);
+  }
+  navigateToEditEmployee(id: number) : void {
+    this.router.navigate(['employee',id,'edit']);
+  }
+  viewDetails(id: number) : void {
+    this.router.navigate(['employee',id]);
   }
 }

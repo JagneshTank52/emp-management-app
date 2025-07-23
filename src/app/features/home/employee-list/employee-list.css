@@ -1,3 +1,19 @@
 .employee-card{
     background-color: var(--component-secondary-bg-color);
 }
+
+.table-hover > tbody > tr:hover {
+  --bs-table-hover-bg: var(--primary-color); 
+}
+
+.table-warning {
+    --bs-table-bg: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+.table thead th {
+    border-bottom: 3px dashed #dee2e6;
+    height: 100%;
+    font-weight: semi-bold;
+    color: #6c757d;
+}

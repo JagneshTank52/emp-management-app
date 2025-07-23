@@ -1,12 +1,15 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3 header">
-        <h2 class="mb-0" style="color: var(--secondary-color);">Employees</h2>
-        <a routerLink="/employee/create" class="btn btn-primary">Add Employee</a>
+        <h3 class="mb-0" style="color: var(--secondary-color);">Employees</h3>
+        <app-reusable-btn backgroundColor="var(--primary-color)" textColor="var(--secondary-color)"
+            borderColor="var(--primary-color)" (buttonClick)="navigateToAddEmployee()" fontSize="16px">
+            Add Employee
+        </app-reusable-btn>
     </div>
 
     <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
+        <table class="table table-hover">
+            <thead>
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
@@ -32,12 +35,26 @@
                     <td>{{employee.DepartmentName}}</td>
                     <td>{{employee.RoleName}}</td>
                     <td>
-                        <div class="btn-group" role="group" aria-label="Employee Actions">
-                            <a [routerLink]="['/', employee.Id]" class="btn btn-info btn-sm me-2">View</a>
-                            <a [routerLink]="['/employee', employee.Id, 'edit']"
-                                class="btn btn-warning btn-sm me-2">Update</a>
-                            <button (click)="deleteEmployee(employee.Id)"
-                                    class="btn btn-danger btn-sm">Delete</button>
+                        <div class="btn-group gap-1" role="group" aria-label="Employee Actions">
+                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)" textColor="var(--secondary-color)"
+                                borderColor="var(--primary-color)" (buttonClick)="viewDetails(employee.Id)"
+                                fontSize="14px">
+                                View
+                            </app-reusable-btn>
+                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)" textColor="var(--secondary-color)"
+                                borderColor="var(--primary-color)" (buttonClick)="navigateToEditEmployee(employee.Id)"
+                                fontSize="14px">
+                                Edit
+                            </app-reusable-btn>
+                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)" textColor="var(--secondary-color)"
+                                borderColor="var(--primary-color)" (buttonClick)="deleteEmployee(employee.Id)"
+                                fontSize="14px">
+                                Delete
+                            </app-reusable-btn>
+                            <!-- <a [routerLink]="['/employee', employee.Id]" class="btn btn-info btn-sm me-2">View</a> -->
+                            <!-- <a [routerLink]="['/employee', employee.Id, 'edit']" -->
+                                <!-- class="btn btn-warning btn-sm me-2">Update</a> -->
+                            <!-- <button (click)="deleteEmployee(employee.Id)" class="btn btn-danger btn-sm">Delete</button> -->
                         </div>
                     </td>
                 </tr>

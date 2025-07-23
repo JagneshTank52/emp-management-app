@@ -3,16 +3,18 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AddEditEmployeeDetails } from '../../../core/module/add-edit-employee-details';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AddEditEmployeeDetails } from '../../../core/model/add-edit-employee-details';
+import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
 
 @Component({
   selector: 'app-employee-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule,ReusableBtn],
   templateUrl: './employee-form.html',
   styleUrl: './employee-form.css'
 })
+
 export class EmployeeForm implements OnInit {
   employeeForm!: FormGroup;
   message: string = '';
@@ -30,8 +32,6 @@ export class EmployeeForm implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
-    debugger;
     this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
       const idParam = params.get('id');
 
@@ -105,8 +105,9 @@ export class EmployeeForm implements OnInit {
           dateOfBirth: employee.DateOfBirth,
           address: employee.Address,
           departmentId: employee.DepartmentId,
-          // userName: employee.UserName,
+          userName: employee.UserName,
           email: employee.Email,
+          password: employee.Password,
           // Do NOT patch password here for security reasons.
           // If the backend sends it back, it might be hashed or null.
           // The user should explicitly type it to change it.
@@ -114,8 +115,8 @@ export class EmployeeForm implements OnInit {
         });
         // Clear password validators immediately after loading for edit,
         // as it's now optional unless the user types something.
-        this.employeeForm.get('password')?.clearValidators();
-        this.employeeForm.get('password')?.updateValueAndValidity();
+        // this.employeeForm.get('password')?.clearValidators();
+        // this.employeeForm.get('password')?.updateValueAndValidity();
       },
       error: (err) => {
         console.error('Error loading employee for edit:', err);
@@ -170,5 +171,9 @@ export class EmployeeForm implements OnInit {
       this.message = 'Please fill in all required fields correctly.';
       this.employeeForm.markAllAsTouched();
     }
+  }
+
+  backToList(): void{
+    this.router.navigate(['employee']);
   }
 }

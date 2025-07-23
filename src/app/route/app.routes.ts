@@ -4,6 +4,7 @@ import { AuthLayout } from '../layouts/auth-layout/auth-layout';
 import { EmployeeList } from '../features/home/employee-list/employee-list';
 import { EmployeeForm } from '../features/home/employee-form/employee-form';
 import { EmployeeDetails } from '../features/home/employee-details/employee-details';
+import { LoginComponent } from '../features/Auth/login.component/login.component';
 
 export const routes: Routes = [
   {
@@ -56,8 +57,10 @@ export const routes: Routes = [
     [
       {
         path: "login",
-        component: AuthLayout // login component
+        component: LoginComponent,
+        title: "Employee Login" // login component
       },
+      
       {
         path: "Register",
         component: AuthLayout // Regiseter component
