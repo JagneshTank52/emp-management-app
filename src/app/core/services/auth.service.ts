@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  private authURL: string = "http://localhost:5140/api/auth";
+  private authURL: string = "http://localhost:5140/api/Auth";
 
   constructor(
     private http: HttpClient,
@@ -26,10 +26,12 @@ export class AuthService {
     return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/login`, credentials)
       .pipe(
         map(response => {
-          if (!response.success || !response.data) {
-            throw new Error(response.message || 'Login failed');
+          console.log(response);
+          if (!response.Success || !response.Data) {
+            throw new Error(response.Message || 'Login failed');
           }
-          return response.data;
+          
+          return response.Data;
         }),
         tap(data => this.setSession(data))
       );
@@ -50,6 +52,7 @@ export class AuthService {
   }
 
   private setSession(authResponse: AuthResponse): void {
+    debugger;
     localStorage.setItem('accessToken', authResponse.accessToken);
     const cookieOptions = `path=/; Secure; SameSite=Strict;`;
     document.cookie = `refreshToken=${authResponse.refreshToken}; ${cookieOptions}`;
@@ -70,10 +73,10 @@ export class AuthService {
     return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/refresh-token`, { refreshToken })
       .pipe(
         map(response => {
-          if (!response.success || !response.data) {
-            throw new Error(response.message || 'Token refresh failed');
+          if (!response.Success || !response.Data) {
+            throw new Error(response.Message || 'Token refresh failed');
           }
-          return response.data;
+          return response.Data;
         }),
         tap(data => this.setSession(data))
       );
@@ -94,7 +97,7 @@ export class AuthService {
   // }
 
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return 'Hello';
   }
 
   private getRefreshTokenFromCookie(): string | null {
