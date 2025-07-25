@@ -10,11 +10,12 @@ import { AddEditEmployeeDetails } from '../model/add-edit-employee-details';
 
 export class EmployeeService {
 
-  private baseURL: string = "http://localhost:5140/api/employee";
+  private baseURL: string = "https://localhost:7051/api/employee";
   constructor(private http: HttpClient) { }
 
   // GET /api/Employee - Get all employees
   getAllEmployees(): Observable<EmployeeDetailsModel[]> {
+    debugger;
     return this.http.get<EmployeeDetailsModel[]>(this.baseURL,{withCredentials: true});
   }
 
