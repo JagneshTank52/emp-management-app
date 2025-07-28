@@ -1,42 +1,88 @@
-<div class="mt-4">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control" formControlName="email" required
-                    [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
-                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-                <div class="invalid-feedback">
-                    @if (loginForm.get('email')?.errors?.['required']) {
-                    <span>Email is required.</span>
-                    }
-                    @if (loginForm.get('email')?.errors?.['email']) {
-                    <span>Invalid email format.</span>
-                    }
+<div class="d-flex flex-col align-items-center justify-content-center h-100 w-100">
+    <div class="card w-50 h-50" style="background-color: var(--component-primary-bg-color);">
+        <div class="row m-0 h-100">
+            <div class="col-6 p-0" style="background-color: #f7f7f7;">
+                <img [src]="loginImage" alt="Login Image" style="height: 100%; width: 100%; object-fit: contain;">
+            </div>
+            <div class="col-6 p-0 d-flex align-items-center justify-content-center">
+                <div class="d-felx flex-row" style="width: 80%;">
+
+                    <p class="fs-4 fw-bold mb-4 ">Employee Management</p>
+
+                    <form class="d-flex flex-column w-100" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+                        <div class="row m-0">
+                            <div class="col p-0 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" class="form-control" formControlName="email" required
+                                    [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
+                                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (loginForm.get('email')?.errors?.['required']) {
+                                    <span>Email is required.</span>
+                                    }
+                                    @if (loginForm.get('email')?.errors?.['email']) {
+                                    <span>Invalid email format.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col p-0 mb-4">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" class="form-control" formControlName="password"
+                                    required
+                                    [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
+                                @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (loginForm.get('password')?.errors?.['required']) {
+                                    <span>Password is required.</span>
+                                    }
+                                    @if (loginForm.get('password')?.errors?.['minlength']) {
+                                    <span>Password must be at least 6 characters long.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- <div class="row m-0">
+                            <div class="col p-0 d-flex align-items-center mb-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-2">
+                            <div class="col p-0 text-start">
+                                <span>New here? <a href="/Account/Register"
+                                        class="text-decoration-none">Register</a></span>
+                            </div>
+                            <div class="col p-0 text-end">
+                                <a href="/Account/ForgotPassword" class="text-decoration-none">Forgot password?</a>
+                            </div>
+                        </div> -->
+                        
+                        <div class="row m-0">
+                            <div class="col p-0 mb-3 justify-content-center align-items-center" >
+                                <app-reusable-btn backgroundColor="var(--primary-color)" type="submit"
+                                    textColor="var(--secondary-color)" borderColor="var(--primary-color)"
+                                    (buttonClick)="login()" fontSize="16px">
+                                    Login
+                                </app-reusable-btn>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                }
-            </div>
 
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" class="form-control" formControlName="password" required
-                    [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
-                @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-                <div class="invalid-feedback">
-                    @if (loginForm.get('password')?.errors?.['required']) {
-                    <span>Password is required.</span>
-                    }
-                    @if (loginForm.get('password')?.errors?.['minlength']) {
-                    <span>Password must be at least 6 characters long.</span>
-                    }
-                </div>
-                }
             </div>
-
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Login</button>
-            </div>
-
         </div>
-    </form>
+
+    </div>
+
 </div>

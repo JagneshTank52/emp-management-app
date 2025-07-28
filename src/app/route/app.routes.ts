@@ -5,19 +5,17 @@ import { EmployeeList } from '../features/home/employee-list/employee-list';
 import { EmployeeForm } from '../features/home/employee-form/employee-form';
 import { EmployeeDetails } from '../features/home/employee-details/employee-details';
 import { LoginComponent } from '../features/Auth/login.component/login.component';
+import { authGuard } from '../core/guards/auth-guard';
 
 export const routes: Routes = [
   {
     path: "",
     component: MainLayout,
+    canActivateChild: [authGuard],
     children: [
       {
-        path: "",
-        redirectTo: "/employee",
-        pathMatch: "full"
-      },
-      {
         path: "employee",
+        canActivateChild: [authGuard],
         children: [
           {
             path: "",
@@ -28,6 +26,7 @@ export const routes: Routes = [
           // POST /api/employee
           {
             path: "create",
+            // canActivate: [authGuard],
             component: EmployeeForm, // Add Employee
             title: "Add New Employee"
           },
@@ -35,6 +34,7 @@ export const routes: Routes = [
           // GET /api/employees/{id} - View employee details
           {
             path: ":id",
+            // canActivate: [authGuard],
             component: EmployeeDetails, // Get employee detalis
             title: "Employee Details"
           },

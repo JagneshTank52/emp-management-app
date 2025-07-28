@@ -5,13 +5,14 @@ import {
 } from '../../../core/services/auth.service';
 import { LoginRequest } from '../../../core/model/login-request';
 import { Subscribable, Subscription } from 'rxjs';
-import { response } from 'express';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login.component',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ReusableBtn],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -20,9 +21,11 @@ export class LoginComponent implements OnInit {
   credentials!: LoginRequest;
   loginForm!: FormGroup;
   loginSubscription?: Subscription;
+  loginImage: string = "assets/images/HR-Software-India.png";
 
   constructor(
     private authService: AuthService,
+    private router: Router,
     private fb: FormBuilder
   ) { }
 
@@ -44,7 +47,8 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loginSubscription = this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        console.log('successfully login');
+        console.log('Successfully logged in');
+        this.router.navigate(['/employee'])
       },
       error: (err) => {
         console.error('Error to login :', err);
@@ -61,12 +65,10 @@ export class LoginComponent implements OnInit {
         this.loginSubscription.unsubscribe();
       }
       this.login();
-
     }
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe to prevent memory leaks when the component is destroyed
     if (this.loginSubscription) {
       this.loginSubscription.unsubscribe();
     }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginRequest } from '../model/login-request';
-import { map, Observable, pipe, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, pipe, tap, throwError } from 'rxjs';
 import { LoginResponse } from '../model/login-response';
 import { stringify } from 'querystring';
 
@@ -20,7 +20,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService, 
+    private tokenService: TokenService,
     private router: Router
   ) { }
 
@@ -40,7 +40,7 @@ export class AuthService {
 
   refreshToken(): Observable<AuthResponse> {
     debugger;
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/refresh-token`, null , {withCredentials: true})
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/refresh-token`, null, { withCredentials: true })
       .pipe(
         map(response => {
           if (!response.Success || !response.Data) {
@@ -52,42 +52,22 @@ export class AuthService {
       );
   }
 
-  logout(): void {
-    const refreshToken = this.getRefreshTokenFromCookie();
-    if (refreshToken) {
-      this.http.post(`${this.authURL}/logout`, { refreshToken });
-    }
-    // localStorage.removeItem('accessToken');
-    // document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
-    // this.router.navigate(['/login']);
+  logout(): Observable<boolean> {
+    return this.http.post<ApiResponse<boolean>>(`${this.authURL}/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => {
+        this.tokenService.clearSession();
+      }),
+      map(() => true), // Return `true` if success
+      catchError(err => {
+        console.error('Logout error:', err);
+        this.tokenService.clearSession();
+        return of(true); // Still return `true` to allow navigation
+      })
+    );
   }
 
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('accessToken') !== null;
-  }
-
-
-
-  // private getRefreshTokenFromCookie(): string | null {
-  //   const cookieString: string = document.cookie;
-  //   const cookieArray: string[] = cookieString.split(';');
-
-  //   for (const cookie of cookieArray) {
-  //     const [name, value] = cookie.split('=');
-
-  //     if (name == "refreshToken") {
-  //       return value;
-  //     }
-  //   }
-  //   return null;
-  // }
-
-
-
-  private getRefreshTokenFromCookie(): string | null {
-    // const match = document.cookie.match(new RegExp('(^| )refreshToken=([^;]+)'));
-    // return match ? match[2] : null;
-    return 's'
+    return this.tokenService.isAccessTokenExist();
   }
 }

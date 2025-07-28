@@ -6,6 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthService } from '../core/services/auth.service';
 import { authInterceptor } from '../core/interceptor/auth.interceptor';
+import { authGuard } from '../core/guards/auth-guard';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +19,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
-    AuthService 
+    AuthService,
   ]
 };
