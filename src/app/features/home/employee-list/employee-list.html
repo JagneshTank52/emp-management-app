@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (employee of allEmployees; track employee.Id)
+                @for (employee of employees; track employee.Id)
                 {
                 <tr>
                     <td>{{employee.FirstName}} {{employee.LastName}}</td>
@@ -36,25 +36,21 @@
                     <td>{{employee.RoleName}}</td>
                     <td>
                         <div class="btn-group gap-1" role="group" aria-label="Employee Actions">
-                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)" textColor="var(--secondary-color)"
-                                borderColor="var(--primary-color)" (buttonClick)="viewDetails(employee.Id)"
-                                fontSize="14px">
+                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)"
+                                textColor="var(--secondary-color)" borderColor="var(--primary-color)"
+                                (buttonClick)="viewDetails(employee.Id)" fontSize="14px">
                                 View
                             </app-reusable-btn>
-                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)" textColor="var(--secondary-color)"
-                                borderColor="var(--primary-color)" (buttonClick)="navigateToEditEmployee(employee.Id)"
-                                fontSize="14px">
+                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)"
+                                textColor="var(--secondary-color)" borderColor="var(--primary-color)"
+                                (buttonClick)="navigateToEditEmployee(employee.Id)" fontSize="14px">
                                 Edit
                             </app-reusable-btn>
-                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)" textColor="var(--secondary-color)"
-                                borderColor="var(--primary-color)" (buttonClick)="deleteEmployee(employee.Id)"
-                                fontSize="14px">
+                            <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)"
+                                textColor="var(--secondary-color)" borderColor="var(--primary-color)"
+                                (buttonClick)="deleteEmployee(employee.Id)" fontSize="14px">
                                 Delete
                             </app-reusable-btn>
-                            <!-- <a [routerLink]="['/employee', employee.Id]" class="btn btn-info btn-sm me-2">View</a> -->
-                            <!-- <a [routerLink]="['/employee', employee.Id, 'edit']" -->
-                                <!-- class="btn btn-warning btn-sm me-2">Update</a> -->
-                            <!-- <button (click)="deleteEmployee(employee.Id)" class="btn btn-danger btn-sm">Delete</button> -->
                         </div>
                     </td>
                 </tr>
@@ -65,9 +61,48 @@
                 }
             </tbody>
         </table>
-    </div>
+        <!-- Pagination -->
+        <!-- Pagination -->
+        <div class="row m-0">
+            <div class="col-12 d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-end mb-3 p-3"
+                style="gap: 10px;">
 
-    <!-- <div class="text-center mt-3">
+                <!-- Select Items Per Page -->
+                <div class="d-flex flex-row align-items-center">
+                    <h5 class="mb-0 me-1">Items per page</h5>
+                    <select class="form-select w-auto me-2" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+                        @for (size of pageSizeOptions; track size) {
+                        <option [value]="size">{{ size }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Pagination Info and Buttons -->
+                <div class="d-flex flex-row align-items-center">
+                    <h5 class="mb-0 me-1">
+                        Page {{startCount}} - {{ endCount }}
+                         of {{ totalEmployee }}
+                    </h5>
+
+                    <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item" [class.disabled]="!hasPreviousPage">
+                            <button class="page-link" (click)="previousPage()" [disabled]="!hasPreviousPage">
+                                <i class="bi bi-caret-left-fill" style="color: var(--primary-color);"></i>
+                            </button>
+                        </li>
+
+                        <li class="page-item" [class.disabled]="!hasNextPage">
+                            <button class="page-link" (click)="nextPage()" [disabled]="!hasNextPage">
+                                <i class="bi bi-caret-right-fill" style="color: var(--primary-color);"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="text-center mt-3">
         <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
     </div> -->
-</div>
+    </div>
