@@ -6,6 +6,7 @@ import { EmployeeForm } from '../features/home/employee-form/employee-form';
 import { EmployeeDetails } from '../features/home/employee-details/employee-details';
 import { LoginComponent } from '../features/Auth/login.component/login.component';
 import { authGuard } from '../core/guards/auth-guard';
+import { RegisterComponent } from '../features/Auth/register.component/register.component';
 
 export const routes: Routes = [
   {
@@ -62,8 +63,8 @@ export const routes: Routes = [
       },
       
       {
-        path: "Register",
-        component: AuthLayout // Regiseter component
+        path: "register",
+        component: RegisterComponent // Regiseter component
       }
     ]
   }

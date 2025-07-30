@@ -30,6 +30,7 @@ export class TokenService {
     const token = this.cookieService.get('AccessToken');
     return !!token; 
   }
+  
 
   clearSession(): void {
   this.cookieService.delete('AccessToken');

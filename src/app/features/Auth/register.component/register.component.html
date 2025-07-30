@@ -1,0 +1,192 @@
+<div class="d-flex flex-col align-items-center justify-content-center h-100 w-100">
+    <div class="card w-50" style="background-color: var(--component-primary-bg-color);">
+        <div class="row m-0 h-100">
+            <div class="col-12 p-4 d-flex align-items-center justify-content-center">
+                <div class="d-flex flex-column" style="width: 80%;">
+
+                    <p class="fs-4 fw-bold mb-4 text-center">Employee Registration</p>
+
+                    <form class="d-flex flex-column w-100" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+                        <!-- First Name and Last Name Row -->
+                        <div class="row m-0">
+                            <div class="col-6 p-0 pe-2 mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" id="firstName" class="form-control" formControlName="firstName" required
+                                    [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" />
+                                @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('firstName')?.errors?.['required']) {
+                                    <span>First Name is required.</span>
+                                    }
+                                    @if (registerForm.get('firstName')?.errors?.['maxlength']) {
+                                    <span>First Name cannot exceed 100 characters.</span>
+                                    }
+                                    @if (registerForm.get('firstName')?.errors?.['pattern']) {
+                                    <span>Only alphabetic characters are allowed.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <div class="col-6 p-0 ps-2 mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" formControlName="lastName" required
+                                    [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" />
+                                @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('lastName')?.errors?.['required']) {
+                                    <span>Last Name is required.</span>
+                                    }
+                                    @if (registerForm.get('lastName')?.errors?.['maxlength']) {
+                                    <span>Last Name cannot exceed 100 characters.</span>
+                                    }
+                                    @if (registerForm.get('lastName')?.errors?.['pattern']) {
+                                    <span>Only alphabetic characters are allowed.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Email Row -->
+                        <div class="row m-0">
+                            <div class="col p-0 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" class="form-control" formControlName="email" required
+                                    [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
+                                @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('email')?.errors?.['required']) {
+                                    <span>Email is required.</span>
+                                    }
+                                    @if (registerForm.get('email')?.errors?.['pattern']) {
+                                    <span>Please enter a valid email address.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Date of Birth and Gender Row -->
+                        <div class="row m-0">
+                            <div class="col-6 p-0 pe-2 mb-3">
+                                <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" class="form-control" formControlName="dateOfBirth" required
+                                    [class.is-invalid]="registerForm.get('dateOfBirth')?.invalid && registerForm.get('dateOfBirth')?.touched" />
+                                @if (registerForm.get('dateOfBirth')?.invalid && registerForm.get('dateOfBirth')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('dateOfBirth')?.errors?.['required']) {
+                                    <span>Date of birth is required.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <div class="col-6 p-0 ps-2 mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select id="gender" class="form-select" formControlName="gender" required
+                                    [class.is-invalid]="registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                @if (registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('gender')?.errors?.['required']) {
+                                    <span>Gender is required.</span>
+                                    }
+                                    @if (registerForm.get('gender')?.errors?.['pattern']) {
+                                    <span>Gender must be Male, Female, or Other.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Phone Number Row -->
+                        <div class="row m-0">
+                            <div class="col p-0 mb-3">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="tel" id="phoneNumber" class="form-control" formControlName="phoneNumber" required
+                                    placeholder="10-digit mobile number"
+                                    [class.is-invalid]="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched" />
+                                @if (registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('phoneNumber')?.errors?.['required']) {
+                                    <span>Phone number is required.</span>
+                                    }
+                                    @if (registerForm.get('phoneNumber')?.errors?.['pattern']) {
+                                    <span>Please enter valid phone number.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Password Row -->
+                        <div class="row m-0">
+                            <div class="col p-0 mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" class="form-control" formControlName="password" required
+                                    [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
+                                @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('password')?.errors?.['required']) {
+                                    <span>Password is required.</span>
+                                    }
+                                    @if (registerForm.get('password')?.errors?.['minlength']) {
+                                    <span>Password must be at least 8 characters long.</span>
+                                    }
+                                    @if (registerForm.get('password')?.errors?.['maxlength']) {
+                                    <span>Password cannot exceed 16 characters.</span>
+                                    }
+                                    @if (registerForm.get('password')?.errors?.['pattern']) {
+                                    <span>Password must contain upper, lower, digit, and special character.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password Row -->
+                        <div class="row m-0">
+                            <div class="col p-0 mb-4">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword" required
+                                    [class.is-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" />
+                                @if (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) {
+                                <div class="invalid-feedback">
+                                    @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+                                    <span>Confirm password is required.</span>
+                                    }
+                                    @if (registerForm.get('confirmPassword')?.errors?.['mismatch']) {
+                                    <span>Passwords do not match.</span>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button Row -->
+                        <div class="row m-0">
+                            <div class="col p-0 mb-3 d-flex justify-content-center align-items-center">
+                                <app-reusable-btn backgroundColor="var(--primary-color)" type="submit"
+                                    textColor="var(--secondary-color)" borderColor="var(--primary-color)"
+                                    (buttonClick)="register()" fontSize="16px">
+                                    Register
+                                </app-reusable-btn>
+                            </div>
+                        </div>
+
+                        <!-- Login Link Row -->
+                        <div class="row m-0">
+                            <div class="col p-0 text-center">
+                                <span>Already have an account? <a href="/login" class="text-decoration-none">Login here</a></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

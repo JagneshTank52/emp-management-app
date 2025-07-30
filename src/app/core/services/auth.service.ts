@@ -9,6 +9,7 @@ import { AuthResponse } from '../model/auth-response';
 import { ApiResponse } from '../model/api-response';
 import { Router } from '@angular/router';
 import { TokenService } from './token.service';
+import { RegisterRequest } from '../model/register-request';
 
 
 @Injectable({
@@ -38,6 +39,18 @@ export class AuthService {
       );
   }
 
+  register(credentials: RegisterRequest): Observable<string> {
+    return this.http.post<ApiResponse<null>>(`${this.authURL}/register`, credentials, { withCredentials: true })
+      .pipe(
+        map(response => {
+          if (!response.Success) {
+            throw new Error(response.Message || 'Registration failed');
+          }
+          return response.Message; // Return success message from backend
+        })
+      );
+  }
+  
   refreshToken(): Observable<AuthResponse> {
     debugger;
     return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/refresh-token`, null, { withCredentials: true })
