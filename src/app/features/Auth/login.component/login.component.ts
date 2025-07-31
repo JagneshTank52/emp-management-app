@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   credentials!: LoginRequest;
   loginForm!: FormGroup;
   loginSubscription?: Subscription;
-  loginImage: string = "assets/images/HR-Software-India.png";
+  loginImage: string = "";
 
   constructor(
     private authService: AuthService,
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loginImage = "assets/images/HR-Software-India.png";
     this.initForm();
   }
 

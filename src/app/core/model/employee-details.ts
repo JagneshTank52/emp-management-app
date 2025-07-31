@@ -1,5 +1,5 @@
 export interface EmployeeDetailsModel {
-    Id: number;
+  Id: number;
   FirstName: string;
   LastName: string;
   UserName: string;

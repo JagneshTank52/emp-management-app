@@ -31,8 +31,7 @@ export class TokenService {
     return !!token; 
   }
   
-
   clearSession(): void {
-  this.cookieService.delete('AccessToken');
-}
+  this.cookieService.delete('AccessToken','/');
+  }
 }

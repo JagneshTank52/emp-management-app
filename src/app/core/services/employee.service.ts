@@ -27,8 +27,8 @@ export class EmployeeService {
   }
 
   // GET /api/Employee/{id} - Get employee by ID
-  getEmployeeById(id: number): Observable<EmployeeDetailsModel> {
-    return this.http.get<EmployeeDetailsModel>(`${this.baseURL}/${id}`, { withCredentials: true });
+  getEmployeeById(id: number): Observable<ApiResponse<EmployeeDetailsModel>> {
+    return this.http.get<ApiResponse<EmployeeDetailsModel>>(`${this.baseURL}/${id}`, { withCredentials: true });
   }
 
   // POST /api/Employee - Create new employee

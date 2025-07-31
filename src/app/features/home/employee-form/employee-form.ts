@@ -96,7 +96,9 @@ export class EmployeeForm implements OnInit {
   private loadEmployeeForEdit(id: number): void {
     debugger;
     this.employeeDataSubscription = this.employeeService.getEmployeeById(id).subscribe({
-      next: (employee) => {
+      next: (response) => {
+        const employee = response.Data!;
+        
         this.employeeForm.patchValue({
           firstName: employee.FirstName,
           lastName: employee.LastName,
