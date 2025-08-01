@@ -17,7 +17,7 @@ import { RegisterRequest } from '../model/register-request';
 })
 export class AuthService {
 
-  private authURL: string = "https://localhost:7051/api/Auth";
+  private authURL: string = "http://localhost:5140/api/Auth";
 
   constructor(
     private http: HttpClient,
@@ -52,7 +52,6 @@ export class AuthService {
   }
   
   refreshToken(): Observable<AuthResponse> {
-    debugger;
     return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/refresh-token`, null, { withCredentials: true })
       .pipe(
         map(response => {

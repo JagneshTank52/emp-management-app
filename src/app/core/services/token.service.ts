@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthResponse } from '../model/auth-response';
 import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class TokenService {
 
   setSession(authResponse: AuthResponse): void {
     const expiresDate = new Date(authResponse.ExpiresIn);
-    this.cookieService.set('AccessToken', authResponse.AccessToken, expiresDate, '/', '', false, 'Lax');
+    this.cookieService.set('RefreshToken', authResponse.RefreshToken, expiresDate, '/', '', false)
+    this.cookieService.set('AccessToken', authResponse.AccessToken, expiresDate, '/', '', false);
   }
 
   getAccessToken(): string | null {
@@ -26,13 +28,23 @@ export class TokenService {
     return this.cookieService.get('RefreshToken');
   }
 
-  isAccessTokenExist(): boolean {
-    const token = this.cookieService.get('AccessToken');
-    return !!token; 
+  isTokenExpired(token: string): boolean {
+      const decoded: any = jwtDecode(token);
+
+      if (!decoded || !decoded.exp) {
+        return true; 
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      return decoded.exp < currentTime;
   }
   
+  isAccessTokenExist(): boolean {
+    const token = this.cookieService.get('AccessToken');
+    return !!token;
+  }
 
   clearSession(): void {
-  this.cookieService.delete('AccessToken');
-}
+    this.cookieService.delete('AccessToken');
+  }
 }
