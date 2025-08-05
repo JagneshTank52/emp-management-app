@@ -1,1 +1,68 @@
-<p>dashboard-component works!</p>
+<div class="container-fluid dashboard-container h-100 px-0">
+    <!-- Grid with full-width rows -->
+    <mat-grid-list cols="4" rowHeight="70px" class="mb-3">
+        <mat-grid-tile colspan="4">
+            <div class="d-flex align-items-center justify-content-start h-100 w-100 px-4">
+                <h3 class="fw-semibold mb-0">
+                    Welcome in, <span class="text-dark">Jagnesh Tank</span>
+                </h3>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+            <!-- <mat-card appearance="outlined" class="h-100 w-100"> -->
+                <div class="stats-row d-flex justify-content-end gap-5 px-3 h-100 w-100">
+                    <div class="stat-item d-flex h-100">
+                        <div class="left d-flex flex-column align-items-end justify-content-end h-100 px-2">
+                            <mat-icon class="stat-icon align-self-start fs-4">groups</mat-icon>
+                            <div class="stat-label fs-6">Employee</div>
+                        </div>
+                        <div class="stat-number d-flex align-items-center fs-2">78</div>
+                    </div>
+                    <div class="stat-item d-flex h-100">
+                        <div class="left d-flex flex-column align-items-end justify-content-end h-100 px-2">
+                            <mat-icon class="stat-icon align-self-start fs-4">groups</mat-icon>
+                            <div class="stat-label fs-6">Project</div>
+                        </div>
+                        <div class="stat-number d-flex align-items-center fs-2">78</div>
+                    </div>
+                </div>
+            <!-- </mat-card> -->
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- Grid with 200px row height -->
+    <mat-grid-list cols="4" rowHeight="300px" gutterSize="8px">
+        <mat-grid-tile>
+            <mat-card appearance="outlined" class="outlined-blur h-100 w-100">
+                <mat-card-header>
+                    <mat-card-title>Attedance</mat-card-title>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button matButton>self attedance</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+            <mat-card appearance="outlined" class="outlined-blur h-100 w-100">
+                <mat-card-header>
+                    <mat-card-title>Projects</mat-card-title>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button matButton>self attedance</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-card appearance="outlined" class="outlined-blur h-100 w-100">
+                <mat-card-header>
+                    <mat-card-title>Employees</mat-card-title>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button matButton>self attedance</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

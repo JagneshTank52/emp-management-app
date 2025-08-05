@@ -3,15 +3,22 @@
 .main-content {
     display: flex;
     flex-direction: column;
+    position: relative;
     height: 100%;
-}
-.page-content{
-    flex-grow: 1;
-    margin: 50px 20px 20px 20px;
+    padding: 10px 15px;
 }
 .nav-content{
-    margin: 10px 15px;
+  position: relative;
 }
+.page-content{
+  position: relative;
+    /* flex-grow: 1; */
+    margin-top: 10px;
+    /* margin: 20px 20px 20px 20px; */
+}
+/* .nav-content{
+    margin: 10px 15px;
+} */
 
 /* Add subtle texture overlay */
 .app-main-layout::before {

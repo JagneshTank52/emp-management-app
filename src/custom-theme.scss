@@ -1,0 +1,99 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+
+:root {
+  @include mat.form-field-overrides((outlined-outline-color: #f0c76e,
+      outlined-focus-outline-color: #f0b429,
+      outlined-hover-outline-color: #fcd582,
+      outlined-focus-label-text-color: black,
+      outlined-hover-label-text-color: black,
+      outlined-label-text-color: black,
+      outlined-input-text-color: #000000,
+      outlined-input-text-placeholder-color: #999999,
+      outlined-container-shape: 25px,
+      outlined-label-text-size: 14px,
+      outlined-label-text-weight: 500,
+      outlined-caret-color: #f0b429,
+    ));
+
+  @include mat.table-density(-1); // Optional: controls spacing/density
+
+  @include mat.table-overrides((background-color: trnsparent,
+      header-headline-color: black,
+      row-item-label-text-color: #000,
+      row-item-outline-color: rgba(0, 0, 0, 1),
+      row-item-outline-width: 0px,
+      header-headline-size: 16px,
+      header-headline-weight: 600));
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-text-field-wrapper {
+  border-radius: 25px !important;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.mat-mdc-card.outlined-blur {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  // box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.mat-mdc-button-base {
+  height: 45px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  --mat-button-text-label-text-color: black;
+}
+
+/* Styling for the button on hover */
+.mat-mdc-button-base:hover {
+  background-color: black !important;
+  --mat-button-text-label-text-color: white;
+}
+
+.toolbar-blur {
+  background: #f6f6f6 !important;
+  border-radius: 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0 1rem;
+}

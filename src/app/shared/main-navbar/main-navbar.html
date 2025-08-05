@@ -1,17 +1,21 @@
-<div class="navbar d-flex px-3 align-items-center justify-content-between">
-    <div class="fw-semibold fs-4 mb-0" style="color: var(--secondary-color);">Employee Management</div>
-    <div class="d-flex align-items-center">
-        <app-reusable-nav-btn textColor="var(--secondary-color)"
-            fontSize="18px">
-            Home
-        </app-reusable-nav-btn>
-        <app-reusable-nav-btn textColor="var(--secondary-color)"
-            fontSize="18px">
-            Departments
-        </app-reusable-nav-btn>
-        <app-reusable-nav-btn textColor="var(--secondary-color)"
-            fontSize="18px" (buttonClick)="logout()">
-            Logout
-        </app-reusable-nav-btn>
+<div class="d-flex justify-content-between align-items-center">
+    <div style="border: 1px solid black; border-radius: 30px;" class="p-3">
+        <h4 class="mb-0">EmpManagement</h4>
+    </div>
+    <div class="flex-shrink-1">
+        <mat-toolbar class="toolbar-blur">
+            <span class="spacer"></span>
+            <button matButton (click)="navigateToDashboard()" class="fs-5">Dashboard</button>
+            <button matButton [matMenuTriggerFor]="belowMenu" class="fs-5">Projects</button>
+            <mat-menu #belowMenu="matMenu" yPosition="below">
+                    <button mat-menu-item (click)="navigateToProject('manage-project')">Manage Project</button>
+                    <button mat-menu-item (click)="navigateToProject('project-status')">Project Status</button>
+                    <button mat-menu-item (click)="navigateToProject('work-sheet')">Work Sheet</button>
+            </mat-menu>
+            <button matButton class="fs-5">Attedance</button>
+            <button matButton class="fs-5">Employee</button>
+            <button mat-icon-button><mat-icon>settings</mat-icon></button>
+            <button mat-icon-button><mat-icon>account_circle</mat-icon></button>
+        </mat-toolbar>
     </div>
 </div>

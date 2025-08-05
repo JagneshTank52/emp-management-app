@@ -8,6 +8,9 @@ import { LoginComponent } from '../features/Auth/login.component/login.component
 import { authGuard } from '../core/guards/auth-guard';
 import { RegisterComponent } from '../features/Auth/register.component/register.component';
 import { DashboardComponent } from '../features/Dashboard/dashboard-component/dashboard-component';
+import { ManageProjectComponent } from '../features/Project/manage-project-component/manage-project-component';
+import { ProjectStatusComponent } from '../features/Project/project-status-component/project-status-component';
+import { WorkSheetComponent } from '../features/Project/work-sheet-component/work-sheet-component';
 
 export const routes: Routes = [
   {
@@ -60,17 +63,23 @@ export const routes: Routes = [
         ]
       },
       {
-        path: "project",
+        path: "project-management",
+        canActivateChild: [authGuard],
         children: [
           {
-            path: "",
-            component: EmployeeDetails,
+            path: "manage-project",
+            component: ManageProjectComponent,
             title: "Project List"
           },
           {
-            path: ":id/edit",
-            component: EmployeeDetails,
-            title: "Edit Project"
+            path: "project-status",
+            component: ProjectStatusComponent,
+            title: "Project status"
+          },
+          {
+            path: "work-sheet",
+            component: WorkSheetComponent,
+            title: "Work Sheet"
           }
         ]
       },
