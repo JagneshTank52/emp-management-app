@@ -7,20 +7,31 @@
     --secondary-bg-color: #E3E5E6;
     --component-primary-bg-color: #ffffff;
     --component-secondary-bg-color: #FCFAEB;
+
+    --color-absent: #f28b82;
+    /* Warm red-pink (visible on light background) */
+    --color-half-present: #4fc3f7;
+    /* Bright sky blue (clear and noticeable) */
+    --color-today: #fdd663;
+    /* Soft amber yellow (contrasts well) */
+    --color-weekend: #dcdcdc;
+    /* Medium-light gray (still subtle) */
+    --color-holiday: #ba9de4;
 }
 
-body,html {
+body,
+html {
     height: 100vh;
     margin: 0;
     /* padding: 5; */
     border-radius: 0;
 }
 
-body{
+body {
     background: radial-gradient(ellipse at top left, var(--secondary-bg-color) 40%, var(--primary-bg-color) 100%);
 }
 
-.btn-primary{
+.btn-primary {
     background-color: var(--component-primary-bg-color);
     color: var(--secondary-color);
     border-color: var(--primary-color);
@@ -31,5 +42,13 @@ body{
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}

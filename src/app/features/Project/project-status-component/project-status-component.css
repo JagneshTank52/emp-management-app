@@ -1,0 +1,99 @@
+.mat-mdc-form-field-subscript-wrapper,
+.mat-mdc-form-field-bottom-align::before {
+    display: none !important;
+}
+
+.card-pill {
+    background-color: #4fc3f7;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* New: #7e57c2
+In-Progress: #ffb74d
+Dev Completed: #81c784
+Ready for Testing: #e57373
+Closed: #4fc3f7 */
+
+/* To group the file icon and title */
+
+/* The title within the mat-card-header */
+mat-card-title.task-title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Other CSS from the previous response still applies */
+.task-card {
+    margin-bottom: 0.5rem;
+    box-shadow: none !important;
+    border: 1px solid #4fc3f7;
+    border-radius: 16px;
+    height: 150px;
+}
+
+.task-content {
+    padding-top: 8px;
+    /* Reduce top padding since header has its own */
+    padding-bottom: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.priority-select-field{
+    width: 100px;
+    /* width: fit-content; */
+}
+
+.priority-select-field .mat-mdc-text-field-wrapper {
+    padding: 0 8px; /* Adjust padding to match the button look */
+    border-radius: 4px;
+    background-color: #f7e1b5; /* Default color for Medium */
+}
+
+/* Hide the outline border to make it look like a button */
+.priority-select-field .mdc-notched-outline {
+    display: none;
+}
+
+/* Style for the options inside the dropdown */
+.priority-option {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Color classes for each priority option */
+.priority-low {
+    background-color: #bbdefb; /* Light blue */
+}
+
+.priority-medium {
+    background-color: #f7e1b5; /* Light yellow */
+}
+
+.priority-high {
+    background-color: #ffcdd2; /* Light red */
+}
+
+/* Assignee name styling */
+.assignee-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}
+
+/* final */
+.status-card{
+    min-width: 360px;
+}

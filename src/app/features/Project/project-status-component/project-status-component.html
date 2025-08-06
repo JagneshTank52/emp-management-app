@@ -1,1 +1,146 @@
-<p>project-status-component works!</p>
+<div class="container-fluid dashboard-container h-100 px-0">
+    <!-- Grid with full-width rows -->
+    <mat-grid-list cols="4" rowHeight="70px" class="mb-3">
+        <mat-grid-tile colspan="4">
+            <div class="d-flex align-items-center justify-content-between h-100 w-100 px-4">
+                <div>
+                    <h4 class="fw-semibold mb-0">
+                        Project Status
+                    </h4>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="me-3" style="width: 350px;">
+                        <mat-form-field id="project-search-for-status" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                            appearance="outline">
+                            <mat-label>Select Project</mat-label>
+                            <mat-select required aria-placeholder="Select Project Type">
+                                <mat-option>-- None --</mat-option>
+                                <mat-option value="project">Project</mat-option>
+                                <mat-option value="task">Task</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 align-items-center">
+                        <button matButton class="fs-6" style="width: 120px;">Search</button>
+                        <button matButton class="fs-6" style="width: 120px;">Reset</button>
+                        <button matButton class="fs-6" style="width: 120px;">Filter</button>
+                        <button mat-button class="outlined-blur" style="width: 120px;" (click)="openAddProjectDialog()">
+                            <mat-icon>add</mat-icon>
+                            <span>Add Task</span>
+                        </button>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </mat-grid-tile>
+        <!-- <mat-grid-tile colspan="4">
+            <div class="stats-row d-flex justify-content-end gap-5 px-3 h-100 w-100">
+                <div class="stat-item d-flex h-100">
+                    <div class="left d-flex flex-column align-items-end justify-content-end h-100 px-2">
+                        <mat-icon class="stat-icon align-self-start fs-4">groups</mat-icon>
+                        <div class="stat-label fs-6">Employee</div>
+                    </div>
+                    <div class="stat-number d-flex align-items-center fs-2">78</div>
+                </div>
+                <div class="stat-item d-flex h-100">
+                    <div class="left d-flex flex-column align-items-end justify-content-end h-100 px-2">
+                        <mat-icon class="stat-icon align-self-start fs-4">groups</mat-icon>
+                        <div class="stat-label fs-6">Project</div>
+                    </div>
+                    <div class="stat-number d-flex align-items-center fs-2">78</div>
+                </div>
+            </div>
+        </mat-grid-tile> -->
+    </mat-grid-list>
+
+    <!-- card -->
+    <mat-card appearance="outlined" class="outlined-blur w-100 d-flex" style="height: 100%;">
+
+        <div class="d-flex h-100 w-100 gap-3 overflow-x-auto">
+            <app-status-card *ngFor="let column of statusColumns" [statusColumn]="column" class="flex-grow-1 h-100 status-card">
+            </app-status-card>
+            <!-- <mat-card appearance="outlined" class="outlined-blur d-flex  mt-0 me-2 flex-grow-1">
+                <mat-card-header class="d-flex align-items-center justify-content-between pb-3">
+                    <mat-card-title>New</mat-card-title>
+                    <span class="card-pill">0</span>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-card appearance="outlined" class="task-card">
+                        <mat-card-header class="d-flex flex-column align-items-start justify-content-start p-0">
+                            <div
+                                style="background-color: #4fc3f7; width: 100%; height: 10px; border-top-right-radius: 16px; border-top-left-radius: 16px;">
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between w-100 p-2">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <mat-icon class="icon-file-document">notes</mat-icon>
+                                    <mat-card-title class="task-title">TA112379: Angular learning</mat-card-title>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <mat-icon class="icon-history">history</mat-icon>
+                                </div>
+                            </div>
+                        </mat-card-header>
+
+                        <mat-card-content class="task-content p-2">
+                            <mat-form-field appearance="outline" class="priority-select-field">
+                                <mat-select [value]="'Medium'">
+                                    <mat-option value="Low">
+                                        <div class="priority-option priority-low">Low</div>
+                                    </mat-option>
+                                    <mat-option value="Medium">
+                                        <div class="priority-option priority-medium">Medium</div>
+                                    </mat-option>
+                                    <mat-option value="High">
+                                        <div class="priority-option priority-high">High</div>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <div class="assignee-name">Assigned To:  Jagnesh Dhirajlal Tank</div>
+                        </mat-card-content>
+
+                    </mat-card>
+                    <mat-card appearance="outlined" class="task-card">
+                        <mat-card-header class="task-card-header">
+                            <div class="task-title-wrapper">
+                                <mat-icon class="icon-file-document">notes</mat-icon>
+                                <mat-card-title class="task-title">TA112379: Angular learning</mat-card-title>
+                            </div>
+                            <mat-icon class="icon-history">history</mat-icon>
+                        </mat-card-header>
+
+                        <mat-card-content class="task-content">
+                            <div class="task-priority-wrapper">
+                                <span class="priority-chip">
+                                    Medium
+                                    <mat-icon class="priority-icon">expand_more</mat-icon>
+                                </span>
+                            </div>
+
+                            <mat-form-field appearance="outline" class="assignee-select-field">
+                                <mat-select [value]="'Jagnesh'">
+                                    <mat-option value="Jagnesh">Jagnesh Dhirajlal Tank</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-card-content>
+
+                    </mat-card>
+                </mat-card-content>
+            </mat-card>
+            <mat-card appearance="outlined" class="outlined-blur h-100 d-flex me-2 mt-0 p-3 flex-grow-1">
+
+            </mat-card>
+            <mat-card appearance="outlined" class="outlined-blur h-100 d-flex me-2 mt-0 p-3 flex-grow-1">
+
+            </mat-card>
+            <mat-card appearance="outlined" class="outlined-blur h-100 d-flex me-2 mt-0 p-3 flex-grow-1">
+
+            </mat-card>
+            <mat-card appearance="outlined" class="outlined-blur h-100 d-flex mt-0 p-3 flex-grow-1">
+
+            </mat-card> -->
+        </div>
+    </mat-card>
+</div>

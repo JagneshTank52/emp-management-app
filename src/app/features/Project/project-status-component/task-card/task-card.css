@@ -1,0 +1,90 @@
+/* // General Task Card Styling */
+.task-card {
+    margin-bottom: 0.75rem;
+    box-shadow: none !important;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 150px;
+}
+
+.task-color-bar {
+    width: 100%;
+    height: 10px;
+}
+
+mat-card-title.task-title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.icon-file-document,
+.icon-history {
+    color: #6c757d;
+}
+
+.task-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* // Priority Selector Styling */
+.priority-select-field {
+    width: 110px;
+
+    .mat-mdc-text-field-wrapper {
+        height: 10px;
+        padding: 0 8px;
+        border-radius: 16px;
+    }
+
+    .mdc-notched-outline {
+        display: none;
+    }
+}
+
+::ng-deep .priority-low-bg .mat-mdc-text-field-wrapper {
+    background-color: #e1f5fe;
+    /* light green for low priority */
+}
+
+::ng-deep .priority-medium-bg .mat-mdc-text-field-wrapper {
+    background-color: #fff8e1;
+    /* light yellow for medium */
+}
+
+::ng-deep .priority-high-bg .mat-mdc-text-field-wrapper {
+    background-color: #ffebee;
+    /* light red for high priority */
+}
+
+
+
+/* // Color classes for each priority option in the dropdown */
+.priority-option {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+
+    &.priority-low {
+        background-color: #4fc3f7;
+    }
+
+    &.priority-medium {
+        background-color: #ffd54f;
+    }
+
+    &.priority-high {
+        background-color: #ef5350;
+    }
+}
+
+/* // Assignee name styling */
+.assignee-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}

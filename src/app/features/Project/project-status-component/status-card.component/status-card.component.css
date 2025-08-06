@@ -1,0 +1,30 @@
+
+.status-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+
+  mat-card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.card-pill {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.status-card-content {
+  padding: 8px;
+  overflow-y: auto; 
+  flex-grow: 1;
+}

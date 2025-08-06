@@ -1,1 +1,97 @@
-<p>work-sheet-component works!</p>
+<div class="container-fluid dashboard-container h-100 px-0">
+    <!-- Grid with full-width rows -->
+    <mat-grid-list cols="4" rowHeight="70px" class="mb-3">
+        <mat-grid-tile colspan="4">
+            <div class="d-flex align-items-center justify-content-between h-100 w-100 px-4">
+                <div>
+                    <h4 class="fw-semibold mb-0">
+                        Work Sheet
+                    </h4>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- card -->
+    <mat-card appearance="outlined" class="outlined-blur w-100 d-flex" style="height: 100%;">
+
+        <mat-card-header
+            class="timesheet-header d-flex  felx-column flex-sm-row align-items-center justify-content-between pb-2">
+            <mat-card-title>
+                {{ getMonthLabel(selectedMonth) }}
+            </mat-card-title>
+            <div class="d-flex flex-wrap gap-3 legend-items">
+                <div class="d-flex align-items-center gap-1">
+                    <span class="legend-box" style="background-color: var(--color-absent);"></span>
+                    <span>Absent</span>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="legend-box" style="background-color: var(--color-half-present);"></span>
+                    <span>First/Second Half Present</span>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="legend-box" style="background-color: var(--color-today);"></span>
+                    <span>Today</span>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="legend-box" style="background-color: var(--color-weekend);"></span>
+                    <span>Weekend</span>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="legend-box" style="background-color: var(--color-holiday);"></span>
+                    <span>Holiday</span>
+                </div>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div class="timesheet-grid-wrapper mat-elevation-z1">
+                <table class="timesheet-table">
+                    <thead>
+                        <tr>
+                            <th class="sticky-column-1">Work Items</th>
+                            <th class="sticky-column-2">P</th>
+                            <th class="sticky-column-3">Σ</th>
+                            <th *ngFor="let day of daysInMonth">
+                                {{ day.dayNumber }}<br>
+                                {{ day.dayOfWeek }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let task of filteredTasks">
+                            <td class="sticky-column-1 task-item" [style.background-color]="task.color">
+                                <mat-icon>assignment</mat-icon> {{ task.id }}: {{ task.title }}
+                            </td>
+                            <td class="sticky-column-2">
+                            </td>
+                            <td class="sticky-column-3">
+                            </td>
+                            <td *ngFor="let day of daysInMonth" class="time-block-cell">
+                                <span *ngIf="getDailyHours(task, day.date)">
+                                    {{ getDailyHours(task, day.date) }}
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr class="summary-row">
+                            <td class="sticky-column-1">Daily work log hours</td>
+                            <td class="sticky-column-2"></td>
+                            <td class="sticky-column-3"></td>
+                            <td *ngFor="let day of daysInMonth">
+                            </td>
+                        </tr>
+                        <tr class="summary-row">
+                            <td class="sticky-column-1">Daily time log hours</td>
+                            <td class="sticky-column-2"></td>
+                            <td class="sticky-column-3"></td>
+                            <td *ngFor="let day of daysInMonth">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</div>
