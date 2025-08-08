@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { RegisterRequest } from '../../../core/model/register-request';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
+import { RegisterRequest } from '../../../core/model/Auth/register-request';
 
 
 @Component({

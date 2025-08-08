@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {
   AuthService
-
 } from '../../../core/services/auth.service';
-import { LoginRequest } from '../../../core/model/login-request';
 import { Subscribable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
 import { Router } from '@angular/router';
+import { LoginRequest } from '../../../core/model/Auth/login-request';
 
 @Component({
   selector: 'app-login.component',

@@ -55,6 +55,13 @@ body {
       row-item-outline-width: 0px,
       header-headline-size: 16px,
       header-headline-weight: 600));
+
+  @include mat.paginator-overrides((
+      container-text-color: black,
+      container-text-size: 16px,
+      container-background-color: transparent,
+    ));
+
 }
 
 .mat-mdc-form-field {

@@ -1,15 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest } from '../model/login-request';
 import { catchError, map, Observable, of, pipe, tap, throwError } from 'rxjs';
-import { LoginResponse } from '../model/login-response';
 import { stringify } from 'querystring';
-
 import { AuthResponse } from '../model/auth-response';
 import { ApiResponse } from '../model/api-response';
 import { Router } from '@angular/router';
 import { TokenService } from './token.service';
-import { RegisterRequest } from '../model/register-request';
+import { LoginRequest } from '../model/Auth/login-request';
+import { RegisterRequest } from '../model/Auth/register-request';
 
 
 @Injectable({

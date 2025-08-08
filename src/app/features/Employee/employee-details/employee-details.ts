@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../../core/services/employee.service';
-import { EmployeeDetailsModel } from '../../../core/model/employee-details';
 import { CommonModule } from '@angular/common';
 import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
+import { EmployeeDetailsModel } from '../../../core/model/Employee/employee-details-model';
 
 @Component({
   selector: 'app-employee-details',

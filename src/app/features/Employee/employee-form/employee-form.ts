@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AddEditEmployeeDetails } from '../../../core/model/add-edit-employee-details';
 import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
+import { AddEditEmployeeDetails } from '../../../core/model/Employee/add-edit-employee-details';
 
 @Component({
   selector: 'app-employee-form',

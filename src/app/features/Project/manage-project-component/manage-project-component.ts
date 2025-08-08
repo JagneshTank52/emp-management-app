@@ -11,6 +11,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { AddProjectDialogComponent } from './add-project-dialog.component/add-project-dialog.component';
 
 @Component({
@@ -26,6 +27,7 @@ import { AddProjectDialogComponent } from './add-project-dialog.component/add-pr
     MatSelectModule,
     MatOptionModule,
     MatInputModule,
+    MatPaginatorModule,
   MatDialogModule],
   templateUrl: './manage-project-component.html',
   styleUrl: './manage-project-component.css'

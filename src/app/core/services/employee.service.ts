@@ -1,10 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { EmployeeDetailsModel } from '../model/employee-details';
-import { AddEditEmployeeDetails } from '../model/add-edit-employee-details';
 import { ApiResponse } from '../model/api-response';
 import { PaginatedList } from '../model/paginated-list';
+import { EmployeeDetailsModel } from '../model/Employee/employee-details-model';
+import { AddEditEmployeeDetails } from '../model/Employee/add-edit-employee-details';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,6 @@ export class EmployeeService {
 
   // GET /api/Employee - Get all employees
   getAllEmployees(pageNumber: number, pageSize: number, sortBy: string, searchTerm: string): Observable<ApiResponse<PaginatedList<EmployeeDetailsModel>>> {
-    debugger;
     let params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString())

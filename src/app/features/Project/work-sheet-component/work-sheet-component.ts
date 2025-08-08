@@ -5,105 +5,78 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-work-sheet-component',
-  imports: [MatCardModule, MatGridListModule, MatIconModule, CommonModule, FormsModule],
+  imports: [MatCardModule, MatGridListModule, MatIconModule, CommonModule, FormsModule,MatTableModule],
   templateUrl: './work-sheet-component.html',
   styleUrl: './work-sheet-component.css'
 })
 export class WorkSheetComponent {
-  // Data for the filters (can be fetched from a service)
-  months = [
-    { value: 8, label: 'August-2025' },
-    // Add other months
-  ];
-  projects = [
-    { id: '1', name: 'Employee Management' },
-    { id: '2', name: 'Project A' },
-    { id: '3', name: 'Project B' },
-  ];
+  selectedMonth = 7; // August (0-based index)
+  selectedYear = 2025;
 
-  tasks = [
-    { id: 'PrjBench001', title: 'Bench', assignedTo: 'Admin', color: '#ffecb3', hours: { '2025-08-01': '08:30', '2025-08-04': '08:30' } },
-    { id: 'TA111670', title: 'Angular learning', assignedTo: 'John Doe', color: '#b3e5fc', hours: { '2025-08-08': '08:30' } },
-    { id: 'TA112379', title: 'Angular learning', assignedTo: 'John Doe', color: '#b3e5fc', hours: { '2025-08-01': '08:30', '2025-08-04': '08:30' } },
+  legends = [
+    { label: 'Absent', color: 'var(--color-absent)' },
+    { label: 'First/Second Half Present', color: 'var(--color-half-present)' },
+    { label: 'Today', color: 'var(--color-today)' },
+    { label: 'Weekend', color: 'var(--color-weekend)' },
+    { label: 'Holiday', color: 'var(--color-holiday)' },
   ];
 
-  selectedMonth = 8; // August
-  selectedProject = '1'; // Default project
-  filteredTasks: any = [];
-  daysInMonth: any = [];
+  daysInMonth = this.getDaysInMonth(this.selectedYear, this.selectedMonth);
 
-  currentUser = 'John Doe';
+  displayedColumns = [
+    'workItem', 'p', 'sum',
+    ...this.daysInMonth.map(d => d.date)
+  ];
 
-  constructor(public dialog: MatDialog) { }
+  filteredTasks = [
+    {
+      id: 'PrjBench001',
+      title: 'Bench',
+      p: '00:00',
+      sum: '42:30',
+      color: '#f5faff',
+      hours: { '2025-08-01': '08:30', '2025-08-04': '08:30' }
+    }
+  ];
 
-  ngOnInit(): void {
-    this.updateCalendarView();
+  getMonthLabel(month: number) {
+    return new Date(0, month).toLocaleString('default', { month: 'long' });
   }
 
-  getMonthLabel(value: number): string {
-    const month = this.months.find(m => m.value === value);
-    return month ? month.label : '';
-  }
-  updateCalendarView(): void {
-    this.getDaysInMonth();
-    this.filterTasks();
-  }
-
-  getDaysInMonth(): void {
-    this.daysInMonth = [];
-    const date = new Date(2025, this.selectedMonth - 1, 1);
-    const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    while (date.getMonth() === this.selectedMonth - 1) {
-      this.daysInMonth.push({
+  getDaysInMonth(year: number, month: number) {
+    const date = new Date(year, month, 1);
+    const days = [];
+    while (date.getMonth() === month) {
+      days.push({
+        date: date.toISOString().split('T')[0],
         dayNumber: date.getDate(),
-        dayOfWeek: daysOfWeek[date.getDay()],
-        date: new Date(date)
+        dayOfWeek: date.toLocaleString('default', { weekday: 'short' })
       });
       date.setDate(date.getDate() + 1);
     }
+    return days;
   }
 
-  onMonthChange(event: any): void {
-    this.selectedMonth = event.value;
-    this.updateCalendarView();
+  getDailyHours(task: any, date: string) {
+    return task.hours[date] || '';
   }
 
-  onProjectChange(event: any): void {
-    this.selectedProject = event.value;
-    this.updateCalendarView();
+  getDayClass(day: any) {
+    const weekday = day.dayOfWeek;
+    if (weekday === 'Sat' || weekday === 'Sun') return 'weekend';
+    return '';
   }
 
-  filterTasks(): void {
-    // If the user is an admin, show all tasks for the selected project.
-    // Otherwise, show only tasks assigned to the current user.
-    const isAdmin = this.currentUser === 'Admin'; // Simple check for now
-    this.filteredTasks = this.tasks.filter(task => {
-      const isAssigned = task.assignedTo === this.currentUser || isAdmin;
-      // You would also filter by project ID here if tasks had one
-      return isAssigned;
-    });
+  getDailyWorkLog(date: string) {
+    return '08:30';
   }
 
-  getDailyHours(task: any, date: Date): string | null {
-    const dateStr = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    return task.hours[dateStr] || null;
+  getDailyTimeLog(date: string) {
+    return '08:00';
   }
-
-  // openDialog(task: any, date: Date): void {
-  //   const dialogRef = this.dialog.open(TimesheetDialogComponent, {
-  //     width: '300px',
-  //     data: { task: task, date: date, hours: this.getDailyHours(task, date) }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       // Update task data with new hours
-  //       const dateStr = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-  //       task.hours[dateStr] = result;
-  //     }
-  //   });
 }
 

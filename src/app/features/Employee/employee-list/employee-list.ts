@@ -3,9 +3,9 @@ import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@a
 import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { EmployeeService } from '../../../core/services/employee.service';
-import { EmployeeDetailsModel } from '../../../core/model/employee-details';
 import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
 import { FormsModule } from '@angular/forms';
+import { EmployeeDetailsModel } from '../../../core/model/Employee/employee-details-model';
 
 
 @Component({
