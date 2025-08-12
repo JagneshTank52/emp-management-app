@@ -1,19 +1,20 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ProjectDetailsModel } from '../../../../core/model/Project/project-details-model';
 import { AddEditProjectModel } from '../../../../core/model/Project/add-edit-project-model';
 import { ProjectService } from '../../../../core/services/project.service';
 import { MatCardModule } from '@angular/material/card';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { response } from 'express';
+import { TechnologyDetails } from '../../../../core/model/Technology/technology-details';
+import { AddEditProjectDialogData } from '../../../../core/model/Project/add-edit-project-dialog-data';
+import { EmployeeDetailsSelectModel } from '../../../../core/model/Employee/employee-details-select-model';
 
 @Component({
   selector: 'app-add-project-dialog.component',
@@ -30,12 +31,14 @@ import { response } from 'express';
   styleUrl: './add-project-dialog.component.css'
 })
 
-export class AddProjectDialogComponent {
+export class AddProjectDialogComponent implements OnInit {
 
   title: string = 'Add New Project';
   projectForm!: FormGroup;
   isEditMode: boolean = false;
   projectId: number | null = null;
+  technologies!: TechnologyDetails[];
+  employeeList!: EmployeeDetailsSelectModel[];
   routeSubscription?: Subscription;
   projectDataSubscription!: Subscription;
 
@@ -45,37 +48,42 @@ export class AddProjectDialogComponent {
     private fb: FormBuilder,
     private projectService: ProjectService,
     private activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
-    // private router: Router,
-    private ref: MatDialogRef<AddProjectDialogComponent>) {
+    private ref: MatDialogRef<AddProjectDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AddEditProjectDialogData) {
     this.initForm();
 
-    this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
-      const idParam = params.get('id');
-      if (idParam) {
-        this.isEditMode = true;
-        this.projectId = +idParam;
-        this.loadProjectForEdit(this.projectId);
-      } else {
-        this.isEditMode = false;
-        this.projectId = null;
-        this.projectForm.reset();
-      }
-    });
+    if (data?.Id && data.Id !== 0) {
+      this.isEditMode = true;
+      this.projectId = data.Id;
+      this.title = 'Edit Project';
+      this.loadProjectForEdit(this.projectId);
+    }
+    else {
+      this.title = "Add New Project";
+      this.isEditMode = false;
+      this.projectId = null;
+      this.projectForm.reset();
+    }
+  }
+
+  ngOnInit(): void {
+    this.technologies = this.data.technologiesList;
+    this.employeeList = this.data.selectEmployeeList;
+    console.log(this.employeeList)
   }
 
   private initForm(): void {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
-      technologyId: [null, Validators.required], // instead of "tech"
-      projectStatus: ['In Progress', Validators.required], // instead of "status"
-      startDate: [null, Validators.required], // instead of "start_date"
-      estimatedDueDate: [null, Validators.required], // instead of "due_date"
-      estimatedHours: ['', [Validators.required, Validators.min(1)]] // instead of "total_hours"
+      technologyId: [0, Validators.required],
+      projectStatus: ['In Progress', Validators.required],
+      startDate: [null, Validators.required],
+      assignedEmployees: [[], Validators.minLength(1)],
+      estimatedDueDate: [null, Validators.required],
+      estimatedHours: ['', [Validators.required, Validators.min(1)]]
     });
   }
-
 
   private loadProjectForEdit(id: number): void {
     debugger;
@@ -88,7 +96,9 @@ export class AddProjectDialogComponent {
           projectStatus: response.ProjectStatus,
           startDate: response.StartDate,
           estimatedDueDate: response.EstimatedDueDate,
-          estimatedHours: response.EstimatedHours
+          estimatedHours: response.EstimatedHours,
+          assignedEmployees: []
+          // AssignedEmployeeIds: formValue.assignedEmployees 
         });
       },
       error: (err) => {
@@ -110,7 +120,7 @@ export class AddProjectDialogComponent {
         StartDate: formValue.startDate,
         EstimatedDueDate: formValue.estimatedDueDate,
         EstimatedHours: Number(formValue.estimatedHours),
-        AssignedEmployeeIds: [3006, 3007]
+        AssignedEmployeeIds: formValue.assignedEmployees
       };
 
       if (this.isEditMode && this.projectId) {

@@ -5,6 +5,7 @@ import { ApiResponse } from '../model/api-response';
 import { PaginatedList } from '../model/paginated-list';
 import { EmployeeDetailsModel } from '../model/Employee/employee-details-model';
 import { AddEditEmployeeDetails } from '../model/Employee/add-edit-employee-details';
+import { EmployeeDetailsSelectModel } from '../model/Employee/employee-details-select-model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,19 +26,24 @@ export class EmployeeService {
     return this.http.get<ApiResponse<PaginatedList<EmployeeDetailsModel>>>(this.baseURL,{ params, withCredentials: true });
   }
 
+  //Get /api/Employee/select-list - Get all employees for assigned to project
+  getEmployeeSelectList() : Observable<ApiResponse<EmployeeDetailsSelectModel[]>>{
+    return this.http.get<ApiResponse<EmployeeDetailsSelectModel[]>>(this.baseURL+'/select-list',{withCredentials: true});
+  } 
+
   // GET /api/Employee/{id} - Get employee by ID
-  getEmployeeById(id: number): Observable<EmployeeDetailsModel> {
-    return this.http.get<EmployeeDetailsModel>(`${this.baseURL}/${id}`, { withCredentials: true });
+  getEmployeeById(id: number): Observable<ApiResponse<EmployeeDetailsModel>> {
+    return this.http.get<ApiResponse<EmployeeDetailsModel>>(`${this.baseURL}/${id}`, { withCredentials: true });
   }
 
   // POST /api/Employee - Create new employee
-  addEmployee(employee: AddEditEmployeeDetails): Observable<EmployeeDetailsModel> {
-    return this.http.post<EmployeeDetailsModel>(this.baseURL, employee, { withCredentials: true, mode: 'cors' });
+  addEmployee(employee: AddEditEmployeeDetails): Observable<ApiResponse<EmployeeDetailsModel>> {
+    return this.http.post<ApiResponse<EmployeeDetailsModel>>(this.baseURL, employee, { withCredentials: true, mode: 'cors' });
   }
 
   // PUT /api/Employee/{id} - Update existing employee
-  updateEmployee(id: number, employee: AddEditEmployeeDetails): Observable<EmployeeDetailsModel> {
-    return this.http.put<EmployeeDetailsModel>(`${this.baseURL}/${id}`, employee, { withCredentials: true });
+  updateEmployee(id: number, employee: AddEditEmployeeDetails): Observable<ApiResponse<EmployeeDetailsModel>> {
+    return this.http.put<ApiResponse<EmployeeDetailsModel>>(`${this.baseURL}/${id}`, employee, { withCredentials: true });
   }
 
   // DELETE /api/Employee/{id} - Delete employee

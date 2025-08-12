@@ -1,6 +1,6 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
-:root {
+/* :root {
     --primary-color: #FFD85F;
     --secondary-color: #303030;
     --primary-bg-color: #FCEBB6;
@@ -9,15 +9,43 @@
     --component-secondary-bg-color: #FCFAEB;
 
     --color-absent: #f28b82;
-    /* Warm red-pink (visible on light background) */
     --color-half-present: #4fc3f7;
-    /* Bright sky blue (clear and noticeable) */
     --color-today: #fdd663;
-    /* Soft amber yellow (contrasts well) */
     --color-weekend: #dcdcdc;
-    /* Medium-light gray (still subtle) */
     --color-holiday: #ba9de4;
+} */
+
+:root {
+  /* === PRIMARY & SECONDARY BRAND COLORS === */
+  --primary-color: #6C5DD3;           /* Purple - Main brand color */
+  --primary-color-hover: #5a4dbf;     /* Darker purple for hover states */
+  --secondary-color: #2E2E3E;         /* Very dark gray - Sidebar BG */
+
+  /* === BACKGROUND COLORS === */
+  --primary-bg-color: #F7F7FA;        /* Very light gray - Main background */
+  --sidebar-bg-color: #1E1E2F;        /* Dark navy/blackish - Sidebar */
+  --card-bg-color: #FFFFFF;            /* White - Cards and content containers */
+  --input-bg-color: #F3F3F5;           /* Light gray - Input/search background */
+
+  /* === TEXT COLORS === */
+  --text-primary: #2E2E3E;             /* Dark gray - Main text */
+  --text-secondary: #6B6B80;           /* Medium gray - Secondary text */
+  --text-muted: #A1A1B8;               /* Light gray - Muted text */
+
+  /* === STATUS COLORS === */
+  --status-pending: #F9D949;           /* Yellow - Pending requests */
+  --status-approved: #4AC769;          /* Green - Approved */
+  --status-rejected: #FF6B6B;          /* Red - Rejected */
+
+  /* === BORDER & DIVIDER COLORS === */
+  --border-color: #E0E0E5;             /* Light gray - Borders and separators */
+
+  /* === ICON/BUTTON COLORS === */
+  --icon-color: #6C5DD3;               /* Purple icons */
+  --button-bg-primary: #6C5DD3;        /* Purple button background */
+  --button-text-primary: #FFFFFF;      /* White text on buttons */
 }
+
 
 body,
 html {

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ReusableBtn } from '../../../shared/reusable-btn/reusable-btn';
 import { AddEditEmployeeDetails } from '../../../core/model/Employee/add-edit-employee-details';
+import { EmployeeDetails } from '../employee-details/employee-details';
 
 @Component({
   selector: 'app-employee-form',
@@ -96,22 +97,23 @@ export class EmployeeForm implements OnInit {
   private loadEmployeeForEdit(id: number): void {
     debugger;
     this.employeeDataSubscription = this.employeeService.getEmployeeById(id).subscribe({
-      next: (employee) => {
+      next: (response) => {
+        const employee = response.Data;
         this.employeeForm.patchValue({
-          firstName: employee.FirstName,
-          lastName: employee.LastName,
-          phoneNumber: employee.PhoneNumber,
-          gender: employee.Gender,
-          dateOfBirth: employee.DateOfBirth,
-          address: employee.Address,
-          departmentId: employee.DepartmentId,
-          userName: employee.UserName,
-          email: employee.Email,
-          password: employee.Password,
+          firstName: employee!.FirstName,
+          lastName: employee!.LastName,
+          phoneNumber: employee!.PhoneNumber,
+          gender: employee!.Gender,
+          dateOfBirth: employee!.DateOfBirth,
+          address: employee!.Address,
+          departmentId: employee!.DepartmentId,
+          userName: employee!.UserName,
+          email: employee!.Email,
+          password: employee!.Password,
           // Do NOT patch password here for security reasons.
           // If the backend sends it back, it might be hashed or null.
           // The user should explicitly type it to change it.
-          roleId: employee.RoleId
+          roleId: employee!.RoleId
         });
         // Clear password validators immediately after loading for edit,
         // as it's now optional unless the user types something.
@@ -146,7 +148,7 @@ export class EmployeeForm implements OnInit {
           next: (response) => {
             this.message = 'Employee updated successfully!';
             console.log('Employee updated:', response);
-            this.router.navigate(['/employee',response.Id]);
+            this.router.navigate(['/employee',response.Data?.Id]);
           },
           error: (error) => {
             this.message = 'Failed to update employee. ' + (error.error?.message || error.message || '');
@@ -159,7 +161,7 @@ export class EmployeeForm implements OnInit {
             this.message = 'Employee added successfully!';
             this.employeeForm.reset();
             console.log('Employee added:', response);
-            this.router.navigate(['/employee',response.Id]);
+            this.router.navigate(['/employee',response.Data?.Id]);
           },
           error: (error) => {
             this.message = 'Failed to add employee. ' + (error.error?.message || error.message || '');

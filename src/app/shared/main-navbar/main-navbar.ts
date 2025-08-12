@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 export class MainNavbar {
   private readonly projectRoute = '/project-management';
   private readonly dashboardRoute = '/dashboard';
+  private readonly employeeRoute = '/employee';
 
   constructor(
     private authService: AuthService,
@@ -25,11 +26,15 @@ export class MainNavbar {
   ) { }
 
   navigateToProject(routeSuffix: string): void {
-    debugger
     this.router.navigate([this.projectRoute,routeSuffix]);
   }
+
   navigateToDashboard(): void {
     this.router.navigate([this.dashboardRoute]);
+  }
+
+  navigateToEmployee(): void {
+    this.router.navigate([this.employeeRoute]);
   }
 
   logout(): void {

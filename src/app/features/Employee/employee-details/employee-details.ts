@@ -41,8 +41,9 @@ export class EmployeeDetails implements OnInit {
 
   loadEmployeeDetails(id: number): void {
     this.employeeSubscription = this.employeeService.getEmployeeById(id).subscribe({
-      next: (data) => {
-        this.employee = data;
+      next: (response) => {
+
+        this.employee = response.Data;
         
         this.cdr.detectChanges();
         this.errorMessage = ''; // Clear any previous error

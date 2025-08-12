@@ -1,76 +1,5 @@
-<!-- <form [formGroup]="projectForm" (ngSubmit)="onSave()">
-  <mat-card>
-    <mat-card-header>
-      <h2>Add New Project</h2>
-    </mat-card-header>
-
-    <mat-card-content>
-      
-        <mat-form-field>
-          <mat-label>Project Name</mat-label>
-          <input matInput formControlName="name" placeholder="E.g. Website Redesign">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Project Type</mat-label>
-          <mat-select formControlName="type">
-            <mat-option value="Fixed">Fixed</mat-option>
-            <mat-option value="Hourly">Hourly</mat-option>
-            <mat-option value="Monthly">Monthly</mat-option>
-            <mat-option value="Cost">Cost</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Technology</mat-label>
-          <input matInput formControlName="tech" placeholder="E.g. Angular, .NET">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status">
-            <mat-option value="Active">Active</mat-option>
-            <mat-option value="In Progress">In Progress</mat-option>
-            <mat-option value="On Hold">On Hold</mat-option>
-            <mat-option value="Completed">Completed</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Number of Employees</mat-label>
-          <input matInput type="number" formControlName="no_of_employee">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Start Date</mat-label>
-          <input matInput [matDatepicker]="startDatePicker" formControlName="start_date">
-          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #startDatePicker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Due Date</mat-label>
-          <input matInput [matDatepicker]="dueDatePicker" formControlName="due_date">
-          <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #dueDatePicker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Total Hours</mat-label>
-          <input matInput type="number" formControlName="total_hours" placeholder="E.g. 500">
-        </mat-form-field>
-      
-    </mat-card-content>
-
-    <mat-card-actions>
-      <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!projectForm.valid">Save Project</button>
-    </mat-card-actions>
-  </mat-card>
-</form> -->
-
 <form [formGroup]="projectForm" (ngSubmit)="onSave()">
-  <h5 mat-dialog-title>Add New Project</h5>
+  <h5 mat-dialog-title>{{ title }}</h5>
 
   <mat-dialog-content>
     <!-- <div class="form-grid"> -->
@@ -78,11 +7,6 @@
       <mat-label>Project Name</mat-label>
       <input matInput formControlName="name" placeholder="E.g. Website Redesign">
     </mat-form-field>
-
-    <!-- <mat-form-field>
-      <mat-label>Project Code</mat-label>
-      <input matInput formControlName="code" placeholder="E.g. PRJ-005">
-    </mat-form-field> -->
 
     <mat-form-field appearance="outline">
       <mat-label>Project Type</mat-label>
@@ -96,7 +20,14 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Technology</mat-label>
-      <input matInput formControlName="technologyId" placeholder="E.g. Angular, .NET">
+      <mat-select formControlName="technologyId">
+        <mat-option value="">-- None --</mat-option>
+        @for (tech of technologies; track tech.Id) {
+        <mat-option [value]="tech.Id">
+          {{ tech.Name }}
+        </mat-option>
+        }
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -106,6 +37,23 @@
         <mat-option value="In Progress">In Progress</mat-option>
         <mat-option value="On Hold">On Hold</mat-option>
         <mat-option value="Completed">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline"> 
+      <mat-label>Assign Employees</mat-label>
+      <mat-select formControlName="assignedEmployees" multiple>
+        <!-- <mat-select-trigger>
+          {{projectForm.controls.assignedEmployees.value?.[0] || ''}}
+          @if ((projectForm.controls.assignedEmployees.value?.length || 0) > 1) {
+          <span class="example-additional-selection">
+            (+{{(projectForm.controls.assignedEmployees.value?.length || 0) - 1}} {{projectForm.controls.assignedEmployees.value?.length === 2 ? 'other' : 'others'}})
+          </span>
+          }
+        </mat-select-trigger> -->
+        @for (employee of employeeList; track employee.Id) {
+        <mat-option [value]="employee.Id">{{employee.Name}}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -136,9 +84,8 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="start">
-    <button type="submit"  mat-raised-button color="primary" [disabled]="!projectForm.valid">Save Project</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="!projectForm.valid">Save Project</button>
     <button mat-button (click)="onCancel()">Cancel</button>
   </mat-dialog-actions>
-
 
 </form>

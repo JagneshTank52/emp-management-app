@@ -18,6 +18,13 @@ import { debounceTime, pipe, Subscription } from 'rxjs';
 import { ProjectDetailsModel } from '../../../core/model/Project/project-details-model';
 import { CommonModule } from '@angular/common';
 import { ProjectQueryParamater } from '../../../core/model/QueryParamaters/project-query-paramater';
+import { TechnologyDetails } from '../../../core/model/Technology/technology-details';
+import { TechnologyService } from '../../../core/services/technology.service';
+import { response } from 'express';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { EmployeeDetailsSelectModel } from '../../../core/model/Employee/employee-details-select-model';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { AddEditProjectDialogData } from '../../../core/model/Project/add-edit-project-dialog-data';
 
 @Component({
   selector: 'app-manage-project-component',
@@ -34,14 +41,18 @@ import { ProjectQueryParamater } from '../../../core/model/QueryParamaters/proje
     MatInputModule,
     MatPaginatorModule,
     MatDialogModule,
+    ReactiveFormsModule,
     CommonModule],
   templateUrl: './manage-project-component.html',
   styleUrl: './manage-project-component.css'
 })
 export class ManageProjectComponent implements OnInit {
+
   message: string = '';
   projectSubscription = new Subscription();
   projects!: ProjectDetailsModel[];
+  technologies!: TechnologyDetails[];
+  employeeList!: EmployeeDetailsSelectModel[];
 
   projectQueryParamater: ProjectQueryParamater = {
     pageNumber: 1,
@@ -54,9 +65,9 @@ export class ManageProjectComponent implements OnInit {
   };
   totalProjects = 0;
 
+  filterForm!: FormGroup;
+
   pageSizeOptions: number[] = [3, 5, 10, 15, 20, 50];
-  // startCount: number = 0;
-  // endCount: number = 0;
 
   displayedColumns: string[] = [
     'code', 'name', 'type', 'tech', 'status',
@@ -65,27 +76,55 @@ export class ManageProjectComponent implements OnInit {
 
   dataTableSource = new MatTableDataSource<ProjectDetailsModel>();
 
-  // @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   constructor(
+    private fb: FormBuilder,
     private dialog: MatDialog,
+    private employeeService: EmployeeService,
     private projectService: ProjectService,
+    private technologyService: TechnologyService,
     private cdr: ChangeDetectorRef
   ) { }
 
-  // ngAfterViewInit(): void {
-  //   this.dataTableSource.paginator = this.paginator;
-  // }
-
   ngOnInit(): void {
     this.LoadProjects();
+    this.LoadTechnology();
+    this.LoadSelectEmployeeList();
+    this.initForm();
 
     this.projectSubscription.add(
-    this.projectService.onProjectsUpdated()
-    .pipe(debounceTime(1000)).subscribe(() => {
-      this.LoadProjects();
+      this.projectService.onProjectsUpdated()
+        .pipe(debounceTime(1000)).subscribe(() => {
+          this.LoadProjects();
+        })
+    );
+  }
+
+  private initForm(): void {
+    this.filterForm = this.fb.group({
+      name: [''],
+      type: [''],
+      technologyId: [''],
+      status: [''] // instead of "total_hours"
+    });
+  }
+
+  LoadTechnology() {
+    var sub = this.technologyService.getTechnologies().subscribe({
+      next: (response) => {
+        this.technologies = response.Data ?? [];
+      }
     })
-  );
+    this.projectSubscription.add(sub);
+  }
+
+  LoadSelectEmployeeList() {
+    var sub = this.employeeService.getEmployeeSelectList().subscribe({
+      next: (response) => {
+        this.employeeList = response.Data ?? [];
+      }
+    })
+    console.log(this.employeeList);
+    this.projectSubscription.add(sub);
   }
 
   LoadProjects() {
@@ -98,23 +137,15 @@ export class ManageProjectComponent implements OnInit {
         this.projectQueryParamater.pageNumber = response.Data?.PageIndex ?? 1;
         this.projectQueryParamater.pageSize = response.Data?.PageSize ?? this.projectQueryParamater.pageSize;
         this.totalProjects = response.Data?.TotalCounts ?? 0;
-        // this.hasNextPage = response.Data?.HasNextPage ?? false;
-        // this.hasPreviousPage = response.Data?.HasPreviousPage ?? false;
-
-        // this.startCount = (this.pageNumber - 1) * this.pageSize + 1;
-        // this.endCount = Math.min(this.pageNumber * this.pageSize, this.totalProjects);
 
         console.log(this.projects);
         this.dataTableSource.data = this.projects;
-
-        this.cdr.detectChanges();
 
         if (this.projects.length === 0) {
           this.message = 'No projects to display.';
         } else {
           this.message = '';
         }
-        // this.endCount = Math.min(this.pageNumber * this.pageSize, this.totalProjects);
 
         this.cdr.detectChanges();
 
@@ -135,19 +166,32 @@ export class ManageProjectComponent implements OnInit {
     this.LoadProjects();
   }
 
-  /**
-  * Opens the "Add Project" dialog and adds the new project to the table
-  * if the user saves it.
-  */
-  openAddProjectDialog(): void {
+  onSearch(): void {
+    debugger;
+    this.projectQueryParamater.searchTerm = this.filterForm.value.name as string
+    this.projectQueryParamater.technologyId = this.filterForm.value.technologyId as number
+    this.projectQueryParamater.projectStatus = this.filterForm.value.status as string
+    this.projectQueryParamater.type = this.filterForm.value.type as string
+
+    this.LoadProjects();
+  }
+
+  openAddEditDialog(projectId: number): void {
+    debugger;
     const dialogRef = this.dialog.open(AddProjectDialogComponent, {
       width: '700px',
-      disableClose: true, // Prevents closing by clicking outside
+      disableClose: true,
+      data: {
+        Id: projectId,
+        technologiesList: this.technologies,
+        selectEmployeeList: this.employeeList
+      } as AddEditProjectDialogData
     });
 
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
+        debugger;
         const currentData = this.dataTableSource.data;
 
         const newProject = {
@@ -158,16 +202,8 @@ export class ManageProjectComponent implements OnInit {
           created_at: new Date().toLocaleString(), // Set creation timestamp
         };
 
-        // Add the new project and refresh the table data
         this.dataTableSource.data = [...currentData, newProject];
       }
-    });
-  }
-
-  openAddEditDialog(): void {
-    const dialogRef = this.dialog.open(AddProjectDialogComponent, {
-      width: '50%',
-      disableClose: false, // Prevents closing by clicking outside
     });
   }
 }
