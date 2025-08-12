@@ -1,11 +1,11 @@
 export interface AddEditProjectModel {
-    id: number;
-    name: string;
-    type: string;
-    technologyId: number;
-    projectStatus: string;
-    startDate: string; 
-    estimatedDueDate: string; 
-    estimatedHours: number;
-    assignedEmployeeIds: number[];
+    Id: number;
+    Name: string;
+    Type: string;
+    TechnologyId: number;
+    ProjectStatus: string;
+    StartDate: Date; 
+    EstimatedDueDate: Date; 
+    EstimatedHours: number;
+    AssignedEmployeeIds: number[];
 }

@@ -12,3 +12,8 @@
 mat-form-field {
   width: 100%;
 }
+
+.mat-mdc-form-field {
+  width: 98%;
+  margin: 1%;
+}

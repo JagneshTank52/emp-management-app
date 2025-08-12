@@ -1,10 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { ApiResponse } from '../model/api-response';
 import { PaginatedList } from '../model/paginated-list';
 import { ProjectDetailsModel } from '../model/Project/project-details-model';
 import { AddEditProjectModel } from '../model/Project/add-edit-project-model';
+import { ProjectQueryParamater } from '../model/QueryParamaters/project-query-paramater';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +13,23 @@ import { AddEditProjectModel } from '../model/Project/add-edit-project-model';
 
 export class ProjectService {
 
+  private projectsUpdated$ = new Subject<void>();
   private baseURL: string = "http://localhost:5140/api/project";
+
   constructor(private http: HttpClient) { }
+
 
   // GET /api/Project - Get all projects
   getAllProjects(
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string,
-    searchTerm: string,
+    projectQueryParamater: ProjectQueryParamater
   ): Observable<ApiResponse<PaginatedList<ProjectDetailsModel>>> {
-    let params = new HttpParams()
-      .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString())
-      .set('sortBy', sortBy)
-      .set('searchTerm', searchTerm);
+
+    let params = new HttpParams();
+    Object.entries(projectQueryParamater).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
+        params = params.set(key, value.toString());
+      }
+    });
 
     return this.http.get<ApiResponse<PaginatedList<ProjectDetailsModel>>>(this.baseURL, {
       params,
@@ -43,24 +46,43 @@ export class ProjectService {
 
   // POST /api/Project - Create new project
   addProject(project: AddEditProjectModel): Observable<ProjectDetailsModel> {
+    console.log(project)
+
     return this.http.post<ProjectDetailsModel>(this.baseURL, project, {
-      withCredentials: true,
-      mode: 'cors'
-    });
+      withCredentials: true
+    }).pipe(
+      tap({
+        next: () => this.projectsUpdated$.next()
+      })
+    );
   }
 
   // PUT /api/Project/{id} - Update existing project
   updateProject(id: number, project: AddEditProjectModel): Observable<ProjectDetailsModel> {
     return this.http.put<ProjectDetailsModel>(`${this.baseURL}/${id}`, project, {
       withCredentials: true
-    });
+    }).pipe(
+      tap({
+        next: () => this.projectsUpdated$.next()
+      })
+    );
   }
 
   // DELETE /api/Project/{id} - Delete project
   deleteProject(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseURL}/${id}`, {
       withCredentials: true
-    });
+    }).pipe(
+      tap({
+        next: () => this.projectsUpdated$.next()
+      })
+    );
   }
+
+  // Observable for any component to listen to
+  onProjectsUpdated(): Observable<void> {
+    return this.projectsUpdated$.asObservable();
+  }
+
 
 }

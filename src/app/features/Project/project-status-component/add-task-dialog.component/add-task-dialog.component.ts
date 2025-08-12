@@ -44,8 +44,8 @@ export class AddTaskDialogComponent implements OnInit {
 
 
   onSave(): void {
-    // Check if the form is valid before closing
     if (this.taskForm.valid) {
+      
       this.dialogRef.close(this.taskForm.value);
     }
   }

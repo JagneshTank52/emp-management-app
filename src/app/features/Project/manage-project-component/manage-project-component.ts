@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, Pipe, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -11,8 +11,13 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { AddProjectDialogComponent } from './add-project-dialog.component/add-project-dialog.component';
+import { ProjectService } from '../../../core/services/project.service';
+import { debounceTime, pipe, Subscription } from 'rxjs';
+import { ProjectDetailsModel } from '../../../core/model/Project/project-details-model';
+import { CommonModule } from '@angular/common';
+import { ProjectQueryParamater } from '../../../core/model/QueryParamaters/project-query-paramater';
 
 @Component({
   selector: 'app-manage-project-component',
@@ -28,77 +33,108 @@ import { AddProjectDialogComponent } from './add-project-dialog.component/add-pr
     MatOptionModule,
     MatInputModule,
     MatPaginatorModule,
-  MatDialogModule],
+    MatDialogModule,
+    CommonModule],
   templateUrl: './manage-project-component.html',
   styleUrl: './manage-project-component.css'
 })
-export class ManageProjectComponent {
+export class ManageProjectComponent implements OnInit {
+  message: string = '';
+  projectSubscription = new Subscription();
+  projects!: ProjectDetailsModel[];
+
+  projectQueryParamater: ProjectQueryParamater = {
+    pageNumber: 1,
+    pageSize: 5,
+    sortBy: '',
+    searchTerm: '',
+    technologyId: null as number | null,
+    projectStatus: '',
+    type: ''
+  };
+  totalProjects = 0;
+
+  pageSizeOptions: number[] = [3, 5, 10, 15, 20, 50];
+  // startCount: number = 0;
+  // endCount: number = 0;
+
   displayedColumns: string[] = [
-    'position', 'name', 'code', 'type', 'tech', 'status',
+    'code', 'name', 'type', 'tech', 'status',
     'start_date', 'due_date', 'created_at', 'no_of_employee', 'total_hours', 'action'
   ];
 
-  myDataArray = new MatTableDataSource([
-    {
-      position: 1,
-      name: 'Project Tracker',
-      code: 'PRJ-001',
-      type: 'Fixed',
-      tech: 'Angular',
-      status: 'Active',
-      start_date: '2025-01-10',
-      due_date: '2025-03-20',
-      created_at: '2025-01-05 14:23',
-      no_of_employee: 6,
-      total_hours: 400
-    },
-    {
-      position: 2,
-      name: 'Task Manager',
-      code: 'PRJ-002',
-      type: 'Hourly',
-      tech: '.NET',
-      status: 'Completed',
-      start_date: '2024-10-01',
-      due_date: '2024-12-15',
-      created_at: '2024-09-25 10:00',
-      no_of_employee: 4,
-      total_hours: 300
-    },
-    {
-      position: 3,
-      name: 'Employee Portal',
-      code: 'PRJ-003',
-      type: 'Monthly',
-      tech: 'Node.js',
-      status: 'In Progress',
-      start_date: '2025-05-05',
-      due_date: '2025-09-10',
-      created_at: '2025-04-30 09:45',
-      no_of_employee: 8,
-      total_hours: 500
-    },
-    {
-      position: 4,
-      name: 'UI Redesign',
-      code: 'PRJ-004',
-      type: 'Cost',
-      tech: 'React',
-      status: 'On Hold',
-      start_date: '2025-02-20',
-      due_date: '2025-06-01',
-      created_at: '2025-02-10 11:30',
-      no_of_employee: 3,
-      total_hours: 250
-    }
-  ]);
+  dataTableSource = new MatTableDataSource<ProjectDetailsModel>();
 
-  /**
-   *
-   */
-  constructor(private dialog: MatDialog) {
-    
+  // @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(
+    private dialog: MatDialog,
+    private projectService: ProjectService,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  // ngAfterViewInit(): void {
+  //   this.dataTableSource.paginator = this.paginator;
+  // }
+
+  ngOnInit(): void {
+    this.LoadProjects();
+
+    this.projectSubscription.add(
+    this.projectService.onProjectsUpdated()
+    .pipe(debounceTime(1000)).subscribe(() => {
+      this.LoadProjects();
+    })
+  );
   }
+
+  LoadProjects() {
+    var sub = this.projectService.getAllProjects(this.projectQueryParamater).subscribe({
+      next: (response) => {
+        debugger;
+        console.log('response: ', response);
+
+        this.projects = response.Data?.Items ?? [];
+        this.projectQueryParamater.pageNumber = response.Data?.PageIndex ?? 1;
+        this.projectQueryParamater.pageSize = response.Data?.PageSize ?? this.projectQueryParamater.pageSize;
+        this.totalProjects = response.Data?.TotalCounts ?? 0;
+        // this.hasNextPage = response.Data?.HasNextPage ?? false;
+        // this.hasPreviousPage = response.Data?.HasPreviousPage ?? false;
+
+        // this.startCount = (this.pageNumber - 1) * this.pageSize + 1;
+        // this.endCount = Math.min(this.pageNumber * this.pageSize, this.totalProjects);
+
+        console.log(this.projects);
+        this.dataTableSource.data = this.projects;
+
+        this.cdr.detectChanges();
+
+        if (this.projects.length === 0) {
+          this.message = 'No projects to display.';
+        } else {
+          this.message = '';
+        }
+        // this.endCount = Math.min(this.pageNumber * this.pageSize, this.totalProjects);
+
+        this.cdr.detectChanges();
+
+        if (this.projects.length === 0) {
+          this.message = 'No employees to display.';
+        } else {
+          this.message = '';
+        }
+      }
+    });
+    this.projectSubscription.add(sub);
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.projectQueryParamater.pageNumber = event.pageIndex + 1;
+    this.projectQueryParamater.pageSize = event.pageSize;
+
+    this.LoadProjects();
+  }
+
   /**
   * Opens the "Add Project" dialog and adds the new project to the table
   * if the user saves it.
@@ -110,9 +146,9 @@ export class ManageProjectComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-     
+
       if (result) {
-        const currentData = this.myDataArray.data;
+        const currentData = this.dataTableSource.data;
 
         const newProject = {
           ...result,
@@ -123,8 +159,15 @@ export class ManageProjectComponent {
         };
 
         // Add the new project and refresh the table data
-        this.myDataArray.data = [...currentData, newProject];
+        this.dataTableSource.data = [...currentData, newProject];
       }
+    });
+  }
+
+  openAddEditDialog(): void {
+    const dialogRef = this.dialog.open(AddProjectDialogComponent, {
+      width: '50%',
+      disableClose: false, // Prevents closing by clicking outside
     });
   }
 }

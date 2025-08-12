@@ -8,7 +8,7 @@
                         Manage Project
                     </h4>
                 </div>
-                <button mat-button class="outlined-blur" (click)="openAddProjectDialog()">
+                <button mat-button class="outlined-blur" (click)="openAddEditDialog()">
                     <mat-icon>add</mat-icon>
                     <span>Add Project</span>
                 </button>
@@ -88,72 +88,66 @@
 
         <mat-card appearance="outlined" class="outlined-blur h-100 d-flex  mt-0 p-3">
             <div class="table-responsive">
-                <table mat-table [dataSource]="myDataArray" class="mat-elevation-z2" style="width: 100%;">
+                <table mat-table [dataSource]="dataTableSource" class="mat-elevation-z2" style="width: 100%;">
 
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                    <!-- Code -->
+                    <ng-container matColumnDef="code">
+                        <th mat-header-cell *matHeaderCellDef> Code </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Code}} </td>
                     </ng-container>
 
                     <!-- Project Name -->
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef> Project Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                    </ng-container>
-
-                    <!-- Code -->
-                    <ng-container matColumnDef="code">
-                        <th mat-header-cell *matHeaderCellDef> Code </th>
-                        <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
                     </ng-container>
 
                     <!-- Type -->
                     <ng-container matColumnDef="type">
                         <th mat-header-cell *matHeaderCellDef> Type </th>
-                        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
                     </ng-container>
 
                     <!-- Tech -->
                     <ng-container matColumnDef="tech">
                         <th mat-header-cell *matHeaderCellDef> Tech </th>
-                        <td mat-cell *matCellDef="let element"> {{element.tech}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.TechnologyName}} </td>
                     </ng-container>
 
                     <!-- Status -->
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef> Status </th>
-                        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.ProjectStatus}} </td>
                     </ng-container>
 
                     <!-- Start Date -->
                     <ng-container matColumnDef="start_date">
                         <th mat-header-cell *matHeaderCellDef> Start Date </th>
-                        <td mat-cell *matCellDef="let element"> {{element.start_date}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.StartDate}} </td>
                     </ng-container>
 
                     <!-- Due Date -->
                     <ng-container matColumnDef="due_date">
                         <th mat-header-cell *matHeaderCellDef> Due Date </th>
-                        <td mat-cell *matCellDef="let element"> {{element.due_date}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.EstimatedDueDate}} </td>
                     </ng-container>
 
                     <!-- Created At -->
                     <ng-container matColumnDef="created_at">
                         <th mat-header-cell *matHeaderCellDef> Created At </th>
-                        <td mat-cell *matCellDef="let element"> {{element.created_at}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.CreatedAt | date}} </td>
                     </ng-container>
 
                     <!-- Number of Employees -->
                     <ng-container matColumnDef="no_of_employee">
                         <th mat-header-cell *matHeaderCellDef> Employees </th>
-                        <td mat-cell *matCellDef="let element"> {{element.no_of_employee}} </td>
+                        <td mat-cell *matCellDef="let element"> {{5}} </td>
                     </ng-container>
 
                     <!-- Total Hours -->
                     <ng-container matColumnDef="total_hours">
                         <th mat-header-cell *matHeaderCellDef> Total Hours </th>
-                        <td mat-cell *matCellDef="let element"> {{element.total_hours}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.EstimatedHours}} </td>
                     </ng-container>
 
                     <!-- Action -->
@@ -167,7 +161,7 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
             </div>
-            <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+            <mat-paginator [length]="totalProjects" [pageSize]="projectQueryParamater.pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" aria-label="Select page">
             </mat-paginator>
 
 
