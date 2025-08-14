@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, Pipe, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, Pipe, signal, ViewChild, WritableSignal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -51,6 +51,7 @@ export class ManageProjectComponent implements OnInit {
   message: string = '';
   projectSubscription = new Subscription();
   projects!: ProjectDetailsModel[];
+  // public tech: WritableSignal<TechnologyDetails[]> = signal([]);
   technologies!: TechnologyDetails[];
   employeeList!: EmployeeDetailsSelectModel[];
 
