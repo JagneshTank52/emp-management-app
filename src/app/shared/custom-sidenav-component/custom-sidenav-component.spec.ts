@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddTaskDialogComponent } from './add-task-dialog.component';
+import { CustomSidenavComponent } from './custom-sidenav-component';
 
-describe('AddTaskDialogComponent', () => {
-  let component: AddTaskDialogComponent;
-  let fixture: ComponentFixture<AddTaskDialogComponent>;
+describe('CustomSidenavComponent', () => {
+  let component: CustomSidenavComponent;
+  let fixture: ComponentFixture<CustomSidenavComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddTaskDialogComponent]
+      imports: [CustomSidenavComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddTaskDialogComponent);
+    fixture = TestBed.createComponent(CustomSidenavComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

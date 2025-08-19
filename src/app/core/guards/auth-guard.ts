@@ -6,7 +6,6 @@ import { firstValueFrom } from 'rxjs';
 
 export const authGuard: CanActivateChildFn = async (route, state) => {
 
-  debugger;
   const authService = inject(AuthService);
   const tokenService = inject(TokenService);
   const router = inject(Router);

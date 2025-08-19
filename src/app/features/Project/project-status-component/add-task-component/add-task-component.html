@@ -1,0 +1,173 @@
+<div class="container-fluid p-0">
+    <!-- Grid with full-width rows -->
+    <mat-grid-list cols="4" rowHeight="70px" class="page-header">
+        <mat-grid-tile colspan="4">
+            <div class="d-flex align-items-center justify-content-between h-100 w-100 px-3">
+                <div>
+                    <h4 class="fw-semibold mb-0">
+                        Add Task
+                    </h4>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="w-100 d-flex flex-column h-100 p-3 pt-4">
+        <form [formGroup]="taskForm" (ngSubmit)="onSave()">
+            <div class="row mb-5 p-0 text-white gy-4 gx-3">
+                <!-- Title -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="Project Title" formControlName="title">
+                    </mat-form-field>
+                </div>
+
+                <!-- Status -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline" [hideRequiredMarker]="true"
+                        [floatLabel]="'auto'">
+                        <mat-label>Task Status</mat-label>
+                        <mat-select required aria-placeholder="Select Task Status" formControlName="taskStatusId">
+                            <mat-option value="">-- None --</mat-option>
+                            @for (taskStatus of (taskStatusDropDown$ | async); track taskStatus.Id){
+                            <mat-option [value]="taskStatus.Id">
+                                {{taskStatus.Name}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row mb-5 p-0 text-white gy-3 gx-3">
+                <!-- Project -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                        appearance="outline">
+                        <mat-label>Select Project</mat-label>
+                        <mat-select required aria-placeholder="Select Project Type" formControlName="projectId">
+                            <mat-option value="">-- None --</mat-option>
+                            @for (project of (projectDropDown$ | async); track project.Id) {
+                            <mat-option [value]="project.Id">
+                                {{ project.Name }}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Labels -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline">
+                        <mat-label>Total hours</mat-label>
+                        <input matInput placeholder="Add Total hour" formControlName="totalHours">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row mb-5 p-0 text-white gy-3 gx-3">
+                <!-- Start Date -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline">
+                        <mat-label>Start Date</mat-label>
+                        <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <!-- End Date -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline">
+                        <mat-label>End Date</mat-label>
+                        <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row mb-5 p-0 text-white gy-3 gx-3">
+                <!-- Assigned To -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                        appearance="outline">
+                        <mat-label>Assigned To</mat-label>
+                        <mat-select required aria-placeholder="Select Employee" formControlName="assignedTo">
+                            <mat-option value="">-- None --</mat-option>
+                            @for (employee of (employeeDown$ | async); track employee.Id) {
+                            <mat-option [value]="employee.Id">
+                                {{ employee.Name }}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Reported By -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                        appearance="outline">
+                        <mat-label>Reported By</mat-label>
+                        <mat-select required aria-placeholder="Select Employee" formControlName="reportedBy">
+                            <mat-option value="">-- None --</mat-option>
+                            @for (employee of (employeeDown$ | async); track employee.Id) {
+                            <mat-option [value]="employee.Id">
+                                {{ employee.Name }}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row mb-5 p-0 text-white gy-3 gx-3">
+                <!-- Priority -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline">
+                        <mat-label>Priority</mat-label>
+                        <mat-select formControlName="priority">
+                            <mat-option>-- None --</mat-option>
+                            <mat-option value="High">High</mat-option>
+                            <mat-option value="Medium">Medium</mat-option>
+                            <mat-option value="Low">Low</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Label -->
+                <div class="col col-md-6 col-xl-3">
+                    <mat-form-field class="small" appearance="outline">
+                        <mat-label>Label</mat-label>
+                        <input matInput placeholder="Enter Label" formControlName="label">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row mb-4 p-0 text-white gy-3 gx-3">
+                <!-- Description -->
+                <div class="col col-md-6 col-xl-6">
+                    <mat-form-field class="small w-100" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <input matInput placeholder="Add Total hour" >
+                        <textarea matInput rows="4" placeholder="Project Description" formControlName="description"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <app-custom-button-component label="Save" type="primary" variant="filled"
+                    buttonType="submit"></app-custom-button-component>
+                <app-custom-button-component label="Cancel" type="primary" variant="outlined"
+                    buttonType="reset"></app-custom-button-component>
+            </div>
+        </form>
+
+
+    </div>
+
+
+    <!-- card -->
+
+</div>

@@ -32,36 +32,81 @@ body {
 }
 
 :root {
-  @include mat.form-field-overrides((outlined-outline-color: #f0c76e,
-      outlined-focus-outline-color: #f0b429,
-      outlined-hover-outline-color: #fcd582,
-      outlined-focus-label-text-color: black,
-      outlined-hover-label-text-color: black,
-      outlined-label-text-color: black,
-      outlined-input-text-color: #000000,
+
+  // Form field
+  @include mat.form-field-overrides((outlined-outline-color:var(--outline-color),
+      outlined-focus-outline-color: var(--primary-color),
+      outlined-hover-outline-color: var(--primary-color),
+      outlined-focus-label-text-color: var(--primary-text-color),
+      outlined-hover-label-text-color: var(--primary-text-color),
+      outlined-label-text-color: var(--primary-text-color),
+      outlined-input-text-color: var(--primary-text-color),
       outlined-input-text-placeholder-color: #999999,
-      outlined-container-shape: 25px,
+      outlined-outline-width: 2px,
+      outlined-container-shape: 8px,
       outlined-label-text-size: 14px,
       outlined-label-text-weight: 500,
-      outlined-caret-color: #f0b429,
     ));
 
   @include mat.table-density(-1); // Optional: controls spacing/density
 
   @include mat.table-overrides((background-color: transparent,
-      header-headline-color: black,
-      row-item-label-text-color: #000,
-      row-item-outline-color: rgba(0, 0, 0, 1),
-      row-item-outline-width: 0px,
+      header-headline-color: var(--primary-text-color),
+      row-item-label-text-color: var(--primary-text-color),
+      row-item-outline-color: var(--outline-color),
+      row-item-outline-width: 1px,
       header-headline-size: 16px,
       header-headline-weight: 600));
 
-  @include mat.paginator-overrides((
-      container-text-color: black,
+  @include mat.paginator-overrides((container-text-color: var(--primary-text-color),
       container-text-size: 16px,
       container-background-color: transparent,
+      enabled-icon-color: var(--primary-color),
     ));
 
+  // For side nav
+  @include mat.sidenav-overrides((container-background-color: var(--secondary-color),
+      container-shape: 0px,
+      container-width: 250px,
+      content-background-color: var(--primary-background-color),
+      content-text-color: var(--primary-text-color)));
+
+  // For toolbar 
+  @include mat.toolbar-overrides((container-background-color: var(--secondary-color),
+      container-text-color: var(--secondary-text-color),
+      standard-height: 60px));
+
+  // For mat tree
+  @include mat.tree-overrides((container-background-color: var(--secondary-color),
+      node-text-color: var(--secondary-text-color),
+    ));
+
+  // For mat card
+  @include mat.card-overrides((title-text-size: 16px,
+      title-text-weight: 500));
+
+
+}
+
+// For card
+.task-card {
+  @include mat.card-overrides((
+    title-text-size: 14px,
+      title-text-weight: 500));
+}
+
+// For Toolbar
+.main-layout-toolbar,
+mat-sidenav {
+  @include mat.icon-overrides((color: var(--secondary-text-color),
+    ));
+}
+
+// For form field height
+
+mat-form-field.small {
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 8px;
 }
 
 .mat-mdc-form-field {
@@ -69,44 +114,12 @@ body {
 }
 
 .mat-mdc-text-field-wrapper {
-  border-radius: 25px !important;
-  background: #f6f6f6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: var(--primary-background-color);
 }
 
 .mat-mdc-card.outlined-blur {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 24px;
-  // box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.mat-mdc-button-base {
-  height: 45px !important;
-  background-color: #f6f6f6 !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  --mat-button-text-label-text-color: black;
-}
-
-/* Styling for the button on hover */
-.mat-mdc-button-base:hover {
-  background-color: black !important;
-  --mat-button-text-label-text-color: #f6f6f6;
-}
-
-.mat-mdc-button-base:hover .mdc-button__label {
-  color: #f6f6f6 !important;
-}
-
-.toolbar-blur {
-  background: #f6f6f6 !important;
-  border-radius: 30px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 0 1rem;
+  border-radius: 8px;
+  background-color: var(--primary-background-color);
 }
 
 .mat-mdc-form-field-subscript-wrapper,
@@ -121,4 +134,18 @@ body {
 .priority-select-field>.mat-mdc-text-field-wrapper>.mat-mdc-form-field-flex {
   height: 30px;
   align-items: center !important;
+}
+
+.page-header {
+  background-color: var(--secondary-background-color);
+  border-bottom: 1px solid var(--outline-color);
+}
+
+.filter-section {
+  border-bottom: 1px solid var(--outline-color);
+}
+
+.custom-table {
+  border-radius: 12px !important;
+  border: 1px solid var(--outline-color);
 }

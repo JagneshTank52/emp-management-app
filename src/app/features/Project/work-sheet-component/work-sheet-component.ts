@@ -6,10 +6,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { CustomButtonComponent } from '../../../shared/custom-button-component/custom-button-component';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-work-sheet-component',
-  imports: [MatCardModule, MatGridListModule, MatIconModule, CommonModule, FormsModule,MatTableModule],
+  imports: [MatCardModule, MatGridListModule, MatIconModule, CommonModule, FormsModule,MatTableModule,CustomButtonComponent,MatOptionModule,MatSelectModule],
   templateUrl: './work-sheet-component.html',
   styleUrl: './work-sheet-component.css'
 })

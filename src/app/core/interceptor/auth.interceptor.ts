@@ -5,15 +5,12 @@ import { inject } from '@angular/core';
 import { TokenService } from '../services/token.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  debugger;
   const authService = inject(AuthService);
   const tokenService = inject(TokenService);
   const accessToken = tokenService.getAccessToken();
 
   let authReq = req;
   if (accessToken) {
-    debugger;
-    console.log('Token: ',accessToken);
     authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${accessToken}` }
     });
@@ -21,7 +18,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      debugger;
       // Handle 401 errors
       if (error.status === 401) {
         // const isPublicRoute = req.url.includes('/login') || req.url.includes('/register');

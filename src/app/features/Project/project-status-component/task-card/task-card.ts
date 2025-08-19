@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { TaskDetailsModel } from '../../../../core/model/Task/task-details-model';
 
 @Component({
   selector: 'app-task-card',
@@ -15,6 +16,6 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class TaskCardComponent {
-  @Input() task!: Task;
+  @Input() task!: TaskDetailsModel;
   @Input() statusColor!: string;
 }

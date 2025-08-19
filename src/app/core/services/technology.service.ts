@@ -8,7 +8,7 @@ import { TechnologyDetails } from '../model/Technology/technology-details';
   providedIn: 'root'
 })
 export class TechnologyService {
-  private baseURL: string = "http://localhost:5140/api/technology";
+  private baseURL: string = "http://localhost:5140/api/DropDown/get-drop-down-list/1";
 
   constructor(private http: HttpClient) { }
 

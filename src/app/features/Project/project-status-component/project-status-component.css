@@ -95,5 +95,9 @@ mat-card-title.task-title {
 
 /* final */
 .status-card{
-    min-width: 360px;
+    min-width: 300px;
+}
+
+.task-board{
+    height: 500px;
 }

@@ -1,164 +1,159 @@
-<div class="container-fluid dashboard-container h-100 px-0">
+<div class="container-fluid h-100 p-0">
     <!-- Grid with full-width rows -->
-    <mat-grid-list cols="4" rowHeight="70px" class="mb-3">
+    <mat-grid-list cols="4" rowHeight="70px" class="page-header">
         <mat-grid-tile colspan="4">
-            <div class="d-flex align-items-center justify-content-between h-100 w-100 px-4">
+            <div class="d-flex align-items-center justify-content-between h-100 w-100 px-3">
                 <div>
                     <h4 class="fw-semibold mb-0">
                         Manage Project
                     </h4>
                 </div>
-                <button mat-button class="outlined-blur" (click)="openAddEditDialog(0)">
-                    <mat-icon>add</mat-icon>
-                    <span>Add Project</span>
-                </button>
+                <app-custom-button-component label="Add Project" icon="add" type="primary"
+                    variant="filled" (click)="openAddEditDialog(0)"></app-custom-button-component>
             </div>
         </mat-grid-tile>
     </mat-grid-list>
 
-    <!-- card -->
-    <mat-card appearance="outlined" class="outlined-blur w-100 d-flex" style="height: 100%;">
-
-        <form [formGroup]="filterForm" (ngSubmit)="onSearch()">
-            <div class="row mx-3 my-3 text-white">
-                <div class="col col-md-6 col-lg-3 ">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Name</mat-label>
-                        <input matInput placeholder="Project Name" formControlName="name">
-                        <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
-                        <!-- <mat-hint>Hint</mat-hint> -->
-                    </mat-form-field>
+    <div class="w-100 d-flex flex-column h-100 p-3">
+        <div class="filter-section pb-4">
+            <form [formGroup]="filterForm" (ngSubmit)="onSearch()">
+                <div class="row mb-3 p-0 text-white gy-3 gx-3">
+                    <div class="col col-md-6 col-xl-3 ">
+                        <mat-form-field class="small" appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Project Name" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-md-6 col-xl-3">
+                        <mat-form-field class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                            appearance="outline">
+                            <mat-label>Type</mat-label>
+                            <mat-select aria-placeholder="Select Project Type" formControlName="type">
+                                <mat-option>-- None --</mat-option>
+                                <mat-option value="Fixed">Fixed</mat-option>
+                                <mat-option value="Hourly">Hourly</mat-option>
+                                <mat-option value="Monthly">Monthly</mat-option>
+                                <mat-option value="Cost">Cost</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-md-6 col-xl-3">
+                        <mat-form-field class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                            appearance="outline">
+                            <mat-label>Techonology</mat-label>
+                            <mat-select aria-placeholder="Select Project Technology" formControlName="technologyId">
+                                <mat-option value="">-- None --</mat-option>
+                                @for (tech of technologies; track tech.Id) {
+                                <mat-option [value]="tech.Id">
+                                    {{ tech.Name }}
+                                </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-md-6 col-xl-3">
+                        <mat-form-field class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+                            appearance="outline">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="status">
+                                <mat-option>-- None --</mat-option>
+                                <mat-option value="Active">Active</mat-option>
+                                <mat-option value="In Progress">In Progress</mat-option>
+                                <mat-option value="On Hold">On Hold</mat-option>
+                                <mat-option value="Completed">Completed</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
-                <div class="col col-md-6 col-lg-3">
-                    <mat-form-field [hideRequiredMarker]="true" [floatLabel]="'auto'" appearance="outline">
-                        <mat-label>Type</mat-label>
-                        <mat-select aria-placeholder="Select Project Type" formControlName="type">
-                            <mat-option>-- None --</mat-option>
-                            <mat-option value="Fixed">Fixed</mat-option>
-                            <mat-option value="Hourly">Hourly</mat-option>
-                            <mat-option value="Monthly">Monthly</mat-option>
-                            <mat-option value="Cost">Cost</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <div class="d-flex align-items-center gap-3">
+                    <app-custom-button-component label="Search" type="primary"
+                        variant="filled" buttonType="submit"></app-custom-button-component>
+                    <app-custom-button-component label="Reset" type="primary"
+                        variant="outlined" buttonType="reset"></app-custom-button-component>
                 </div>
-                <div class="col col-md-6 col-lg-3">
-                    <mat-form-field [hideRequiredMarker]="true" [floatLabel]="'auto'" appearance="outline">
-                        <mat-label>Techonology</mat-label>
-                        <mat-select aria-placeholder="Select Project Technology" formControlName="technologyId">
-                            <mat-option value="">-- None --</mat-option>
-                            @for (tech of technologies; track tech.Id) {
-                            <mat-option [value]="tech.Id">
-                                {{ tech.Name }}
-                            </mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col col-md-6 col-lg-3">
-                    <mat-form-field [hideRequiredMarker]="true" [floatLabel]="'auto'" appearance="outline">
-                        <mat-label>Status</mat-label>
-                        <mat-select formControlName="status">
-                            <mat-option>-- None --</mat-option>
-                            <mat-option value="Active">Active</mat-option>
-                            <mat-option value="In Progress">In Progress</mat-option>
-                            <mat-option value="On Hold">On Hold</mat-option>
-                            <mat-option value="Completed">Completed</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center gap-3 mx-4 mb-4">
-                <button type="submit" matButton class="fs-5">Search</button>
-                <button type="reset" matButton class="fs-5">Reset</button>
-            </div>
             </form>
+        </div>
 
-            <mat-card appearance="outlined" class="outlined-blur h-100 d-flex  mt-0 p-3">
-                <div class="table-responsive">
-                    <table mat-table [dataSource]="dataTableSource" class="mat-elevation-z2" style="width: 100%;">
+        <div class="table-responsive py-4">
+            <table mat-table [dataSource]="dataTableSource" class="mat-elevation-z2 custom-table mb-3">
+                <!-- Code -->
+                <ng-container matColumnDef="code">
+                    <th mat-header-cell *matHeaderCellDef> Code </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Code}} </td>
+                </ng-container>
 
-                        <!-- Code -->
-                        <ng-container matColumnDef="code">
-                            <th mat-header-cell *matHeaderCellDef> Code </th>
-                            <td mat-cell *matCellDef="let element"> {{element.Code}} </td>
-                        </ng-container>
+                <!-- Project Name -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Project Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                </ng-container>
 
-                        <!-- Project Name -->
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Project Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
-                        </ng-container>
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef> Type </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
+                </ng-container>
 
-                        <!-- Type -->
-                        <ng-container matColumnDef="type">
-                            <th mat-header-cell *matHeaderCellDef> Type </th>
-                            <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
-                        </ng-container>
+                <!-- Tech -->
+                <ng-container matColumnDef="tech">
+                    <th mat-header-cell *matHeaderCellDef> Tech </th>
+                    <td mat-cell *matCellDef="let element"> {{element.TechnologyName}} </td>
+                </ng-container>
 
-                        <!-- Tech -->
-                        <ng-container matColumnDef="tech">
-                            <th mat-header-cell *matHeaderCellDef> Tech </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TechnologyName}} </td>
-                        </ng-container>
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ProjectStatus}} </td>
+                </ng-container>
 
-                        <!-- Status -->
-                        <ng-container matColumnDef="status">
-                            <th mat-header-cell *matHeaderCellDef> Status </th>
-                            <td mat-cell *matCellDef="let element"> {{element.ProjectStatus}} </td>
-                        </ng-container>
+                <!-- Start Date -->
+                <ng-container matColumnDef="start_date">
+                    <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.StartDate | date}} </td>
+                </ng-container>
 
-                        <!-- Start Date -->
-                        <ng-container matColumnDef="start_date">
-                            <th mat-header-cell *matHeaderCellDef> Start Date </th>
-                            <td mat-cell *matCellDef="let element"> {{element.StartDate | date}} </td>
-                        </ng-container>
+                <!-- Due Date -->
+                <ng-container matColumnDef="due_date">
+                    <th mat-header-cell *matHeaderCellDef> Due Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.EstimatedDueDate | date}} </td>
+                </ng-container>
 
-                        <!-- Due Date -->
-                        <ng-container matColumnDef="due_date">
-                            <th mat-header-cell *matHeaderCellDef> Due Date </th>
-                            <td mat-cell *matCellDef="let element"> {{element.EstimatedDueDate | date}} </td>
-                        </ng-container>
+                <!-- Created At -->
+                <ng-container matColumnDef="created_at">
+                    <th mat-header-cell *matHeaderCellDef> Created At </th>
+                    <td mat-cell *matCellDef="let element"> {{element.CreatedAt | date}} </td>
+                </ng-container>
 
-                        <!-- Created At -->
-                        <ng-container matColumnDef="created_at">
-                            <th mat-header-cell *matHeaderCellDef> Created At </th>
-                            <td mat-cell *matCellDef="let element"> {{element.CreatedAt | date}} </td>
-                        </ng-container>
+                <!-- Number of Employees -->
+                <ng-container matColumnDef="no_of_employee">
+                    <th mat-header-cell *matHeaderCellDef> Employees </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.AssignedEmployee?.length || 0 }} </td>
+                </ng-container>
 
-                        <!-- Number of Employees -->
-                        <ng-container matColumnDef="no_of_employee">
-                            <th mat-header-cell *matHeaderCellDef> Employees </th>
-                            <td mat-cell *matCellDef="let element"> {{ element.AssignedEmployee?.length || 0 }} </td>
-                        </ng-container>
+                <!-- Total Hours -->
+                <ng-container matColumnDef="total_hours">
+                    <th mat-header-cell *matHeaderCellDef> Total Hours </th>
+                    <td mat-cell *matCellDef="let element"> {{element.EstimatedHours}} </td>
+                </ng-container>
 
-                        <!-- Total Hours -->
-                        <ng-container matColumnDef="total_hours">
-                            <th mat-header-cell *matHeaderCellDef> Total Hours </th>
-                            <td mat-cell *matCellDef="let element"> {{element.EstimatedHours}} </td>
-                        </ng-container>
+                <!-- Action -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-button class="outlined-blur d-flex align-items-center"
+                            (click)="openAddEditDialog(element.Id)">
+                            <mat-icon class="m-0">edit</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
 
-                        <!-- Action -->
-                        <ng-container matColumnDef="action">
-                            <th mat-header-cell *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element">
-                                <button mat-button class="outlined-blur d-flex align-items-center" (click)="openAddEditDialog(element.Id)">
-                                    <mat-icon class="m-0">edit</mat-icon>
-                                </button>
-                            </td>
-                        </ng-container>
-
-                        <!-- Header and Row Definitions -->
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-                </div>
-                <mat-paginator [length]="totalProjects" [pageSize]="projectQueryParamater.pageSize"
-                    [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" aria-label="Select page">
-                </mat-paginator>
-
-            </mat-card>
-        
-
-    </mat-card>
+                <!-- Header and Row Definitions -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [length]="totalProjects" [pageSize]="projectQueryParamater.pageSize"
+                [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" aria-label="Select page">
+            </mat-paginator>
+        </div>
+    </div>
 </div>

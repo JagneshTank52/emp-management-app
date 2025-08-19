@@ -1,30 +1,40 @@
-<div class="main-content" >
-    <div class="nav-content">
-        <app-main-navbar></app-main-navbar>
-    </div>
-    <div class="page-content">
-        
-        <router-outlet></router-outlet>
-    </div>
-</div>
+<div class="main-layout-container" [class.main-layout-is-mobile]="isMobile()">
+    <mat-toolbar class="main-layout-toolbar">
 
-<!-- <div class="example-container" [class.example-is-mobile]="isMobile()">
-    <mat-toolbar class="example-toolbar">
-        <button matIconButton (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="example-app-name">Responsive App</h1>
+        <button matIconButton (click)="snav.toggle()">
+            <mat-icon>
+               menu
+            </mat-icon>
+        </button>
+        <span class="main-layout-app-name">Emp Management</span>
+        <span class="spacer"></span>
+        <button matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+            <mat-icon>settings</mat-icon>
+        </button>
+        <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">
+            <mat-icon>account_circle</mat-icon>
+        </button>
     </mat-toolbar>
 
-    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="isMobile() ? 56 : 0">
+    <mat-sidenav-container class="main-layout-sidenav-container" [style.marginTop.px]="isMobile() ? 56 : 0">
         <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'side'" [fixedInViewport]="isMobile()" fixedTopGap="56">
-            <mat-nav-list>
-                @for (nav of fillerNav; track nav) {
-                <a mat-list-item>{{nav}}</a>
-                }
-            </mat-nav-list>
+                <!-- mat tree -->
+                <mat-tree #tree [dataSource]="navItems" [childrenAccessor]="childrenAccessor">
+                    <!-- Leaf node template -->
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                        <app-custom-sidenav-component [label]="node.label" [icon]="node.icon" [link]="node.link">
+                        </app-custom-sidenav-component>
+                    </mat-tree-node>
+                    <!-- Expandable node template -->
+                    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                        <app-custom-sidenav-component [label]="node.label" [icon]="node.icon" [expandable]="true"
+                            [expanded]="tree.isExpanded(node)" (toggleExpand)="tree.toggle(node)">
+                        </app-custom-sidenav-component>
+                    </mat-tree-node>
+                </mat-tree>
         </mat-sidenav>
-
         <mat-sidenav-content>
-           <router-outlet></router-outlet>
+            <router-outlet></router-outlet>
         </mat-sidenav-content>
     </mat-sidenav-container>
-</div> -->
+</div>

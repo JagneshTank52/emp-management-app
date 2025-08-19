@@ -1,55 +1,19 @@
-.card-wrapper {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 50px;
-    background-color: #fefaf4;
-    min-height: 400px;
-}
-
-.curved-card {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    height: 300px;
-    background-color: #fff;
-    border-radius: 30px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Top-right inward cut-out shape */
-.top-right-curve {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    background-color: #fefaf4;
-    /* Same as card-wrapper bg */
-    border-bottom-left-radius: 100px;
-    z-index: 2;
-}
-
 .mat-mdc-row {
-    height: 60px;
-}
-
-.mat-mdc-cell:first-child {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-
-.mat-mdc-cell:last-child {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    height: 50px;
 }
 
 .mat-mdc-row:hover{
     background-color: var(--primary-color);
+    color: var(--secondary-text-color);
 }
 
 .mat-mdc-header-row {
     height: 60px;
+    background-color: var(--secondary-background-color);
 }
+
+.mat-mdc-row:hover mat-icon {
+  color: var(--secondary-text-color) !important;
+}
+
+/* New */

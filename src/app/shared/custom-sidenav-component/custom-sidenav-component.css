@@ -1,0 +1,22 @@
+a {
+  padding: 10px 12px;
+  margin: 12px 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  background-color: var(--secondary-highlight-color);
+  border-radius: 8px;
+}
+
+a.active{
+    background-color:  var(--secondary-highlight-color);border-radius: 8px;
+}
+/* a span{
+    color: var(--secondary-text-color);
+} */
+
+.spacer {
+  flex: 1 1 auto;
+}

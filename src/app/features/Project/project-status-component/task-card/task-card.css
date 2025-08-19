@@ -1,11 +1,13 @@
 /* // General Task Card Styling */
 .task-card {
     margin-bottom: 0.75rem;
+    background-color: var(--primary-background-color);
     box-shadow: none !important;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
     overflow: hidden;
     height: 150px;
+    min-width: 300px
 }
 
 .task-color-bar {
@@ -13,11 +15,11 @@
     height: 10px;
 }
 
-mat-card-title.task-title {
+/* mat-card-title.task-title {
     margin: 0;
     font-weight: 500;
     font-size: 14px;
-}
+} */
 
 .icon-file-document,
 .icon-history {
@@ -87,4 +89,4 @@ mat-card-title.task-title {
     font-size: 14px;
     font-weight: 500;
     color: #444;
-}
+}  

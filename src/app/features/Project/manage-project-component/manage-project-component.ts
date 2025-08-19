@@ -25,6 +25,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeDetailsSelectModel } from '../../../core/model/Employee/employee-details-select-model';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { AddEditProjectDialogData } from '../../../core/model/Project/add-edit-project-dialog-data';
+import { CustomButtonComponent } from '../../../shared/custom-button-component/custom-button-component';
 
 @Component({
   selector: 'app-manage-project-component',
@@ -42,7 +43,8 @@ import { AddEditProjectDialogData } from '../../../core/model/Project/add-edit-p
     MatPaginatorModule,
     MatDialogModule,
     ReactiveFormsModule,
-    CommonModule],
+    CommonModule,
+  CustomButtonComponent],
   templateUrl: './manage-project-component.html',
   styleUrl: './manage-project-component.css'
 })
@@ -112,6 +114,7 @@ export class ManageProjectComponent implements OnInit {
   LoadTechnology() {
     var sub = this.technologyService.getTechnologies().subscribe({
       next: (response) => {
+        console.log(response)
         this.technologies = response.Data ?? [];
       }
     })

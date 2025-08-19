@@ -11,6 +11,7 @@ import { DashboardComponent } from '../features/Dashboard/dashboard-component/da
 import { ManageProjectComponent } from '../features/Project/manage-project-component/manage-project-component';
 import { ProjectStatusComponent } from '../features/Project/project-status-component/project-status-component';
 import { WorkSheetComponent } from '../features/Project/work-sheet-component/work-sheet-component';
+import { AddTaskComponent } from '../features/Project/project-status-component/add-task-component/add-task-component';
 
 export const routes: Routes = [
   {
@@ -73,8 +74,18 @@ export const routes: Routes = [
           },
           {
             path: "project-status",
-            component: ProjectStatusComponent,
-            title: "Project status"
+            // component: ProjectStatusComponent,
+            title: "Project status",
+            children: [
+              {
+                path: "",
+                component: ProjectStatusComponent,
+              },
+              {
+                path: "add-task",
+                component: AddTaskComponent
+              }
+            ]
           },
           {
             path: "work-sheet",

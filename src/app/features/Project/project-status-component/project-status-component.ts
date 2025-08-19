@@ -15,7 +15,16 @@ import { AddProjectDialogComponent } from '../manage-project-component/add-proje
 import { StatusColumn } from '../../../core/model/status-column';
 import { CommonModule } from '@angular/common';
 import { StatusCardComponent } from './status-card.component/status-card.component';
-import { AddTaskDialogComponent } from './add-task-dialog.component/add-task-dialog.component';
+import { CustomButtonComponent } from '../../../shared/custom-button-component/custom-button-component';
+import { BehaviorSubject, map, Observable, shareReplay, Subscription, switchMap, tap } from 'rxjs';
+import { DropDownService } from '../../../core/services/drop-down.service';
+import { DropDownType } from '../../../core/model/Common/comman-enums';
+import { TaskService } from '../../../core/services/task.service';
+import { TaskDetailsModel } from '../../../core/model/Task/task-details-model';
+import { error } from 'console';
+import { DropDownModel } from '../../../core/model/Common/drop-down-model';
+import { RouterModule } from '@angular/router';
+import { TaskQueryParamater } from '../../../core/model/QueryParamaters/task-query-paramater';
 
 @Component({
   selector: 'app-project-status-component',
@@ -33,127 +42,121 @@ import { AddTaskDialogComponent } from './add-task-dialog.component/add-task-dia
     MatInputModule,
     MatDialogModule,
     CommonModule,
-    StatusCardComponent
+    StatusCardComponent,
+    CustomButtonComponent,
+    RouterModule
   ],
   templateUrl: './project-status-component.html',
   styleUrl: './project-status-component.css'
 })
 
 export class ProjectStatusComponent implements OnInit {
+
+  selectedProjectId: number | null = null;
+  taskSubscription = new Subscription();
   statusColumns: StatusColumn[] = [];
+  groupedColumns$!: Observable<StatusColumn[]>;
+  allTasks: TaskDetailsModel[] = [];
+  projectDropDown$!: Observable<DropDownModel[]>;
+  taskQueryParams$ = new BehaviorSubject<TaskQueryParamater>({
+    statusId: null,
+    priority: null,
+    projectId: null,
+    assignedTo: null,
+    pageNumber: 1,
+    pageSize: 10,
+    sortBy: '',
+    searchTerm: ''
 
-  projects = [
-    { id: 1, name: 'Website Redesign', code: 'PRJ-005' },
-    { id: 2, name: 'Mobile App Development', code: 'PRJ-006' },
-    { id: 3, name: 'API Integration', code: 'PRJ-007' }
-  ];
+  });
 
-  users = [
-    { id: 101, name: 'Alice Johnson (Admin)' },
-    { id: 102, name: 'Bob Williams' },
-    { id: 103, name: 'Charlie Brown' }
-  ];
+  constructor(
+    private dialog: MatDialog,
+    private dropDownService: DropDownService,
+    private taskService: TaskService,
+  ) { }
+
+  // ngOnInit(): void {
+
+  //   this.loadTaskStatus();
+  //   this.taskService.getAllTasks().subscribe();
+  //   this.taskService.getTasksGrouped(this.statusColumns).subscribe(columns => {
+  //     this.statusColumns = columns;
+  //     console.log('after adding task');
+  //     console.log(this.statusColumns);
+  //   });
+
+  // }
 
   ngOnInit(): void {
+    this.projectDropDown$ = this.dropDownService.getDropDownList(DropDownType.Project);
 
-    this.statusColumns = [
-      {
-        id: 1,
-        title: 'New',
-        color: '#7e57c2',
-        tasks: [
-          { id: 'TA112379', title: 'Angular learning', priority: 'Medium', assignee: 'Jagnesh Tank' },
-          { id: 'TA112379', title: 'Angular learning', priority: 'Medium', assignee: 'Jagnesh Tank' },
-          { id: 'TA112380', title: 'Create login page', priority: 'High', assignee: 'Jane Doe' }
-        ]
-      },
-      {
-        id: 2,
-        title: 'In-Progress',
-        color: '#ffb74d',
-        tasks: [
-          { id: 'TA112381', title: 'Fix button alignment', priority: 'Low', assignee: 'John Smith' }
-        ]
-      },
-      {
-        id: 3,
-        title: 'Dev Completed',
-        color: '#81c784',
-        tasks: [
-        ]
-      },
-      {
-        id: 4,
-        title: 'Ready for Testing',
-        color: '#e57373',
-        tasks: [
-          { id: 'TA112370', title: 'Deploy version 1.0', priority: 'High', assignee: 'Admin' }
-        ]
-      },
-      {
-        id: 5,
-        title: 'Closed',
-        color: '#4fc3f7',
-        tasks: [
-          { id: 'TA112370', title: 'Deploy version 1.0', priority: 'High', assignee: 'Admin' }
-        ]
-      }
-    ];
-  }
+    // kick off initial load of tasks
+    // this.taskService.getAllTasks().subscribe(); // <-- still needed ONCE to populate tasks$
 
-  constructor(private dialog: MatDialog) {
+    // load status columns & prepare grouped observable
+    // Reactive grouped columns observable
+    this.groupedColumns$ = this.dropDownService.getDropDownList(DropDownType.TaskStatus).pipe(
+      map(res => res?.length ? this.initColumns(res) : []),
+      tap(columns => this.statusColumns = columns),
+      switchMap(columns =>
+        this.taskQueryParams$.pipe(
+          switchMap(params =>
+            this.taskService.getAllTasks(params).pipe(
+              map(() => columns) // keep columns for grouping
+            )
+          )
+        )
+      ),
+      switchMap(columns => this.taskService.getTasksGrouped(columns)),
+      shareReplay(1)
+    );
 
   }
-  /**
-  * Opens the "Add Project" dialog and adds the new project to the table
-  * if the user saves it.
-  */
-  openAddProjectDialog(): void {
-    const dialogRef: MatDialogRef<AddTaskDialogComponent> = this.dialog.open(AddTaskDialogComponent, {
-      width: '800px', // A wider dialog for this form
-      disableClose: true, // User must click a button to close
-      data: { // Pass the necessary data to the dialog
-        projects: this.projects,
-        users: this.users
-      }
-    })
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Dialog result:', result);
+  // loadTaskStatus() {
+  //   this.dropDownService.getDropDownList(DropDownType.TaskStatus).subscribe({
+  //     next: (res) => {
+  //       if (res && res.length > 0) {
+  //         this.statusColumns = this.initColumns(res);
+  //       } else {
+  //         this.statusColumns = [];
+  //       }
+  //       console.log('load status');
+  //       console.log(this.statusColumns);
+  //     },
+  //     error: (err) => {
+  //       console.error('Failed to load Task Status', err);
+  //       this.statusColumns = [];
+  //     }
+  //   });
+  // }
 
-        // Here you would typically call a service to save the new task to your backend.
-        // The backend should generate the 'id' and 'created_at' timestamp.
-        // For this example, we'll create the full object on the client side.
+  initColumns(statuses: DropDownModel[]): StatusColumn[] {
+    return statuses.map(status => ({
+      id: status.Id,
+      title: status.Name,
+      color: status.Color ?? '#000000',
+      tasks: []
+    }));
+  }
 
-        const newTask = {
-          ...result,
-          id: Math.floor(Math.random() * 1000), // Placeholder ID
-          created_at: new Date().toISOString(), // Use ISO string for consistency
-          // Format dates if needed, though keeping them as Date objects is often better
-          start_date: new Date(result.start_date),
-          end_date: new Date(result.end_date)
-        };
+  onSearch(): void {
+    const currentParams = this.taskQueryParams$.value;
+    this.taskQueryParams$.next({
+      ...currentParams,
+      projectId: this.selectedProjectId || null
+    });
+  }
 
-        const targetColumn = this.statusColumns.find(column => column.title === result.status);
-
-        if (targetColumn) {
-          targetColumn.tasks.push({
-            id: `TA${newTask.id}`, // Optional formatting of ID
-            title: newTask.title,
-            priority: newTask.priority,
-            assignee: newTask.assigned_to
-          });
-
-          // Add the new task to your local data array to update the UI
-
-
-          // If using MatTableDataSource, you would do:
-          // const currentData = this.dataSource.data;
-          // this.dataSource.data = [...currentData, newTask];
-        }
-      }});
-  };
-
+  onReset(): void {
+    debugger
+    const currentParams = this.taskQueryParams$.value;
+    this.selectedProjectId = null; // reset selected project in UI
+    this.taskQueryParams$.next({
+      ...currentParams,
+      projectId: null
+    });
+  }
 }
 

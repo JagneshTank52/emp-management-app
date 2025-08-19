@@ -1,88 +1,111 @@
-<div class="container-fluid dashboard-container h-100 px-0">
+<div class="container-fluid p-0">
   <!-- Header -->
-  <mat-grid-list cols="4" rowHeight="70px" class="mb-3">
+  <mat-grid-list cols="4" rowHeight="70px" class="page-header">
     <mat-grid-tile colspan="4">
-      <div class="d-flex align-items-center justify-content-between h-100 w-100 px-4">
+      <div class="d-flex align-items-center justify-content-between h-100 w-100 px-3">
         <h4 class="fw-semibold mb-0">Work Sheet</h4>
       </div>
     </mat-grid-tile>
   </mat-grid-list>
 
-  <!-- Card -->
-  <mat-card appearance="outlined" class="outlined-blur w-100 d-flex flex-column">
-    <!-- Legend -->
-    <mat-card-header class="timesheet-header">
-      <mat-card-title>
-        {{ getMonthLabel(selectedMonth) }} - {{ selectedYear }}
-      </mat-card-title>
-      <div class="d-flex flex-wrap gap-3 legend-items">
-        <ng-container *ngFor="let legend of legends">
-          <div class="d-flex align-items-center gap-1">
-            <span class="legend-box" [style.background-color]="legend.color"></span>
-            <span>{{ legend.label }}</span>
+  <div class="w-100 d-flex flex-column h-100 p-3">
+    <div
+      class="filter-section pb-4 pt-2 d-flex flex-column flex-xxl-row align-items-start align-items-xxl-center justify-content-xxl-between justify-content-start gap-3">
+      <div class="me-3 d-flex gap-3">
+        <mat-form-field id="project-search-for-status" class="small" [hideRequiredMarker]="true" [floatLabel]="'auto'"
+          appearance="outline">
+          <mat-label>Select Project</mat-label>
+          <mat-select required aria-placeholder="Select Project Type">
+            <mat-option>-- None --</mat-option>
+            <mat-option value="project">Project</mat-option>
+            <mat-option value="task">Task</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <app-custom-button-component label="Search" type="primary" variant="filled"></app-custom-button-component>
+        <app-custom-button-component label="Reset" type="primary" variant="outlined"></app-custom-button-component>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="py-4">
+      <mat-card appearance="outlined" class="outlined-blur w-100 d-flex flex-column">
+        <!-- Legend -->
+        <mat-card-header class="timesheet-header">
+          <mat-card-title>
+            {{ getMonthLabel(selectedMonth) }} - {{ selectedYear }}
+          </mat-card-title>
+          <div class="d-flex flex-wrap gap-3 legend-items">
+            <ng-container *ngFor="let legend of legends">
+              <div class="d-flex align-items-center gap-1">
+                <span class="legend-box" [style.background-color]="legend.color"></span>
+                <span>{{ legend.label }}</span>
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
-      </div>
-    </mat-card-header>
+        </mat-card-header>
 
-    <!-- Timesheet Table -->
-    <mat-card-content>
-      <div class="timesheet-grid-wrapper mat-elevation-z1">
-        <table mat-table [dataSource]="filteredTasks" class="mat-elevation-z1 timesheet-table">
+        <!-- Timesheet Table -->
+        <mat-card-content>
+          <div class="timesheet-grid-wrapper mat-elevation-z1">
+            <table mat-table [dataSource]="filteredTasks" class="mat-elevation-z1 timesheet-table">
 
-          <!-- Work Items -->
-          <ng-container matColumnDef="workItem">
-            <th mat-header-cell *matHeaderCellDef class="sticky-column-1">Work Items</th>
-            <td mat-cell *matCellDef="let task" class="sticky-column-1 task-item" [style.background-color]="task.color">
-              <mat-icon>assignment</mat-icon>
-              <span>{{ task.id }}: {{ task.title }}</span>
-            </td>
-          </ng-container>
+              <!-- Work Items -->
+              <ng-container matColumnDef="workItem">
+                <th mat-header-cell *matHeaderCellDef class="sticky-column-1">Work Items</th>
+                <td mat-cell *matCellDef="let task" class="sticky-column-1 task-item"
+                  [style.background-color]="task.color">
+                  <mat-icon>assignment</mat-icon>
+                  <span>{{ task.id }}: {{ task.title }}</span>
+                </td>
+              </ng-container>
 
-          <!-- P Column -->
-          <ng-container matColumnDef="p">
-            <th mat-header-cell *matHeaderCellDef class="sticky-column-2">P</th>
-            <td mat-cell *matCellDef="let task" class="sticky-column-2">{{ task.p || '00:00' }}</td>
-          </ng-container>
+              <!-- P Column -->
+              <ng-container matColumnDef="p">
+                <th mat-header-cell *matHeaderCellDef class="sticky-column-2">P</th>
+                <td mat-cell *matCellDef="let task" class="sticky-column-2">{{ task.p || '00:00' }}</td>
+              </ng-container>
 
-          <!-- Σ Column -->
-          <ng-container matColumnDef="sum">
-            <th mat-header-cell *matHeaderCellDef class="sticky-column-3">Σ</th>
-            <td mat-cell *matCellDef="let task" class="sticky-column-3">{{ task.sum || '00:00' }}</td>
-          </ng-container>
+              <!-- Σ Column -->
+              <ng-container matColumnDef="sum">
+                <th mat-header-cell *matHeaderCellDef class="sticky-column-3">Σ</th>
+                <td mat-cell *matCellDef="let task" class="sticky-column-3">{{ task.sum || '00:00' }}</td>
+              </ng-container>
 
-          <!-- Dynamic Day Columns -->
-          <ng-container *ngFor="let day of daysInMonth" [matColumnDef]="day.date">
-            <th mat-header-cell *matHeaderCellDef>
-              {{ day.dayNumber }}<br>{{ day.dayOfWeek }}
-            </th>
-            <td mat-cell *matCellDef="let task" class="time-block-cell"
-                [ngClass]="getDayClass(day)">
-              <span *ngIf="getDailyHours(task, day.date)">
-                {{ getDailyHours(task, day.date) }}
-              </span>
-            </td>
-          </ng-container>
+              <!-- Dynamic Day Columns -->
+              <ng-container *ngFor="let day of daysInMonth" [matColumnDef]="day.date">
+                <th mat-header-cell *matHeaderCellDef>
+                  {{ day.dayNumber }}<br>{{ day.dayOfWeek }}
+                </th>
+                <td mat-cell *matCellDef="let task" class="time-block-cell" [ngClass]="getDayClass(day)">
+                  <span *ngIf="getDailyHours(task, day.date)">
+                    {{ getDailyHours(task, day.date) }}
+                  </span>
+                </td>
+              </ng-container>
 
-          <!-- Header & Rows -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              <!-- Header & Rows -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-          <!-- Summary Rows -->
-          <tr class="summary-row">
-            <td class="sticky-column-1">Daily work log hours</td>
-            <td class="sticky-column-2"></td>
-            <td class="sticky-column-3"></td>
-            <td *ngFor="let day of daysInMonth">{{ getDailyWorkLog(day.date) }}</td>
-          </tr>
-          <tr class="summary-row">
-            <td class="sticky-column-1">Daily time log hours</td>
-            <td class="sticky-column-2"></td>
-            <td class="sticky-column-3"></td>
-            <td *ngFor="let day of daysInMonth">{{ getDailyTimeLog(day.date) }}</td>
-          </tr>
-        </table>
-      </div>
-    </mat-card-content>
-  </mat-card>
+              <!-- Summary Rows -->
+              <tr class="summary-row">
+                <td class="sticky-column-1">Daily work log hours</td>
+                <td class="sticky-column-2"></td>
+                <td class="sticky-column-3"></td>
+                <td *ngFor="let day of daysInMonth">{{ getDailyWorkLog(day.date) }}</td>
+              </tr>
+              <tr class="summary-row">
+                <td class="sticky-column-1">Daily time log hours</td>
+                <td class="sticky-column-2"></td>
+                <td class="sticky-column-3"></td>
+                <td *ngFor="let day of daysInMonth">{{ getDailyTimeLog(day.date) }}</td>
+              </tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
 </div>

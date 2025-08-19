@@ -46,7 +46,7 @@ export class AddProjectDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectService: ProjectService,
+  private projectService: ProjectService,
     private activatedRoute: ActivatedRoute,
     private ref: MatDialogRef<AddProjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddEditProjectDialogData) {
