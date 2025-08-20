@@ -1,4 +1,4 @@
-<button class="custom-button" mat-raised-button [ngClass]="[type, variant]" [type]="buttonType">
+<button class="custom-button" mat-raised-button [ngClass]="[type, variant]" [type]="buttonType"  [disabled]="disabled"  [matTooltip]="disabled ? tooltip : ''"> 
     @if (icon) {
     <mat-icon class="mr-1">{{ icon }}</mat-icon>
     }

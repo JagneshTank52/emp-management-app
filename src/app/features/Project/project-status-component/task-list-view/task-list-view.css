@@ -1,0 +1,4 @@
+.mat-mdc-header-row {
+    height: 60px;
+    background-color: var(--secondary-background-color);
+}

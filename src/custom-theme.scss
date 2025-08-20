@@ -48,7 +48,7 @@ body {
       outlined-label-text-weight: 500,
     ));
 
-  @include mat.table-density(-1); // Optional: controls spacing/density
+  @include mat.table-density(-1); 
 
   @include mat.table-overrides((background-color: transparent,
       header-headline-color: var(--primary-text-color),
@@ -103,7 +103,6 @@ mat-sidenav {
 }
 
 // For form field height
-
 mat-form-field.small {
   --mat-form-field-container-height: 40px;
   --mat-form-field-container-vertical-padding: 8px;
@@ -148,4 +147,25 @@ mat-form-field.small {
 .custom-table {
   border-radius: 12px !important;
   border: 1px solid var(--outline-color);
+}
+
+
+// For table
+.mat-mdc-row {
+    height: 50px;
+}
+
+.mat-mdc-row:hover{
+    background-color: var(--primary-color);
+    color: var(--secondary-text-color);
+}
+
+
+
+.mat-mdc-row:hover mat-icon {
+  color: var(--secondary-text-color) !important;
+}
+
+mat-paginator .mat-mdc-select-value{
+  text-align: center;
 }

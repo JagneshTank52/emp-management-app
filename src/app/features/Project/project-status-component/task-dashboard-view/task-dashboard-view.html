@@ -1,0 +1,4 @@
+@for (column of (groupedTaskColumns$ | async); track column.id) {
+<app-status-card [statusColumn]="column" class="flex-grow-1">
+</app-status-card>
+}

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TaskQueryParamater } from '../model/QueryParamaters/task-query-paramater';
 import { ApiResponse } from '../model/api-response';
-import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, shareReplay, startWith, tap } from 'rxjs';
 import { PaginatedList } from '../model/paginated-list';
 import { TaskDetailsModel } from '../model/Task/task-details-model';
 import { StatusColumn } from '../model/status-column';
@@ -16,12 +16,17 @@ import { AddEditTaskModel } from '../model/Task/add-edit-task-model';
 export class TaskService {
 
   private baseURL: string = "http://localhost:5140/api/task"
+
   private tasksSubject = new BehaviorSubject<TaskDetailsModel[]>([]);
   readonly tasks$ = this.tasksSubject.asObservable();
+  private viewModeSubject = new BehaviorSubject<'dashboard' | 'list'>('dashboard');
+  readonly viewMode$ = this.viewModeSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  // GET /api/Task - Get all projects
+  // ========= API CALL =========
+
+  // GET /api/Task - Get all tasks
   getAllTasks(
     taskQueryParamater?: TaskQueryParamater
   ): Observable<ApiResponse<PaginatedList<TaskDetailsModel>>> {
@@ -39,7 +44,7 @@ export class TaskService {
       params,
       withCredentials: true
     }).pipe(
-      tap(res => this.tasksSubject.next(res.Data!.Items)),
+      tap(res => this.tasksSubject.next(res.Data!.Items || [])),
       shareReplay({ bufferSize: 1, refCount: true })
     );
   }
@@ -76,24 +81,14 @@ export class TaskService {
       withCredentials: true
     }).pipe(
       tap(() => {
-        // Remove the deleted project from tasksSubject
         const currentTasks = this.tasksSubject.getValue();
         const updatedTasks = currentTasks.filter(t => t.Id !== id);
-        this.tasksSubject.next([...updatedTasks]); // Immutable update for Angular change detection
+        this.tasksSubject.next([...updatedTasks]); 
       })
     );
   }
 
-
   // ========= STATE MANAGEMENT =========
-  // setTasks(dtoList: TaskDetailDTO[]): void {
-  //   const mapped = dtoList.map(dto => TaskMapper.fromDTO(dto));
-  //   this.tasks$.next(mapped);
-  // }
-
-  // getTasks(): Observable<TaskDetailsModel[]> {
-  //   return this.tasks$.asObservable();
-  // }
 
   getTasksGrouped(statuses: StatusColumn[]): Observable<StatusColumn[]> {
     return this.tasks$.pipe(
@@ -106,5 +101,9 @@ export class TaskService {
         return grouped;
       })
     );
+  }
+
+  setViewMode(mode: 'dashboard' | 'list') {
+    this.viewModeSubject.next(mode);
   }
 }

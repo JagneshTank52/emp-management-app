@@ -1,33 +1,39 @@
 .custom-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 90px;
-    padding: 6px 6px;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+  padding: 6px 6px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* ===== Primary ===== */
 .custom-button.primary.filled {
-    background-color: var(--primary-color);
-    color: var(--secondary-text-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
 }
 
+.custom-button:disabled,
+.custom-button.disabled {
+  opacity: 0.7;
+}
+
+
 .custom-button.primary.outlined {
-    background-color: var(--secondary-background-color);
-    color: var(--primary-text-color);
-    border-color: var(--secondary-background-color);
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
+  border-color: var(--outline-color);
 }
 
 .custom-button.primary:hover {
-    background-color: var(--primary-color);
-    color: var(--secondary-text-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
 }
 
 /* ===== Secondary =====
@@ -48,11 +54,11 @@
 
 /* ===== Navigation ===== */
 .custom-button.navigation {
-    background-color: var(--secondary-background-color);
-    color: var(--primary-text-color);
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
 }
 
 .custom-button.navigation:hover {
-   background-color: var( --primary-highlight-color);
-   color: var(--primary-color);
+  background-color: var(--primary-highlight-color);
+  color: var(--primary-color);
 }

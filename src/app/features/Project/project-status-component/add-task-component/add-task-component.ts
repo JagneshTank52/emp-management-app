@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CustomButtonComponent } from '../../../../shared/custom-button-component/custom-button-component';
 import { MatCardModule } from '@angular/material/card';
@@ -17,12 +17,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DropDownModel } from '../../../../core/model/Common/drop-down-model';
-import { Observable, tap } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, switchMap, tap } from 'rxjs';
 import { TaskService } from '../../../../core/services/task.service';
 import { DropDownService } from '../../../../core/services/drop-down.service';
 import { DropDownType } from '../../../../core/model/Common/comman-enums';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskDetailsModel } from '../../../../core/model/Task/task-details-model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 
 @Component({
   selector: 'app-add-task-component',
@@ -52,6 +54,7 @@ export class AddTaskComponent implements OnInit {
   title: string = 'Add Task';
   isEditMode: boolean = false;
   taskId: number | null = null;
+  projectId: number | null = null;
 
   projectDropDown$!: Observable<DropDownModel[]>;
   taskStatusDropDown$!: Observable<DropDownModel[]>;
@@ -62,23 +65,45 @@ export class AddTaskComponent implements OnInit {
     private taskService: TaskService,
     private dropDownService: DropDownService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private destroyRef: DestroyRef
   ) {
     this.initForm();
   }
 
   ngOnInit(): void {
+    combineLatest([
+      this.activatedRoute.paramMap,
+      this.activatedRoute.queryParamMap
+    ]).pipe(
+      map(([params, query]) => ({
+        taskId: Number(params.get('id')),
+        projectId: Number(query.get('projectId'))
+      })),
 
-    this.loadDropdowns();
-
-    // Check if editing
-    this.taskId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    if (this.taskId) {
-      this.isEditMode = true;
-      this.title = 'Edit Task';
-      this.loadTaskForEdit(this.taskId);
-    }
+      switchMap(({ taskId, projectId }) => {
+        if (taskId) {
+          this.isEditMode = true;
+          this.title = 'Edit Task';
+          return this.loadTaskForEdit(taskId).pipe(
+            map(task => task?.ProjectId ?? null),
+            catchError(err => {
+              console.error('Error loading task for edit:', err);
+              return of(projectId ?? null);
+            })
+          );
+        } else {
+          this.isEditMode = false;
+          this.title = 'Add Task';
+          return of(projectId ?? null);
+        }
+      }),
+      takeUntilDestroyed(this.destroyRef) 
+    ).subscribe(projectId => {
+      this.loadDropdowns(projectId as number);
+    });
   }
+
 
   private initForm(): void {
     this.taskForm = this.fb.group({
@@ -97,14 +122,14 @@ export class AddTaskComponent implements OnInit {
     });
   }
 
-  private loadDropdowns(): void {
+  private loadDropdowns(projectId: number): void {
     this.projectDropDown$ = this.dropDownService.getDropDownList(DropDownType.Project);
     this.taskStatusDropDown$ = this.dropDownService.getDropDownList(DropDownType.TaskStatus);
-    this.employeeDown$ = this.dropDownService.getDropDownList(DropDownType.Employee);
+    this.employeeDown$ = this.dropDownService.getDropDownList(DropDownType.Employee,projectId);
   }
 
-  private loadTaskForEdit(id: number): void {
-    this.taskService.getTaskById(id).pipe(
+  private loadTaskForEdit(id: number) {
+    return this.taskService.getTaskById(id).pipe(
       tap(response => {
         this.taskForm.patchValue({
           title: response.Title,
@@ -121,16 +146,13 @@ export class AddTaskComponent implements OnInit {
           labels: response.Label ?? ''
         });
       })
-    ).subscribe({
-      error: (err) => console.error('Error loading task for edit:', err)
-    });
+    );
   }
 
 
   onSave(): void {
     if (this.taskForm.invalid) {
       this.taskForm.markAllAsTouched();
-      //  this.toast.error('Please fix validation errors.');
       return;
     }
 
@@ -157,20 +179,17 @@ export class AddTaskComponent implements OnInit {
     request$
       .subscribe({
         next: (response) => {
-          // this.isLoading = false;
-          // this.toast.success(`Task ${this.isEditMode ? 'updated' : 'created'} successfully`);
           this.router.navigate(['/project-status']);
         },
         error: (err) => {
-          // this.isLoading = false;
           console.error('Task save error:', err);
-          // this.toast.error('Something went wrong. Please try again.');
         }
       });
   }
 
   onCancel(): void {
-     this.taskForm.reset();
+    this.taskForm.reset();
     this.router.navigate(['/project-status']);
   }
 }
+

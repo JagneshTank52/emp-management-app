@@ -9,22 +9,23 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { AddProjectDialogComponent } from '../manage-project-component/add-project-dialog.component/add-project-dialog.component';
+import {MatTableModule } from '@angular/material/table';
+import { MatDialogModule} from '@angular/material/dialog';
 import { StatusColumn } from '../../../core/model/status-column';
 import { CommonModule } from '@angular/common';
-import { StatusCardComponent } from './status-card.component/status-card.component';
 import { CustomButtonComponent } from '../../../shared/custom-button-component/custom-button-component';
 import { BehaviorSubject, map, Observable, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { DropDownService } from '../../../core/services/drop-down.service';
 import { DropDownType } from '../../../core/model/Common/comman-enums';
 import { TaskService } from '../../../core/services/task.service';
 import { TaskDetailsModel } from '../../../core/model/Task/task-details-model';
-import { error } from 'console';
 import { DropDownModel } from '../../../core/model/Common/drop-down-model';
 import { RouterModule } from '@angular/router';
 import { TaskQueryParamater } from '../../../core/model/QueryParamaters/task-query-paramater';
+import { TaskDashboardView } from './task-dashboard-view/task-dashboard-view';
+import { TaskListView } from './task-list-view/task-list-view';
+import { PageEvent } from '@angular/material/paginator';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-project-status-component',
@@ -42,9 +43,12 @@ import { TaskQueryParamater } from '../../../core/model/QueryParamaters/task-que
     MatInputModule,
     MatDialogModule,
     CommonModule,
-    StatusCardComponent,
     CustomButtonComponent,
-    RouterModule
+    CommonModule,
+    RouterModule,
+    TaskDashboardView,
+    TaskListView,
+    ReactiveFormsModule
   ],
   templateUrl: './project-status-component.html',
   styleUrl: './project-status-component.css'
@@ -57,53 +61,52 @@ export class ProjectStatusComponent implements OnInit {
   statusColumns: StatusColumn[] = [];
   groupedColumns$!: Observable<StatusColumn[]>;
   allTasks: TaskDetailsModel[] = [];
+  viewMode$!: Observable<'dashboard' | 'list'>;
+  tasks$!: Observable<TaskDetailsModel[]>;
   projectDropDown$!: Observable<DropDownModel[]>;
+  taskStatusDropDown$!: Observable<DropDownModel[]>;
+  employeeDropDown$!: Observable<DropDownModel[]>;
+  totalTasks!: number;
   taskQueryParams$ = new BehaviorSubject<TaskQueryParamater>({
     statusId: null,
     priority: null,
     projectId: null,
     assignedTo: null,
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 5,
     sortBy: '',
     searchTerm: ''
-
   });
 
+  taskFilterForm!: FormGroup;
+
   constructor(
-    private dialog: MatDialog,
     private dropDownService: DropDownService,
     private taskService: TaskService,
-  ) { }
-
-  // ngOnInit(): void {
-
-  //   this.loadTaskStatus();
-  //   this.taskService.getAllTasks().subscribe();
-  //   this.taskService.getTasksGrouped(this.statusColumns).subscribe(columns => {
-  //     this.statusColumns = columns;
-  //     console.log('after adding task');
-  //     console.log(this.statusColumns);
-  //   });
-
-  // }
+    private fb: FormBuilder
+  ) {
+    this.viewMode$ = this.taskService.viewMode$;
+    this.tasks$ = this.taskService.tasks$;
+  }
 
   ngOnInit(): void {
+
     this.projectDropDown$ = this.dropDownService.getDropDownList(DropDownType.Project);
+    this.employeeDropDown$ = this.dropDownService.getDropDownList(DropDownType.Employee);
+    this.taskStatusDropDown$ = this.dropDownService.getDropDownList(DropDownType.TaskStatus);
 
-    // kick off initial load of tasks
-    // this.taskService.getAllTasks().subscribe(); // <-- still needed ONCE to populate tasks$
-
-    // load status columns & prepare grouped observable
-    // Reactive grouped columns observable
-    this.groupedColumns$ = this.dropDownService.getDropDownList(DropDownType.TaskStatus).pipe(
+    // load status columns & prepare Reactive grouped columns observable
+    this.groupedColumns$ = this.taskStatusDropDown$.pipe(
       map(res => res?.length ? this.initColumns(res) : []),
       tap(columns => this.statusColumns = columns),
       switchMap(columns =>
         this.taskQueryParams$.pipe(
           switchMap(params =>
             this.taskService.getAllTasks(params).pipe(
-              map(() => columns) // keep columns for grouping
+              tap(response => {
+                this.totalTasks = response.Data!.TotalCounts ?? 0
+              }),
+              map(() => columns)
             )
           )
         )
@@ -112,25 +115,17 @@ export class ProjectStatusComponent implements OnInit {
       shareReplay(1)
     );
 
+    this.initTaskForm();
   }
 
-  // loadTaskStatus() {
-  //   this.dropDownService.getDropDownList(DropDownType.TaskStatus).subscribe({
-  //     next: (res) => {
-  //       if (res && res.length > 0) {
-  //         this.statusColumns = this.initColumns(res);
-  //       } else {
-  //         this.statusColumns = [];
-  //       }
-  //       console.log('load status');
-  //       console.log(this.statusColumns);
-  //     },
-  //     error: (err) => {
-  //       console.error('Failed to load Task Status', err);
-  //       this.statusColumns = [];
-  //     }
-  //   });
-  // }
+  private initTaskForm(): void {
+    this.taskFilterForm = this.fb.group({
+      searchTerm: [''],
+      statusId: [''],
+      priority: [''],
+      assignedTo: [''],
+    })
+  }
 
   initColumns(statuses: DropDownModel[]): StatusColumn[] {
     return statuses.map(status => ({
@@ -142,20 +137,45 @@ export class ProjectStatusComponent implements OnInit {
   }
 
   onSearch(): void {
-    const currentParams = this.taskQueryParams$.value;
+    const formValue = this.taskFilterForm.value;
     this.taskQueryParams$.next({
-      ...currentParams,
-      projectId: this.selectedProjectId || null
+      pageNumber: 1,
+      pageSize: 5,
+      searchTerm: formValue.searchTerm as string,
+      statusId: formValue.statusId as number,
+      priority: formValue.priority as string,
+      assignedTo: formValue.assignedTo as number,
+      projectId: this.selectedProjectId || null,
+      sortBy: ''
     });
   }
 
   onReset(): void {
-    debugger
+    this.taskFilterForm.reset();
+    const formValue = this.taskFilterForm.value;
+    this.selectedProjectId = null;
+    this.taskQueryParams$.next({
+      pageNumber: 1,
+      pageSize: 5,
+      searchTerm: formValue.searchTerm as string,
+      statusId: formValue.statusId as number,
+      priority: formValue.priority as string,
+      assignedTo: formValue.assignedTo as number,
+      projectId: null,
+      sortBy: ''
+    });
+  }
+
+  changeView(mode: 'dashboard' | 'list') {
+    this.taskService.setViewMode(mode);
+  }
+
+  onPageChange(event: PageEvent): void {
     const currentParams = this.taskQueryParams$.value;
-    this.selectedProjectId = null; // reset selected project in UI
     this.taskQueryParams$.next({
       ...currentParams,
-      projectId: null
+      pageNumber: event.pageIndex + 1,
+      pageSize: event.pageSize,
     });
   }
 }

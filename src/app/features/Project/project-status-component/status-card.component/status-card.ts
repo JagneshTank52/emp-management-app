@@ -7,9 +7,9 @@ import { TaskCardComponent } from '../task-card/task-card';
 @Component({
   selector: 'app-status-card',
   imports: [CommonModule,MatCardModule, TaskCardComponent],
-  templateUrl: './status-card.component.html',
-  styleUrl: './status-card.component.css'
+  templateUrl: './status-card.html',
+  styleUrl: './status-card.css'
 })
-export class StatusCardComponent {
+export class StatusCard {
   @Input() statusColumn!: StatusColumn;
 }
