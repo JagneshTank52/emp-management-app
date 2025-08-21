@@ -1,0 +1,96 @@
+/* .task-detail-wrapper ul .title-col {
+    background-color: var(--secondary-background-color);
+    color: var(--primary-text-color);
+    border-right: .1rem solid var(--table-header-border-color);
+    font-size: 0.9rem;
+    flex: 0 0 40%;
+    max-width: 40%;
+}
+
+.task-detail-wrapper ul .detail-col {
+    flex: 0 0 60%;
+    max-width: 60%;
+    color: var(--primary-text-color);
+    font-size: 0.9rem;
+}
+
+.task-detail-wrapper ul li:nth-child(n) {
+    border-left: .1rem solid var(--outline-color);
+}
+
+.task-detail-wrapper ul li {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: .1rem solid var(--outline-color);
+    text-transform: capitalize;
+}
+
+.task-detail-wrapper ul li {
+    max-width: 50%;
+    flex: 0 0 50%;
+} */
+
+.task-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  gap: 1rem;
+}
+
+.grid-item {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: .1rem solid var(--outline-color);
+  text-transform: capitalize;
+  text-align: center;
+  /* align-items: center; */
+}
+
+.title-col {
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
+  border-right: .1rem solid var(--table-header-border-color);
+  font-size: 0.9rem;
+  flex: 0 0 40%;
+  max-width: 40%;
+}
+
+.big-title-col {
+  background-color: var(--secondary-background-color);
+  color: var(--primary-text-color);
+  border-right: .1rem solid var(--table-header-border-color);
+  font-size: 0.9rem;
+  flex: 0 0 20%;
+  max-width: 20%;
+  text-align: center;
+}
+
+.detail-col {
+  flex: 0 0 60%;
+  max-width: 60%;
+  color: var(--primary-text-color);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.big-detail-col {
+  flex: 0 0 80%;
+  max-width: 80%;
+  color: var(--primary-text-color);
+  font-size: 0.9rem;
+}
+
+.has-full-width {
+  grid-column: span 2; /* spans all columns */
+}
+
+@media (max-width: 992px) {
+  .task-detail-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .task-detail-grid {
+    grid-template-columns: repeat(1fr); /* 1 column on small screens */
+  }
+}

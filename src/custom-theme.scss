@@ -48,9 +48,9 @@ body {
       outlined-label-text-weight: 500,
     ));
 
-  @include mat.table-density(-1); 
+  @include mat.table-density(-1);
 
-  @include mat.table-overrides((background-color: transparent,
+  @include mat.table-overrides((background-color: var(--primary-background-color),
       header-headline-color: var(--primary-text-color),
       row-item-label-text-color: var(--primary-text-color),
       row-item-outline-color: var(--outline-color),
@@ -85,13 +85,54 @@ body {
   @include mat.card-overrides((title-text-size: 16px,
       title-text-weight: 500));
 
+  @include mat.expansion-overrides((header-expanded-state-height: 40px,
+      header-collapsed-state-height: 40px,
+      container-text-size: 14px,
+      header-text-size: 16px,
+      header-text-color: var(--primary-text-color),
+      container-text-color: var(--primary-text-color),
+      container-background-color: var(--primary-background-color)));
 
+  @include mat.tabs-overrides((container-height: 40px,
+      background-color: var(--primary-background-color),
+      foreground-color: var(--primary-text-color),
+      divider-color: var(--outline-color),
+      active-indicator-color: var(--primary-color),
+      active-label-text-color: var(--primary-color),
+      active-focus-label-text-color: var(--primary-color),
+      label-text-size: 14px,
+      active-ripple-color: none,
+      inactive-ripple-color: none,
+      disabled-ripple-color: none));
+
+
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+// mat tab
+.mdc-tab {
+  padding: 0 !important;
+}
+
+// Mat expansion
+.mat-expansion-panel-header {
+  padding: 0 12px !important;
+  border-bottom: 1px solid var(--outline-color);
+  border-radius: 0px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 1rem !important;
 }
 
 // For card
 .task-card {
-  @include mat.card-overrides((
-    title-text-size: 14px,
+  @include mat.card-overrides((title-text-size: 14px,
       title-text-weight: 500));
 }
 
@@ -152,13 +193,13 @@ mat-form-field.small {
 
 // For table
 .mat-mdc-row {
-    height: 50px;
+  height: 50px;
 }
 
-.mat-mdc-row:hover{
-    background-color: var(--primary-color);
-    color: var(--secondary-text-color);
-}
+// .mat-mdc-row:hover {
+//   background-color: var(--primary-color);
+//   color: var(--secondary-text-color);
+// }
 
 
 
@@ -166,6 +207,14 @@ mat-form-field.small {
   color: var(--secondary-text-color) !important;
 }
 
-mat-paginator .mat-mdc-select-value{
+mat-paginator .mat-mdc-select-value {
   text-align: center;
+}
+
+.mat-mdc-card-content:last-child {
+  padding-bottom: 0 !important;
+}
+
+.mat-mdc-card-content {
+  padding: 0 !important;
 }

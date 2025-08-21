@@ -12,6 +12,7 @@ import { ManageProjectComponent } from '../features/Project/manage-project-compo
 import { ProjectStatusComponent } from '../features/Project/project-status-component/project-status-component';
 import { WorkSheetComponent } from '../features/Project/work-sheet-component/work-sheet-component';
 import { AddTaskComponent } from '../features/Project/project-status-component/add-task-component/add-task-component';
+import { TaskDetails } from '../features/Project/project-status-component/task-details/task-details';
 
 export const routes: Routes = [
   {
@@ -84,6 +85,10 @@ export const routes: Routes = [
               {
                 path: "add-task",
                 component: AddTaskComponent
+              },
+              {
+                path: "task-view",
+                component: TaskDetails
               }
             ]
           },

@@ -1,0 +1,201 @@
+<div class="container-fluid p-0">
+    <!-- page header -->
+    <mat-grid-list cols="4" rowHeight="70px" class="page-header">
+        <mat-grid-tile colspan="4">
+            <div class="d-flex align-items-center justify-content-between h-100 w-100 px-3">
+                <div>
+                    <h4 class="fw-semibold mb-0">
+                        Task
+                    </h4>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- page content -->
+    <div class="w-100 d-flex flex-column h-100 p-3">
+
+        <!-- basic filter -->
+        <div
+            class="d-flex flex-column flex-xxl-row align-items-start align-items-xxl-center filter-section justify-content-xxl-between justify-content-start gap-3 pb-3">
+            <div class="d-flex align-items-center gap-3">
+                <app-custom-button-component label="Edit" icon="dashboard" type="navigation"
+                    variant="filled"></app-custom-button-component>
+                <app-custom-button-component label="Add Worklog" icon="list" type="navigation"
+                    variant="filled"></app-custom-button-component>
+                <app-custom-button-component label="Comments" icon="access_time" type="navigation"
+                    variant="filled"></app-custom-button-component>
+            </div>
+        </div>
+
+        <!-- main page content -->
+        <div class="py-3">
+            <div class="d-flex flex-column mb-3 p-0 text-center gap-3">
+                <div class="d-flex align-items-center justify-content-start gap-2">
+                    <div>
+                        <mat-icon>list_alt</mat-icon>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">
+                            Code : Task Name
+                        </h5>
+                    </div>
+                </div>
+                <div>
+                    <mat-accordion>
+                        <mat-expansion-panel class="mb-3" (opened)="panelOpenState.set(true)"
+                            (closed)="panelOpenState.set(false)">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Task Details</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ng-template matExpansionPanelContent>
+                                <div class="task-detail-grid">
+                                    <div class="grid-item">
+                                        <span class="title-col">Created Date:</span>
+                                        <span class="detail-col">14-Aug-2025</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Project:</span>
+                                        <span class="detail-col">AirFlow</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Last Modified Date:</span>
+                                        <span class="detail-col">--</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Priority:</span>
+                                        <span class="detail-col">Medium</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Start Date:</span>
+                                        <span class="detail-col">14-Aug-2025</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Status:</span>
+                                        <span class="detail-col">In Progress</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">End Date:</span>
+                                        <span class="detail-col">14-Aug-2025</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Assign To:</span>
+                                        <span class="detail-col">Shubh Shah</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Reported By:</span>
+                                        <span class="detail-col">Somi Khan</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Total hours:</span>
+                                        <span class="detail-col">2</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Labels:</span>
+                                        <span class="detail-col">FE</span>
+                                    </div>
+                                    <div class="grid-item">
+                                        <span class="title-col">Work Logged:</span>
+                                        <span class="detail-col">--</span>
+                                    </div>
+                                    <div class="grid-item has-full-width">
+                                        <span class="big-title-col">Description</span>
+                                        <span class="big-detail-col">Complete login frontend as per the
+                                            requirement</span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <div>
+                    <mat-tab-group fitInkBarToContent mat-stretch-tabs="false" mat-align-tabs="start"
+                        animationDuration="0ms">
+                        <mat-tab label="Comments">
+                            <ng-template matTabContent>
+
+                            </ng-template>
+                        </mat-tab>
+                        <mat-tab label="Work Log">
+                            <ng-template matTabContent>
+                                <div class="table-responsive">
+                                    <table mat-table [dataSource]="worklogs" class="mat-elevation-z2 custom-table mb-3">
+
+                                        <!-- Code -->
+                                        <ng-container matColumnDef="code">
+                                            <th mat-header-cell *matHeaderCellDef> Code </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.Code}} </td>
+                                        </ng-container>
+
+                                        <!-- Work Log Title -->
+                                        <ng-container matColumnDef="workLogTitle">
+                                            <th mat-header-cell *matHeaderCellDef> Work Log Title </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.WorkLogTitle}} </td>
+                                        </ng-container>
+
+                                        <!-- Task Title -->
+                                        <ng-container matColumnDef="taskTitle">
+                                            <th mat-header-cell *matHeaderCellDef> Task Title </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.TaskTitle}} </td>
+                                        </ng-container>
+
+                                        <!-- Assigned To -->
+                                        <ng-container matColumnDef="assignedToName">
+                                            <th mat-header-cell *matHeaderCellDef> Assigned To </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.AssignedToName}} </td>
+                                        </ng-container>
+
+                                        <!-- Work Date -->
+                                        <ng-container matColumnDef="workDate">
+                                            <th mat-header-cell *matHeaderCellDef> Work Date </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.WorkDate | date}} </td>
+                                        </ng-container>
+
+                                        <!-- Task Status -->
+                                        <ng-container matColumnDef="taskStatusName">
+                                            <th mat-header-cell *matHeaderCellDef> Status </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.TaskStatusName}} </td>
+                                        </ng-container>
+
+                                        <!-- Work Time Hours -->
+                                        <ng-container matColumnDef="workTimeHours">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center"> Hours </th>
+                                            <td mat-cell *matCellDef="let element" class="text-center">
+                                                {{element.WorkTimeHours}} </td>
+                                        </ng-container>
+
+                                        <!-- Created At -->
+                                        <ng-container matColumnDef="createdAt">
+                                            <th mat-header-cell *matHeaderCellDef> Created At </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.CreatedAt | date}} </td>
+                                        </ng-container>
+
+                                        <!-- Action -->
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
+                                            <td mat-cell *matCellDef="let element" class="text-center">
+                                                @if(element.IsEditable){
+                                                <mat-icon class="m-0">edit</mat-icon>
+                                                }
+
+                                                <!-- <button *ngIf="element.IsEditable" mat-button
+                                                    class="outlined-blur d-flex align-items-center"
+                                                    (click)="onEditWorkLog(element)">
+                                                    <mat-icon class="m-0">edit</mat-icon>
+                                                </button> -->
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- Header + Row -->
+                                        <tr mat-header-row *matHeaderRowDef="displayedWorklogColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedWorklogColumns;"></tr>
+                                    </table>
+                                </div>
+                            </ng-template>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

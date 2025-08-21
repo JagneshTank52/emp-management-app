@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReusableNavBtn } from './reusable-nav-btn';
+import { CustomTable } from './custom-table';
 
-describe('ReusableNavBtn', () => {
-  let component: ReusableNavBtn;
-  let fixture: ComponentFixture<ReusableNavBtn>;
+describe('CustomTable', () => {
+  let component: CustomTable;
+  let fixture: ComponentFixture<CustomTable>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReusableNavBtn]
+      imports: [CustomTable]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReusableNavBtn);
+    fixture = TestBed.createComponent(CustomTable);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

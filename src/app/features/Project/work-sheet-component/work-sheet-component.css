@@ -1,55 +1,3 @@
-.timesheet-grid-wrapper {
-  overflow-x: auto;
-  max-height: 70vh;
-}
-
-.timesheet-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-/* Apply solid background for sticky cells */
-.sticky-column-1,
-.sticky-column-2,
-.sticky-column-3 {
-  position: sticky;
-  background-color: #fff !important;
-  /* Match your card/table background */
-  background-clip: padding-box;
-  /* Prevent bleed from borders */
-  z-index: 2;
-}
-
-/* Left positions */
-.sticky-column-1 {
-  left: 0;
-  min-width: 250px;
-  z-index: 3;
-}
-
-.sticky-column-2 {
-  left: 250px;
-  min-width: 60px;
-  text-align: center;
-  z-index: 2;
-}
-
-.sticky-column-3 {
-  left: 310px;
-  min-width: 60px;
-  text-align: center;
-  z-index: 1;
-}
-
-/* Solid background for sticky header cells too */
-.mat-header-row .sticky-column-1,
-.mat-header-row .sticky-column-2,
-.mat-header-row .sticky-column-3 {
-  background-color: #fff;
-  /* Same as above */
-  z-index: 4;
-}
-
 .summary-row {
   font-weight: bold;
   background: #fafafa;
@@ -57,7 +5,7 @@
 
 .time-block-cell {
   text-align: center;
-  min-width: 80px;
+  min-width: 50px;
 }
 
 .weekend {
@@ -69,4 +17,76 @@
   height: 16px;
   display: inline-block;
   border: 1px solid #ccc;
+}
+
+.timesheet-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+/* Header + cell borders */
+.timesheet-table th.mat-mdc-header-cell,
+.timesheet-table td.mat-mdc-cell {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 0;
+  height: 50px;
+}
+
+.timesheet-table th.mat-mdc-header-cell.work-item-header {
+  border-left: 1px solid #ccc !important;
+}
+
+
+/* First column wide */
+.work-item-header,
+.work-item-cell {
+  min-width: 250px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding-left: 8px !important;
+}
+
+/* Flexbox for proper icon + text alignment */
+.work-item-cell {
+  display: flex;
+  align-items: center;
+  /* vertically center icon + text */
+  gap: 6px;
+  /* spacing between icon and text */
+}
+
+/* Control icon size so it matches text */
+.work-item-cell mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  /* don’t shrink icon */
+}
+
+/* Top header row styling */
+.timesheet-table th.mat-mdc-header-cell {
+  background: #fafafa;
+  font-weight: 600;
+  border-bottom: 2px solid #aaa;
+}
+
+/* Ensure equal size for other cells */
+.time-block-cell,
+.timesheet-table th.mat-mdc-header-cell:not(.work-item-header) {
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.timesheet-card .mat-mdc-card-header {
+  justify-content: space-between;
+  padding: 0.9rem !important;
 }

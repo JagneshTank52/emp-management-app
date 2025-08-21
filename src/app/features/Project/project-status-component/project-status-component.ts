@@ -9,8 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import {MatTableModule } from '@angular/material/table';
-import { MatDialogModule} from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 import { StatusColumn } from '../../../core/model/status-column';
 import { CommonModule } from '@angular/common';
 import { CustomButtonComponent } from '../../../shared/custom-button-component/custom-button-component';
@@ -26,6 +26,7 @@ import { TaskDashboardView } from './task-dashboard-view/task-dashboard-view';
 import { TaskListView } from './task-list-view/task-list-view';
 import { PageEvent } from '@angular/material/paginator';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CustomTable } from '../../../shared/component/custom-table/custom-table';
 
 @Component({
   selector: 'app-project-status-component',
@@ -48,7 +49,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
     RouterModule,
     TaskDashboardView,
     TaskListView,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CustomTable
   ],
   templateUrl: './project-status-component.html',
   styleUrl: './project-status-component.css'
@@ -77,6 +79,21 @@ export class ProjectStatusComponent implements OnInit {
     sortBy: '',
     searchTerm: ''
   });
+
+  taskDisplayedColumns: string[] = [
+    'code',
+    'title',
+    'description',
+    'project_name',
+    'priority',
+    'status_name',
+    'start_date',
+    'end_date',
+    'total_hours',
+    'label',
+    'assigned_to',
+    'action'
+  ];
 
   taskFilterForm!: FormGroup;
 

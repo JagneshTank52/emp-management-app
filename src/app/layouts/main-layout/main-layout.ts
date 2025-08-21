@@ -2,7 +2,6 @@
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MainNavbar } from '../../shared/main-navbar/main-navbar';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';

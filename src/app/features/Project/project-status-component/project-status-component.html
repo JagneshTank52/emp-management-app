@@ -100,8 +100,7 @@
                             <mat-form-field class="small" appearance="outline" [hideRequiredMarker]="true"
                                 [floatLabel]="'auto'">
                                 <mat-label>Task Status</mat-label>
-                                <mat-select aria-placeholder="Select Task Status"
-                                    formControlName="statusId">
+                                <mat-select aria-placeholder="Select Task Status" formControlName="statusId">
                                     <mat-option value="">-- None --</mat-option>
                                     @for (taskStatus of (taskStatusDropDown$ | async); track taskStatus.Id){
                                     <mat-option [value]="taskStatus.Id">
@@ -137,6 +136,9 @@
                 <app-task-list-view [tasks$]="tasks$" [length]="totalTasks" [pageSize]="taskQueryParams$.value.pageSize"
                     (pageChange)="onPageChange($event)">
                 </app-task-list-view>
+                <!-- <app-custom-table [dataSource$]="tasks$" [displayedColumns]="taskDisplayedColumns" [length]="totalTasks"
+                    [pageSize]="taskQueryParams$.value.pageSize" (pageChange)="onPageChange($event)">
+                </app-custom-table> -->
             </mat-card>
             }
             @default {
