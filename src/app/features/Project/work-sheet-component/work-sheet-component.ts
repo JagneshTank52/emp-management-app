@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,17 +9,26 @@ import { MatTableModule } from '@angular/material/table';
 import { CustomButtonComponent } from '../../../shared/custom-button-component/custom-button-component';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { WorklogService } from '../../../core/services/worklog.service';
+import { Observable, tap } from 'rxjs';
+import { DropDownModel } from '../../../core/model/Common/drop-down-model';
+import { DropDownService } from '../../../core/services/drop-down.service';
+import { DropDownType } from '../../../core/model/Common/comman-enums';
+import { WorkSheetTaskDetailsModel } from '../../../core/model/WorkLog/work-sheet-task-details-model';
+import { WorkSheetDetailsModel } from '../../../core/model/WorkLog/work-sheet-details-model';
 
 @Component({
   selector: 'app-work-sheet-component',
-  imports: [MatCardModule, MatGridListModule, ReactiveFormsModule,MatIconModule, CommonModule, FormsModule, MatTableModule, CustomButtonComponent, MatOptionModule, MatSelectModule],
+  imports: [MatCardModule, MatGridListModule, ReactiveFormsModule, MatIconModule, CommonModule, FormsModule, MatTableModule, CustomButtonComponent, MatOptionModule, MatSelectModule],
   templateUrl: './work-sheet-component.html',
   styleUrl: './work-sheet-component.css'
 })
-export class WorkSheetComponent {
+export class WorkSheetComponent implements OnInit {
+  projectDropDown$!: Observable<DropDownModel[]>;
   worklogFilterForm!: FormGroup;
   selectedMonth = 8; // August (0-based index)
   selectedYear = 2025;
+  workSheet$!: Observable<WorkSheetDetailsModel | null>;
 
   legends = [
     { label: 'Absent', color: 'var(--color-absent)' },
@@ -48,10 +57,7 @@ export class WorkSheetComponent {
 
   daysInMonth = this.getDaysInMonth(this.selectedYear, this.selectedMonth);
 
-  displayedColumns = [
-    'workItem', 'p', 'sum',
-    ...this.daysInMonth.map(d => d.date)
-  ];
+  displayedColumns: string[] = ['workItem','sum'];
 
   filteredTasks = [
     {
@@ -81,10 +87,18 @@ export class WorkSheetComponent {
   ];
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private worklogService: WorklogService,
+    private dropDownService: DropDownService,
+    private cdr: ChangeDetectorRef
   ) {
     this.initWorklogForm();
     this.generateYears();
+
+  }
+  ngOnInit(): void {
+    this.projectDropDown$ = this.dropDownService.getDropDownList(DropDownType.Project);
+
   }
 
   private initWorklogForm(): void {
@@ -104,11 +118,27 @@ export class WorkSheetComponent {
   onSearch(): void {
     debugger
     if (this.worklogFilterForm.valid) {
-      console.log('Filter values:', this.worklogFilterForm.value);
+      const { month, year, project } = this.worklogFilterForm.value;
+
+      this.worklogService.getWorkSheet(month, year, project)
+        .subscribe({
+          next: (response) => {
+            console.log(response.data);
+            const workSheet = response.data?.dailyWorkLogs;
+            console.log('Worksheet details:', workSheet);
+            debugger
+            const dayColumns = workSheet?.map(d => d.attendanceDate) || [];
+            this.displayedColumns = ['workItem','sum', ...dayColumns];
+            this.workSheet$ = this.worklogService.workSheet$;
+            this.cdr.detectChanges();
+          },
+          error: (err) => console.error('Error fetching worksheet', err)
+        });
     }
   }
 
   onReset(): void {
+
     this.worklogFilterForm.reset();
   }
 
@@ -130,15 +160,6 @@ export class WorkSheetComponent {
     return days;
   }
 
-  getDailyHours(task: any, date: string) {
-    return task.hours[date] || '';
-  }
-
-  getDayClass(day: any) {
-    const weekday = day.dayOfWeek;
-    if (weekday === 'Sat' || weekday === 'Sun') return 'weekend';
-    return '';
-  }
 
   getDailyWorkLog(date: string) {
     return '08:30';
@@ -147,5 +168,23 @@ export class WorkSheetComponent {
   getDailyTimeLog(date: string) {
     return '08:00';
   }
+
+  // Convert date string to day number (1, 2, 3, ...)
+  getDayNumber(dateStr: string): number {
+    return new Date(dateStr).getDate();
+  }
+
+  getDailyHours(task: WorkSheetTaskDetailsModel, dateStr: string): number | null {
+    const log = task.workLogDetails.find(w => w.attendanceDate.toISOString().startsWith(dateStr));
+    return log ? log.workTimeInMinute : null;
+  }
+
+  // Example: CSS class for a day (enable/disable/highlight)
+  getDayClass(day: { attendanceDate: string, day: string }): string {
+    // Customize: for example, highlight holidays or weekends
+    const date = new Date(day.attendanceDate);
+    return (date.getDay() === 0 || date.getDay() === 6) ? 'weekend' : '';
+  }
+
 }
 

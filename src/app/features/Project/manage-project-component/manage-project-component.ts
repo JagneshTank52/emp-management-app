@@ -115,7 +115,7 @@ export class ManageProjectComponent implements OnInit {
     var sub = this.technologyService.getTechnologies().subscribe({
       next: (response) => {
         console.log(response)
-        this.technologies = response.Data ?? [];
+        this.technologies = response.data ?? [];
       }
     })
     this.projectSubscription.add(sub);
@@ -124,7 +124,7 @@ export class ManageProjectComponent implements OnInit {
   LoadSelectEmployeeList() {
     var sub = this.employeeService.getEmployeeSelectList().subscribe({
       next: (response) => {
-        this.employeeList = response.Data ?? [];
+        this.employeeList = response.data ?? [];
       }
     })
     console.log(this.employeeList);
@@ -137,10 +137,10 @@ export class ManageProjectComponent implements OnInit {
         debugger;
         console.log('response: ', response);
 
-        this.projects = response.Data?.Items ?? [];
-        this.projectQueryParamater.pageNumber = response.Data?.PageIndex ?? 1;
-        this.projectQueryParamater.pageSize = response.Data?.PageSize ?? this.projectQueryParamater.pageSize;
-        this.totalProjects = response.Data?.TotalCounts ?? 0;
+        this.projects = response.data?.items ?? [];
+        this.projectQueryParamater.pageNumber = response.data?.pageIndex ?? 1;
+        this.projectQueryParamater.pageSize = response.data?.pageSize ?? this.projectQueryParamater.pageSize;
+        this.totalProjects = response.data?.totalCounts ?? 0;
 
         console.log(this.projects);
         this.dataTableSource.data = this.projects;

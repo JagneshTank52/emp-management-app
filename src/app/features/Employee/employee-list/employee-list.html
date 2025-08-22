@@ -23,32 +23,32 @@
                 </tr>
             </thead>
             <tbody>
-                @for (employee of employees; track employee.Id)
+                @for (employee of employees; track employee.id)
                 {
                 <tr>
-                    <td>{{employee.FirstName}} {{employee.LastName}}</td>
-                    <td>{{employee.Email}}</td>
-                    <td>{{employee.PhoneNumber}}</td>
-                    <td>{{employee.Gender}}</td>
-                    <td>{{employee.DateOfBirth | date:'shortDate'}}</td>
-                    <td>{{employee.Address}}</td>
-                    <td>{{employee.DepartmentName}}</td>
-                    <td>{{employee.RoleName}}</td>
+                    <td>{{employee.firstName}} {{employee.lastName}}</td>
+                    <td>{{employee.email}}</td>
+                    <td>{{employee.phoneNumber}}</td>
+                    <td>{{employee.gender}}</td>
+                    <td>{{employee.dateOfBirth | date:'shortDate'}}</td>
+                    <td>{{employee.address}}</td>
+                    <td>{{employee.departmentName}}</td>
+                    <td>{{employee.roleName}}</td>
                     <td>
                         <div class="btn-group gap-1" role="group" aria-label="Employee Actions">
                             <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)"
                                 textColor="var(--secondary-color)" borderColor="var(--primary-color)"
-                                (buttonClick)="viewDetails(employee.Id)" fontSize="14px">
+                                (buttonClick)="viewDetails(employee.id)" fontSize="14px">
                                 View
                             </app-reusable-btn>
                             <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)"
                                 textColor="var(--secondary-color)" borderColor="var(--primary-color)"
-                                (buttonClick)="navigateToEditEmployee(employee.Id)" fontSize="14px">
+                                (buttonClick)="navigateToEditEmployee(employee.id)" fontSize="14px">
                                 Edit
                             </app-reusable-btn>
                             <app-reusable-btn backgroundColor="var(--component-secondary-bg-color)"
                                 textColor="var(--secondary-color)" borderColor="var(--primary-color)"
-                                (buttonClick)="deleteEmployee(employee.Id)" fontSize="14px">
+                                (buttonClick)="deleteEmployee(employee.id)" fontSize="14px">
                                 Delete
                             </app-reusable-btn>
                         </div>

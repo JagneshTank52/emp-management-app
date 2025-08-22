@@ -28,10 +28,10 @@ export class AuthService {
       .pipe(
         map(response => {
           console.log(response);
-          if (!response.Success || !response.Data) {
-            throw new Error(response.Message || 'Login failed');
+          if (!response.success || !response.data) {
+            throw new Error(response.message || 'Login failed');
           }
-          return response.Data;
+          return response.data;
         }),
         tap(data => this.tokenService.setSession(data))
       );
@@ -41,10 +41,10 @@ export class AuthService {
     return this.http.post<ApiResponse<null>>(`${this.authURL}/register`, credentials, { withCredentials: true })
       .pipe(
         map(response => {
-          if (!response.Success) {
-            throw new Error(response.Message || 'Registration failed');
+          if (!response.success) {
+            throw new Error(response.message || 'Registration failed');
           }
-          return response.Message; // Return success message from backend
+          return response.message; // Return success message from backend
         })
       );
   }
@@ -53,10 +53,10 @@ export class AuthService {
     return this.http.post<ApiResponse<AuthResponse>>(`${this.authURL}/refresh-token`, null, { withCredentials: true })
       .pipe(
         map(response => {
-          if (!response.Success || !response.Data) {
-            throw new Error(response.Message || 'Token refresh failed');
+          if (!response.success || !response.data) {
+            throw new Error(response.message || 'Token refresh failed');
           }
-          return response.Data;
+          return response.data;
         }),
         tap(data => this.tokenService.setSession(data))
       );

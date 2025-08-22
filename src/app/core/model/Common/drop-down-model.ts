@@ -1,5 +1,5 @@
 export interface DropDownModel {
-    Id: number;
-    Name: string;
-    Color: string;
+    id: number;
+    name: string;
+    color: string;
 }

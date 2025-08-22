@@ -98,22 +98,22 @@ export class EmployeeForm implements OnInit {
     debugger;
     this.employeeDataSubscription = this.employeeService.getEmployeeById(id).subscribe({
       next: (response) => {
-        const employee = response.Data;
+        const employee = response.data;
         this.employeeForm.patchValue({
-          firstName: employee!.FirstName,
-          lastName: employee!.LastName,
-          phoneNumber: employee!.PhoneNumber,
-          gender: employee!.Gender,
-          dateOfBirth: employee!.DateOfBirth,
-          address: employee!.Address,
-          departmentId: employee!.DepartmentId,
-          userName: employee!.UserName,
-          email: employee!.Email,
-          password: employee!.Password,
+          firstName: employee!.firstName,
+          lastName: employee!.lastName,
+          phoneNumber: employee!.phoneNumber,
+          gender: employee!.gender,
+          dateOfBirth: employee!.dateOfBirth,
+          address: employee!.address,
+          departmentId: employee!.departmentId,
+          userName: employee!.userName,
+          email: employee!.email,
+          password: employee!.password,
           // Do NOT patch password here for security reasons.
           // If the backend sends it back, it might be hashed or null.
           // The user should explicitly type it to change it.
-          roleId: employee!.RoleId
+          roleId: employee!.roleId
         });
         // Clear password validators immediately after loading for edit,
         // as it's now optional unless the user types something.
@@ -148,7 +148,7 @@ export class EmployeeForm implements OnInit {
           next: (response) => {
             this.message = 'Employee updated successfully!';
             console.log('Employee updated:', response);
-            this.router.navigate(['/employee',response.Data?.Id]);
+            this.router.navigate(['/employee',response.data?.id]);
           },
           error: (error) => {
             this.message = 'Failed to update employee. ' + (error.error?.message || error.message || '');
@@ -161,7 +161,7 @@ export class EmployeeForm implements OnInit {
             this.message = 'Employee added successfully!';
             this.employeeForm.reset();
             console.log('Employee added:', response);
-            this.router.navigate(['/employee',response.Data?.Id]);
+            this.router.navigate(['/employee',response.data?.id]);
           },
           error: (error) => {
             this.message = 'Failed to add employee. ' + (error.error?.message || error.message || '');

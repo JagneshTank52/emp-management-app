@@ -30,9 +30,9 @@
                         <mat-label>Task Status</mat-label>
                         <mat-select required aria-placeholder="Select Task Status" formControlName="taskStatusId">
                             <mat-option value="">-- None --</mat-option>
-                            @for (taskStatus of (taskStatusDropDown$ | async); track taskStatus.Id){
-                            <mat-option [value]="taskStatus.Id">
-                                {{taskStatus.Name}}
+                            @for (taskStatus of (taskStatusDropDown$ | async); track taskStatus.id){
+                            <mat-option [value]="taskStatus.id">
+                                {{taskStatus.name}}
                             </mat-option>
                             }
                         </mat-select>
@@ -48,9 +48,9 @@
                         <mat-label>Select Project</mat-label>
                         <mat-select required aria-placeholder="Select Project Type" formControlName="projectId">
                             <mat-option value="">-- None --</mat-option>
-                            @for (project of (projectDropDown$ | async); track project.Id) {
-                            <mat-option [value]="project.Id">
-                                {{ project.Name }}
+                            @for (project of (projectDropDown$ | async); track project.id) {
+                            <mat-option [value]="project.id">
+                                {{ project.name }}
                             </mat-option>
                             }
                         </mat-select>
@@ -96,9 +96,9 @@
                         <mat-label>Assigned To</mat-label>
                         <mat-select required aria-placeholder="Select Employee" formControlName="assignedTo">
                             <mat-option value="">-- None --</mat-option>
-                            @for (employee of (employeeDown$ | async); track employee.Id) {
-                            <mat-option [value]="employee.Id">
-                                {{ employee.Name }}
+                            @for (employee of (employeeDown$ | async); track employee.id) {
+                            <mat-option [value]="employee.id">
+                                {{ employee.name }}
                             </mat-option>
                             }
                         </mat-select>
@@ -112,9 +112,9 @@
                         <mat-label>Reported By</mat-label>
                         <mat-select required aria-placeholder="Select Employee" formControlName="reportedBy">
                             <mat-option value="">-- None --</mat-option>
-                            @for (employee of (employeeDown$ | async); track employee.Id) {
-                            <mat-option [value]="employee.Id">
-                                {{ employee.Name }}
+                            @for (employee of (employeeDown$ | async); track employee.id) {
+                            <mat-option [value]="employee.id">
+                                {{ employee.name }}
                             </mat-option>
                             }
                         </mat-select>

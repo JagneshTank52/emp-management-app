@@ -45,12 +45,12 @@ export class EmployeeList implements OnInit {
     this.loadEmpSubscription = this.employeeService.getAllEmployees(this.pageNumber, this.pageSize, this.sortBy, this.searchTerm).subscribe({
       next: (response) => {
         console.log('response: ', response);
-        this.employees = response.Data!.Items ?? [];
-        this.pageNumber = response.Data!.PageIndex;
-        this.pageSize = response.Data!.PageSize;
-        this.totalEmployee = response.Data!.TotalCounts;
-        this.hasNextPage = response.Data!.HasNextPage;
-        this.hasPreviousPage = response.Data!.HasPreviousPage;
+        this.employees = response.data!.items ?? [];
+        this.pageNumber = response.data!.pageIndex;
+        this.pageSize = response.data!.pageSize;
+        this.totalEmployee = response.data!.totalCounts;
+        this.hasNextPage = response.data!.hasNextPage;
+        this.hasPreviousPage = response.data!.hasPreviousPage;
         this.startCount = (this.pageNumber - 1) * this.pageSize + 1;
         this.endCount = Math.min(this.pageNumber * this.pageSize, this.totalEmployee);
 

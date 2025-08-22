@@ -1,5 +1,5 @@
 export interface AuthResponse {
-    AccessToken: string;
-    RefreshToken: string;
-    ExpiresIn: number;
+    accessToken: string;
+    refreshToken: string;
+    expiresIn: number;
 }

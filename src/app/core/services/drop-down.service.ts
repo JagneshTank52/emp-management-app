@@ -52,7 +52,7 @@ export class DropDownService {
     // Fetch from API
     this.http.get<ApiResponse<DropDownModel[]>>(this.baseURL+type, { params, withCredentials: true })
       .subscribe({
-        next: res => subject.next(res.Data ?? []),
+        next: res => subject.next(res.data ?? []),
         error: () => subject.next([])
       });
 
@@ -64,7 +64,7 @@ export class DropDownService {
     if (!this.cache.has(type)) return;
     this.http.get<ApiResponse<DropDownModel[]>>(`/api/dropdowns/${type}`)
       .subscribe({
-        next: res => this.cache.get(type)!.next(res.Data ?? []),
+        next: res => this.cache.get(type)!.next(res.data ?? []),
         error: () => this.cache.get(type)!.next([])
       });
   }

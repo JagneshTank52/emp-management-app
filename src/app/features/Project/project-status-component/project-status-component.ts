@@ -121,7 +121,7 @@ export class ProjectStatusComponent implements OnInit {
           switchMap(params =>
             this.taskService.getAllTasks(params).pipe(
               tap(response => {
-                this.totalTasks = response.Data!.TotalCounts ?? 0
+                this.totalTasks = response.data!.totalCounts ?? 0
               }),
               map(() => columns)
             )
@@ -146,9 +146,9 @@ export class ProjectStatusComponent implements OnInit {
 
   initColumns(statuses: DropDownModel[]): StatusColumn[] {
     return statuses.map(status => ({
-      id: status.Id,
-      title: status.Name,
-      color: status.Color ?? '#000000',
+      id: status.id,
+      title: status.name,
+      color: status.color ?? '#000000',
       tasks: []
     }));
   }

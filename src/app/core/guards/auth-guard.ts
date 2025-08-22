@@ -16,7 +16,7 @@ export const authGuard: CanActivateChildFn = async (route, state) => {
 
   if (!isValid && refreshToken) {
     const response = await firstValueFrom(authService.refreshToken())
-    accessToken = response.AccessToken;
+    accessToken = response.accessToken;
     isValid = !!tokenService;
   }
 

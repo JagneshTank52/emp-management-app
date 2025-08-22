@@ -13,9 +13,9 @@ export class TokenService {
   ) { }
 
   setSession(authResponse: AuthResponse): void {
-    const expiresDate = new Date(authResponse.ExpiresIn);
-    this.cookieService.set('RefreshToken', authResponse.RefreshToken, expiresDate, '/', '', false)
-    this.cookieService.set('AccessToken', authResponse.AccessToken, expiresDate, '/', '', false);
+    const expiresDate = new Date(authResponse.expiresIn);
+    this.cookieService.set('RefreshToken', authResponse.refreshToken, expiresDate, '/', '', false)
+    this.cookieService.set('AccessToken', authResponse.accessToken, expiresDate, '/', '', false);
   }
 
   getAccessToken(): string | null {

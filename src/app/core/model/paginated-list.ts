@@ -1,9 +1,9 @@
 export interface PaginatedList<T> {
-    Items: T[];
-    PageIndex: number;
-    PageSize: number;
-    TotalPages: number;
-    TotalCounts: number;
-    HasPreviousPage: boolean;
-    HasNextPage: boolean;
+    items: T[];
+    pageIndex: number;
+    pageSize: number;
+    totalPages: number;
+    totalCounts: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
 }

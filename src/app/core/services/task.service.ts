@@ -44,7 +44,7 @@ export class TaskService {
       params,
       withCredentials: true
     }).pipe(
-      tap(res => this.tasksSubject.next(res.Data!.Items || [])),
+      tap(res => this.tasksSubject.next(res.data!.items || [])),
       shareReplay({ bufferSize: 1, refCount: true })
     );
   }
@@ -68,7 +68,7 @@ export class TaskService {
     return this.http.put<TaskDetailsModel>(`${this.baseURL}/${id}`, task, { withCredentials: true }).pipe(
       tap(updatedTask => {
         const currentTasks = this.tasksSubject.getValue();
-        const index = currentTasks.findIndex(t => t.Id === id);
+        const index = currentTasks.findIndex(t => t.id === id);
         if (index > -1) currentTasks[index] = updatedTask;
         this.tasksSubject.next([...currentTasks]);
       })
@@ -82,7 +82,7 @@ export class TaskService {
     }).pipe(
       tap(() => {
         const currentTasks = this.tasksSubject.getValue();
-        const updatedTasks = currentTasks.filter(t => t.Id !== id);
+        const updatedTasks = currentTasks.filter(t => t.id !== id);
         this.tasksSubject.next([...updatedTasks]); 
       })
     );
@@ -95,7 +95,7 @@ export class TaskService {
       map(tasks => {
         const grouped = statuses.map(s => ({ ...s, tasks: [] as TaskDetailsModel[] }));
         tasks.forEach(task => {
-          const column = grouped.find(c => c.id === task.StatusId);
+          const column = grouped.find(c => c.id === task.statusId);
           if (column) column.tasks.push(task);
         });
         return grouped;

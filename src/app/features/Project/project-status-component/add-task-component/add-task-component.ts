@@ -86,7 +86,7 @@ export class AddTaskComponent implements OnInit {
           this.isEditMode = true;
           this.title = 'Edit Task';
           return this.loadTaskForEdit(taskId).pipe(
-            map(task => task?.ProjectId ?? null),
+            map(task => task?.projectId ?? null),
             catchError(err => {
               console.error('Error loading task for edit:', err);
               return of(projectId ?? null);
@@ -132,18 +132,18 @@ export class AddTaskComponent implements OnInit {
     return this.taskService.getTaskById(id).pipe(
       tap(response => {
         this.taskForm.patchValue({
-          title: response.Title,
-          description: response.Description ?? '',
-          projectId: response.ProjectId,
-          taskStatusId: response.StatusId,
-          totalHour: response.TotalHours,
-          startDate: response.StartDate ? new Date(response.StartDate) : null,
-          endDate: response.EndDate ? new Date(response.EndDate) : null,
-          assignedTo: response.AssignedTo,
-          reportedBy: response.ReportedBy,
-          priority: response.Priority ?? 'Low',
-          label: response.Label ?? '',
-          labels: response.Label ?? ''
+          title: response.title,
+          description: response.description ?? '',
+          projectId: response.projectId,
+          taskStatusId: response.statusId,
+          totalHour: response.totalHours,
+          startDate: response.startDate ? new Date(response.startDate) : null,
+          endDate: response.endDate ? new Date(response.endDate) : null,
+          assignedTo: response.assignedTo,
+          reportedBy: response.reportedBy,
+          priority: response.priority ?? 'Low',
+          label: response.label ?? '',
+          labels: response.label ?? ''
         });
       })
     );

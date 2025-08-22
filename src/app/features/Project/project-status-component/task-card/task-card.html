@@ -7,7 +7,7 @@
         <button mat-icon-button class="bg-transparent border-0 align-items-center d-flex">
           <mat-icon class="icon-file-document">notes</mat-icon>
         </button>
-        <mat-card-title class="text-center">{{ task.Code }}: {{ task.Title }}</mat-card-title>
+        <mat-card-title class="text-center">{{ task.code }}: {{ task.title }}</mat-card-title>
       </div>
       <div class="d-flex align-items-center">
         <button mat-icon-button class="bg-transparent border-0 align-items-center d-flex">
@@ -19,11 +19,11 @@
 
   <mat-card-content class="task-content px-3 py-2">
     <mat-form-field appearance="outline" class="priority-select-field" [ngClass]="{
-        'priority-low-bg': task.Priority === 'Low',
-        'priority-medium-bg': task.Priority === 'Medium',
-        'priority-high-bg': task.Priority === 'High'
+        'priority-low-bg': task.priority === 'Low',
+        'priority-medium-bg': task.priority === 'Medium',
+        'priority-high-bg': task.priority === 'High'
       }">
-      <mat-select [(ngModel)]="task.Priority">
+      <mat-select [(ngModel)]="task.priority">
         <mat-option value="Low">
           <div class="priority-option priority-low">Low</div>
         </mat-option>
@@ -36,6 +36,6 @@
       </mat-select>
     </mat-form-field>
 
-    <div class="assignee-name">Assigned To: {{ task.AssignedToName }}</div>
+    <div class="assignee-name">Assigned To: {{ task.assignedToName }}</div>
   </mat-card-content>
 </mat-card>

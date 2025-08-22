@@ -2,7 +2,7 @@ import { EmployeeDetailsSelectModel } from "../Employee/employee-details-select-
 import { TechnologyDetails } from "../Technology/technology-details";
 
 export interface AddEditProjectDialogData {
-    Id: number,
+  Id: number,
   technologiesList: TechnologyDetails[];
   selectEmployeeList: EmployeeDetailsSelectModel[];
 }

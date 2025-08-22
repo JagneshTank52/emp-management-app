@@ -43,7 +43,7 @@ export class EmployeeDetails implements OnInit {
     this.employeeSubscription = this.employeeService.getEmployeeById(id).subscribe({
       next: (response) => {
 
-        this.employee = response.Data;
+        this.employee = response.data;
         
         this.cdr.detectChanges();
         this.errorMessage = ''; // Clear any previous error
