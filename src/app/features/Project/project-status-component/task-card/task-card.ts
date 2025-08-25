@@ -7,10 +7,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { TaskDetailsModel } from '../../../../core/model/Task/task-details-model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task-card',
-  imports: [MatOptionModule,CommonModule,MatSelectModule,MatCardModule,MatIconModule,FormsModule],
+  imports: [MatOptionModule,CommonModule,MatSelectModule,RouterModule,MatCardModule,MatIconModule,FormsModule],
   templateUrl: './task-card.html',
   styleUrl: './task-card.css'
 })

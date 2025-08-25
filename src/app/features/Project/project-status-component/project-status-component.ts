@@ -107,7 +107,6 @@ export class ProjectStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.projectDropDown$ = this.dropDownService.getDropDownList(DropDownType.Project);
     this.employeeDropDown$ = this.dropDownService.getDropDownList(DropDownType.Employee);
     this.taskStatusDropDown$ = this.dropDownService.getDropDownList(DropDownType.TaskStatus);

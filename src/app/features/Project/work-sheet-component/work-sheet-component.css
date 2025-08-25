@@ -9,7 +9,7 @@
 }
 
 .weekend {
-  background-color: var(--color-weekend) !important;
+  background-color: var(red) !important;
 }
 
 .legend-box {
@@ -34,9 +34,9 @@
   height: 50px;
 }
 
-.timesheet-table th.mat-mdc-header-cell.work-item-header {
-  border-left: 1px solid #ccc !important;
-}
+/* .timesheet-table th.mat-mdc-header-cell.work-item-header {
+  border-right: 1px solid #ccc !important;
+} */
 
 
 /* First column wide */
@@ -55,9 +55,9 @@
 .work-item-cell {
   display: flex;
   align-items: center;
-  /* vertically center icon + text */
+
   gap: 6px;
-  /* spacing between icon and text */
+
 }
 
 /* Control icon size so it matches text */
@@ -66,21 +66,22 @@
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  /* don’t shrink icon */
 }
 
 /* Top header row styling */
 .timesheet-table th.mat-mdc-header-cell {
   background: #fafafa;
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--primary-text-color);
   border-bottom: 2px solid #aaa;
 }
 
-/* Ensure equal size for other cells */
+/* Ensure 
+ells */
 .time-block-cell,
 .timesheet-table th.mat-mdc-header-cell:not(.work-item-header) {
   width: 50px;
-  min-width: 50px;
+  min-width: 55px;
   max-width: 50px;
   text-align: center;
   vertical-align: middle;
@@ -89,4 +90,14 @@
 .timesheet-card .mat-mdc-card-header {
   justify-content: space-between;
   padding: 0.9rem !important;
+}
+
+.timesheet-table .mat-mdc-row:hover {
+  background-color: inherit;
+  color: inherit;
+  cursor: default;
+}
+
+.timesheet-table .mat-mdc-row:hover mat-icon{
+  color: var(--primary-text-color) !important;
 }

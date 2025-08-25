@@ -7,7 +7,6 @@
     </mat-card-header>
 
     <mat-card-content class="status-card-content">
-
         @for (task of statusColumn.tasks; track task.id) {
         <app-task-card [task]="task" [statusColor]="statusColumn.color">
         </app-task-card>

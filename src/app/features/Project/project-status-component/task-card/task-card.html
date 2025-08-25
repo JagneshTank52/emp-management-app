@@ -7,7 +7,11 @@
         <button mat-icon-button class="bg-transparent border-0 align-items-center d-flex">
           <mat-icon class="icon-file-document">notes</mat-icon>
         </button>
-        <mat-card-title class="text-center">{{ task.code }}: {{ task.title }}</mat-card-title>
+        <a [routerLink]="['task-view',task.id]">
+          <mat-card-title class="text-center">
+            {{ task.code }}: {{ task.title }}
+          </mat-card-title>
+        </a>
       </div>
       <div class="d-flex align-items-center">
         <button mat-icon-button class="bg-transparent border-0 align-items-center d-flex">

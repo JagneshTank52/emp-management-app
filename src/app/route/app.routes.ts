@@ -87,7 +87,7 @@ export const routes: Routes = [
                 component: AddTaskComponent
               },
               {
-                path: "task-view",
+                path: "task-view/:id",
                 component: TaskDetails
               }
             ]

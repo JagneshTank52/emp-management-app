@@ -16,19 +16,22 @@ import { DropDownService } from '../../../core/services/drop-down.service';
 import { DropDownType } from '../../../core/model/Common/comman-enums';
 import { WorkSheetTaskDetailsModel } from '../../../core/model/WorkLog/work-sheet-task-details-model';
 import { WorkSheetDetailsModel } from '../../../core/model/WorkLog/work-sheet-details-model';
+import { MinuteToHourPipe } from '../../../shared/pipes/minute-to-hour-pipe';
 
 @Component({
   selector: 'app-work-sheet-component',
-  imports: [MatCardModule, MatGridListModule, ReactiveFormsModule, MatIconModule, CommonModule, FormsModule, MatTableModule, CustomButtonComponent, MatOptionModule, MatSelectModule],
+  imports: [MatCardModule, MatGridListModule, ReactiveFormsModule, MatIconModule, MinuteToHourPipe, CommonModule, FormsModule, MatTableModule, CustomButtonComponent, MatOptionModule, MatSelectModule],
   templateUrl: './work-sheet-component.html',
   styleUrl: './work-sheet-component.css'
 })
 export class WorkSheetComponent implements OnInit {
   projectDropDown$!: Observable<DropDownModel[]>;
   worklogFilterForm!: FormGroup;
-  selectedMonth = 8; // August (0-based index)
-  selectedYear = 2025;
+  selectedMonth = new Date().getMonth() + 1; // August (0-based index)
+  selectedYear = new Date().getFullYear();
   workSheet$!: Observable<WorkSheetDetailsModel | null>;
+  selectedMonthLabel = '';
+
 
   legends = [
     { label: 'Absent', color: 'var(--color-absent)' },
@@ -55,36 +58,7 @@ export class WorkSheetComponent implements OnInit {
 
   years: number[] = [];
 
-  daysInMonth = this.getDaysInMonth(this.selectedYear, this.selectedMonth);
-
-  displayedColumns: string[] = ['workItem','sum'];
-
-  filteredTasks = [
-    {
-      id: 'Task 1',
-      title: 'Bench',
-      p: '00:00',
-      sum: '42:30',
-      color: '#f5faff',
-      hours: { '2025-08-01': '08:30', '2025-08-04': '08:30' }
-    },
-    {
-      id: 'Task 2',
-      title: 'Development',
-      p: '04:00',
-      sum: '56:15',
-      color: '#fff5f5',
-      hours: { '2025-08-02': '04:00', '2025-08-05': '08:00', '2025-08-07': '06:15' }
-    },
-    {
-      id: 'Task 3',
-      title: 'Testing',
-      p: '02:30',
-      sum: '24:45',
-      color: '#f5fff5',
-      hours: { '2025-08-03': '02:30', '2025-08-06': '08:15' }
-    },
-  ];
+  displayedColumns: string[] = ['workItem', 'sum'];
 
   constructor(
     private fb: FormBuilder,
@@ -92,20 +66,27 @@ export class WorkSheetComponent implements OnInit {
     private dropDownService: DropDownService,
     private cdr: ChangeDetectorRef
   ) {
+    this.selectedMonthLabel = this.getMonthLabel(this.selectedMonth)
     this.initWorklogForm();
     this.generateYears();
 
   }
+
   ngOnInit(): void {
     this.projectDropDown$ = this.dropDownService.getDropDownList(DropDownType.Project);
+
+    this.worklogFilterForm.valueChanges.subscribe(val => {
+      this.selectedMonthLabel = this.getMonthLabel(val.month);
+      this.selectedYear = val.year;
+    });
 
   }
 
   private initWorklogForm(): void {
     this.worklogFilterForm = this.fb.group({
       project: ['', Validators.required],
-      month: [new Date().getMonth() + 1, Validators.required],
-      year: [new Date().getFullYear(), Validators.required]
+      month: [this.selectedMonth, Validators.required],
+      year: [this.selectedYear, Validators.required]
     });
   }
 
@@ -128,9 +109,8 @@ export class WorkSheetComponent implements OnInit {
             console.log('Worksheet details:', workSheet);
             debugger
             const dayColumns = workSheet?.map(d => d.attendanceDate) || [];
-            this.displayedColumns = ['workItem','sum', ...dayColumns];
+            this.displayedColumns = ['workItem', 'sum', ...dayColumns];
             this.workSheet$ = this.worklogService.workSheet$;
-            this.cdr.detectChanges();
           },
           error: (err) => console.error('Error fetching worksheet', err)
         });
@@ -138,36 +118,20 @@ export class WorkSheetComponent implements OnInit {
   }
 
   onReset(): void {
-
     this.worklogFilterForm.reset();
+  }
+
+  getSumMinutes(task: WorkSheetTaskDetailsModel): number {
+    if (!task.workLogDetails || !task.workLogDetails.length) return 0;
+
+    return task.workLogDetails.reduce((sum, log) => sum + (log.workTimeInMinute || 0), 0);
   }
 
   getMonthLabel(month: number) {
     return new Date(0, (month - 1)).toLocaleString('default', { month: 'long' });
   }
 
-  getDaysInMonth(year: number, month: number) {
-    const date = new Date(year, month, 1);
-    const days = [];
-    while (date.getMonth() === month) {
-      days.push({
-        date: date.toISOString().split('T')[0],
-        dayNumber: date.getDate(),
-        dayOfWeek: date.toLocaleString('default', { weekday: 'short' })
-      });
-      date.setDate(date.getDate() + 1);
-    }
-    return days;
-  }
 
-
-  getDailyWorkLog(date: string) {
-    return '08:30';
-  }
-
-  getDailyTimeLog(date: string) {
-    return '08:00';
-  }
 
   // Convert date string to day number (1, 2, 3, ...)
   getDayNumber(dateStr: string): number {
@@ -175,7 +139,18 @@ export class WorkSheetComponent implements OnInit {
   }
 
   getDailyHours(task: WorkSheetTaskDetailsModel, dateStr: string): number | null {
-    const log = task.workLogDetails.find(w => w.attendanceDate.toISOString().startsWith(dateStr));
+    const targetDate = new Date(dateStr);
+
+    const log = task.workLogDetails.find(w => {
+      const logDate = new Date(w.attendanceDate); // Convert to Date in case it's a string
+      return (
+        logDate.getFullYear() === targetDate.getFullYear() &&
+        logDate.getMonth() === targetDate.getMonth() &&
+        logDate.getDate() === targetDate.getDate()
+      );
+    });
+
+    console.log(log);
     return log ? log.workTimeInMinute : null;
   }
 

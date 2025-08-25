@@ -114,6 +114,11 @@ ul {
   margin-bottom: 0px !important;
 }
 
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
 // mat tab
 .mdc-tab {
   padding: 0 !important;
@@ -196,11 +201,10 @@ mat-form-field.small {
   height: 50px;
 }
 
-// .mat-mdc-row:hover {
-//   background-color: var(--primary-color);
-//   color: var(--secondary-text-color);
-// }
-
+.mat-mdc-row:hover {
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
+}
 
 
 .mat-mdc-row:hover mat-icon {
@@ -211,10 +215,18 @@ mat-paginator .mat-mdc-select-value {
   text-align: center;
 }
 
-.mat-mdc-card-content:last-child {
+// .mat-mdc-card-content:last-child {
+//   padding-bottom: 0 !important;
+// }
+
+// .mat-mdc-card-content {
+//   padding: 0 !important;
+// }
+
+.timesheet-card .mat-mdc-card-content:last-child {
   padding-bottom: 0 !important;
 }
 
-.mat-mdc-card-content {
+.timesheet-card .mat-mdc-card-content {
   padding: 0 !important;
 }
